@@ -1,0 +1,36 @@
+# 依赖与本地缓存
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+.cache/
+
+# 渲染产物与本地中间件（约 4.2 GB，不入库）
+/export/
+/out/
+/work/
+*.log
+
+# 字幕抽帧取自受版权保护的源视频画面
+/docs/evidence/
+
+# 歌曲与歌词属于权利方：请自带，不要提交
+/assets/audio/*
+!/assets/audio/README.md
+!/assets/audio/provenance.json
+/data/lyrics.json
+/data/lyrics_user_supplied.tsv
+*.lrc
+*.mp3
+*.m4a
+*.wav
+*.flac
+*.ogg
+*.mp4
+
+# 本地密钥与系统文件
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

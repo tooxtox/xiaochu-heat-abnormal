@@ -1,0 +1,1 @@
+{"name":"xiaochu-heat-abnormal","private":true,"type":"module","scripts":{"preview":"node tools/serve.mjs","analyze":"python tools/analyze_audio.py assets/audio/song.m4a -o data/audio_features.json","render":"node tools/render.mjs","trace":"python tools/trace_character.py"},"dependencies":{"@napi-rs/canvas":"0.1.100"},"optionalDependencies":{"playwright":"1.62.1"}}

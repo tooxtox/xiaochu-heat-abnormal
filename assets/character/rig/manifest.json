@@ -1,0 +1,680 @@
+{
+  "schemaVersion": 1,
+  "method": "Limited raster cutout animation with original-pixel layers and local closed-eyelid overlays. Not a reconstructed 3D character or a new hand-drawn pose.",
+  "full": {
+    "width": 1024,
+    "height": 1536,
+    "base": "assets/character/rig/full-base.png",
+    "baseDrawOrder": 20,
+    "layers": [
+      {
+        "name": "ear_left",
+        "path": "assets/character/rig/full-ear_left.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          467,
+          138
+        ],
+        "amplitudeDeg": 3.5,
+        "drawOrder": 8,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+        "actual": true
+      },
+      {
+        "name": "ear_right",
+        "path": "assets/character/rig/full-ear_right.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          609,
+          96
+        ],
+        "amplitudeDeg": 3,
+        "drawOrder": 9,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+        "actual": true
+      },
+      {
+        "name": "tail",
+        "path": "assets/character/rig/full-tail.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          354,
+          765
+        ],
+        "amplitudeDeg": 3.5,
+        "drawOrder": 1,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+        "actual": true
+      },
+      {
+        "name": "hair_back_left",
+        "path": "assets/character/rig/full-hair_back_left.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          335,
+          382
+        ],
+        "amplitudeDeg": 1.2,
+        "drawOrder": 3,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+        "actual": true
+      },
+      {
+        "name": "hair_back_right",
+        "path": "assets/character/rig/full-hair_back_right.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          719,
+          403
+        ],
+        "amplitudeDeg": 1.2,
+        "drawOrder": 4,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+        "actual": true
+      },
+      {
+        "name": "raised_hand",
+        "path": "assets/character/rig/full-raised_hand.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          439,
+          526
+        ],
+        "amplitudeDeg": 2.8,
+        "drawOrder": 30,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Only the small revealed hand/cuff underlay is OpenCV inpainted, then quantised to the fixed palette.",
+        "actual": true
+      },
+      {
+        "name": "hair_front",
+        "path": "assets/character/rig/full-hair_front.png",
+        "width": 1024,
+        "height": 1536,
+        "pivot": [
+          519,
+          318
+        ],
+        "amplitudeDeg": 1,
+        "drawOrder": 35,
+        "parent": "body_static",
+        "mode": "rotate",
+        "available": true,
+        "reconstruction": "Original mint/ink foreground lock; the hidden clothing beneath it is locally inpainted and quantised only inside the cut region.",
+        "actual": true
+      }
+    ],
+    "head": {
+      "available": false,
+      "reason": "Head/neck and scalp fringe are not safely separable from this single raster without inventing hidden hair and collar. Head remains in the static base; ears are real separate layers."
+    },
+    "qa": {
+      "restMeanAbsoluteChannelDifference": 0.0075,
+      "restDifferingPixels": 1468,
+      "maximumAnglesVerified": true,
+      "visualReview": "Source-resolution ear, tail, wrist, front-lock and back-hair attachment crops inspected at both declared rotation limits on 2026-10-22.",
+      "independentMotion": [
+        {
+          "name": "ear_left",
+          "changedPixels": 1957,
+          "changedBounds": [
+            421,
+            59,
+            509,
+            160
+          ]
+        },
+        {
+          "name": "ear_right",
+          "changedPixels": 1973,
+          "changedBounds": [
+            555,
+            9,
+            655,
+            117
+          ]
+        },
+        {
+          "name": "tail",
+          "changedPixels": 15415,
+          "changedBounds": [
+            80,
+            564,
+            369,
+            833
+          ]
+        },
+        {
+          "name": "hair_back_left",
+          "changedPixels": 21410,
+          "changedBounds": [
+            89,
+            332,
+            362,
+            688
+          ]
+        },
+        {
+          "name": "hair_back_right",
+          "changedPixels": 11447,
+          "changedBounds": [
+            697,
+            332,
+            897,
+            677
+          ]
+        },
+        {
+          "name": "raised_hand",
+          "changedPixels": 5462,
+          "changedBounds": [
+            325,
+            397,
+            454,
+            553
+          ]
+        },
+        {
+          "name": "hair_front",
+          "changedPixels": 2842,
+          "changedBounds": [
+            497,
+            285,
+            576,
+            507
+          ]
+        }
+      ]
+    },
+    "blink": {
+      "path": "assets/character/rig/full-blink.png",
+      "available": true,
+      "mode": "local-overlay",
+      "eyes": [
+        {
+          "cover": [
+            [
+              503,
+              220
+            ],
+            [
+              513,
+              208
+            ],
+            [
+              530,
+              203
+            ],
+            [
+              550,
+              207
+            ],
+            [
+              561,
+              218
+            ],
+            [
+              561,
+              235
+            ],
+            [
+              553,
+              250
+            ],
+            [
+              538,
+              256
+            ],
+            [
+              519,
+              249
+            ],
+            [
+              506,
+              239
+            ]
+          ],
+          "anchors": [
+            [
+              516,
+              240
+            ],
+            [
+              553,
+              227
+            ]
+          ]
+        },
+        {
+          "cover": [
+            [
+              587,
+              199
+            ],
+            [
+              596,
+              185
+            ],
+            [
+              611,
+              180
+            ],
+            [
+              626,
+              184
+            ],
+            [
+              640,
+              195
+            ],
+            [
+              642,
+              213
+            ],
+            [
+              634,
+              231
+            ],
+            [
+              615,
+              236
+            ],
+            [
+              599,
+              226
+            ]
+          ],
+          "anchors": [
+            [
+              597,
+              219
+            ],
+            [
+              630,
+              207
+            ]
+          ]
+        }
+      ],
+      "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained."
+    }
+  },
+  "calm": {
+    "width": 627,
+    "height": 627,
+    "base": "assets/character/expression-calm.png",
+    "blink": {
+      "path": "assets/character/rig/calm-blink.png",
+      "available": true,
+      "mode": "local-overlay",
+      "eyes": [
+        {
+          "cover": [
+            [
+              294,
+              226
+            ],
+            [
+              311,
+              215
+            ],
+            [
+              333,
+              214
+            ],
+            [
+              352,
+              225
+            ],
+            [
+              357,
+              239
+            ],
+            [
+              350,
+              258
+            ],
+            [
+              331,
+              267
+            ],
+            [
+              312,
+              260
+            ],
+            [
+              299,
+              251
+            ]
+          ],
+          "anchors": [
+            [
+              300,
+              251
+            ],
+            [
+              349,
+              237
+            ]
+          ]
+        },
+        {
+          "cover": [
+            [
+              396,
+              211
+            ],
+            [
+              408,
+              196
+            ],
+            [
+              426,
+              192
+            ],
+            [
+              443,
+              198
+            ],
+            [
+              450,
+              213
+            ],
+            [
+              446,
+              235
+            ],
+            [
+              430,
+              246
+            ],
+            [
+              413,
+              240
+            ],
+            [
+              402,
+              230
+            ]
+          ],
+          "anchors": [
+            [
+              402,
+              225
+            ],
+            [
+              440,
+              211
+            ]
+          ]
+        }
+      ],
+      "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained."
+    }
+  },
+  "fear": {
+    "width": 627,
+    "height": 627,
+    "base": "assets/character/expression-fear.png",
+    "blink": {
+      "path": "assets/character/rig/fear-blink.png",
+      "available": true,
+      "mode": "local-overlay",
+      "eyes": [
+        {
+          "cover": [
+            [
+              271,
+              222
+            ],
+            [
+              289,
+              212
+            ],
+            [
+              311,
+              211
+            ],
+            [
+              329,
+              225
+            ],
+            [
+              332,
+              239
+            ],
+            [
+              325,
+              257
+            ],
+            [
+              308,
+              264
+            ],
+            [
+              288,
+              259
+            ],
+            [
+              277,
+              250
+            ]
+          ],
+          "anchors": [
+            [
+              277,
+              245
+            ],
+            [
+              324,
+              232
+            ]
+          ]
+        },
+        {
+          "cover": [
+            [
+              376,
+              209
+            ],
+            [
+              390,
+              194
+            ],
+            [
+              410,
+              191
+            ],
+            [
+              425,
+              201
+            ],
+            [
+              431,
+              218
+            ],
+            [
+              423,
+              238
+            ],
+            [
+              405,
+              246
+            ],
+            [
+              388,
+              237
+            ],
+            [
+              380,
+              228
+            ]
+          ],
+          "anchors": [
+            [
+              382,
+              223
+            ],
+            [
+              423,
+              211
+            ]
+          ]
+        }
+      ],
+      "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained."
+    }
+  },
+  "sad": {
+    "width": 627,
+    "height": 627,
+    "base": "assets/character/expression-sad.png",
+    "blink": {
+      "path": "assets/character/rig/sad-blink.png",
+      "available": true,
+      "mode": "local-overlay",
+      "eyes": [
+        {
+          "cover": [
+            [
+              294,
+              238
+            ],
+            [
+              310,
+              226
+            ],
+            [
+              332,
+              223
+            ],
+            [
+              352,
+              233
+            ],
+            [
+              359,
+              246
+            ],
+            [
+              353,
+              264
+            ],
+            [
+              334,
+              276
+            ],
+            [
+              312,
+              269
+            ],
+            [
+              300,
+              260
+            ]
+          ],
+          "anchors": [
+            [
+              301,
+              258
+            ],
+            [
+              352,
+              244
+            ]
+          ]
+        },
+        {
+          "cover": [
+            [
+              399,
+              216
+            ],
+            [
+              413,
+              202
+            ],
+            [
+              433,
+              199
+            ],
+            [
+              449,
+              209
+            ],
+            [
+              453,
+              225
+            ],
+            [
+              447,
+              243
+            ],
+            [
+              431,
+              251
+            ],
+            [
+              412,
+              244
+            ],
+            [
+              404,
+              235
+            ]
+          ],
+          "anchors": [
+            [
+              405,
+              232
+            ],
+            [
+              447,
+              220
+            ]
+          ]
+        }
+      ],
+      "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained."
+    }
+  },
+  "peace": {
+    "width": 627,
+    "height": 627,
+    "base": "assets/character/expression-peace.png",
+    "blink": {
+      "available": false,
+      "reason": "Original eyes are already closed."
+    }
+  },
+  "limitations": [
+    "The head remains static; it is not claimed as an independently rotatable layer.",
+    "Back-hair layers contain the original outer locks; the separate foreground lock retains a short attachment at its root.",
+    "Small hidden hand/cuff and front-lock underlays are inferred by local inpainting and palette quantisation, not newly generated anatomy.",
+    "All rotations are intentionally small. Do not exceed the manifest amplitudes without inspecting seams.",
+    "Blink overlays preserve the original expression mouth and face; eyelash strokes come from the already-generated closed-eye portrait."
+  ]
+}

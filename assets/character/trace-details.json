@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "generator": "Built-in image_gen.imagegen",
+  "localProcessing": "Existing trace_character.separate/write_svg/compare functions; semantic colour regions, source ink preservation and automatic local contours.",
+  "alphaPolicy": "Same 224–251 alpha remap and largest-component foreground cleanup. Original opaque eyes stay alpha=255 throughout; hand glow is removed.",
+  "palette": {
+    "outline": "#294F4C",
+    "ink": "#193330",
+    "mint_deep": "#4D8475",
+    "mint_shadow": "#70B39B",
+    "mint": "#9DE4C2",
+    "mint_light": "#B9F0D5",
+    "mint_glint": "#DCF8E9",
+    "ivory_deep": "#BFC9C4",
+    "ivory_shadow": "#DDE2DC",
+    "ivory": "#F3F2E9",
+    "ivory_light": "#FFFDF4",
+    "skin_shadow": "#D9A798",
+    "skin": "#F6CEBC",
+    "skin_light": "#FFE5D5",
+    "pink_deep": "#9C4D72",
+    "pink": "#E9ACC8",
+    "pink_light": "#FAD3E4"
+  },
+  "assets": {
+    "eyes": {
+      "source": "eyes-original.png",
+      "sourceSha256": "24c24743aa67e1d6153bb0834f4e9457a1df523abe7d9a51e3b06df836a4e018",
+      "size": [
+        1672,
+        941
+      ],
+      "alphaBbox": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sourceAlphaMin": 255,
+      "sourceAlphaMax": 255,
+      "outputAlphaMin": 255,
+      "outputAlphaMax": 255,
+      "opaquePixelFraction": 1.0,
+      "transparentPixelFraction": 0.0,
+      "outputs": [
+        "eyes-recolored.png",
+        "eyes-lineart.png",
+        "eyes-traced.svg",
+        "eyes-compare.png"
+      ],
+      "promptRecord": "Normalized summary in docs/PROMPTS.md, not a verbatim prompt transcript.",
+      "visualReview": "Both pink eyes and mint fringe retained; full-frame opaque macro."
+    },
+    "hand": {
+      "source": "hand-original.png",
+      "sourceSha256": "2be9abb854973dacb810a43668c649e099649a0229e07d1745ea67063c369b80",
+      "size": [
+        1536,
+        1024
+      ],
+      "alphaBbox": [
+        98,
+        84,
+        1536,
+        1024
+      ],
+      "sourceAlphaMin": 0,
+      "sourceAlphaMax": 254,
+      "outputAlphaMin": 0,
+      "outputAlphaMax": 255,
+      "opaquePixelFraction": 0.294465,
+      "transparentPixelFraction": 0.700294,
+      "outputs": [
+        "hand-recolored.png",
+        "hand-lineart.png",
+        "hand-traced.svg",
+        "hand-compare.png"
+      ],
+      "promptRecord": "Normalized summary in docs/PROMPTS.md, not a verbatim prompt transcript.",
+      "visualReview": "One upturned hand, five visible fingers, ivory lace cuff and mint bows; forearm enters from lower right."
+    }
+  },
+  "limitations": "Generated fixed-pose details, not articulated fingers, eyelids or a replacement full character rig. Automatic tracing can simplify fine lace and thin lines."
+}

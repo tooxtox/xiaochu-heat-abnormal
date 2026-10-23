@@ -1,0 +1,100 @@
+{
+  "method": "Automatic local semantic colour separation and contour tracing, not hand tracing",
+  "palette": {
+    "outline": "#294F4C",
+    "ink": "#193330",
+    "mint_deep": "#4D8475",
+    "mint_shadow": "#70B39B",
+    "mint": "#9DE4C2",
+    "mint_light": "#B9F0D5",
+    "mint_glint": "#DCF8E9",
+    "ivory_deep": "#BFC9C4",
+    "ivory_shadow": "#DDE2DC",
+    "ivory": "#F3F2E9",
+    "ivory_light": "#FFFDF4",
+    "skin_shadow": "#D9A798",
+    "skin": "#F6CEBC",
+    "skin_light": "#FFE5D5",
+    "pink_deep": "#9C4D72",
+    "pink": "#E9ACC8",
+    "pink_light": "#FAD3E4"
+  },
+  "main_size": [
+    1024,
+    1536
+  ],
+  "atlas_size": [
+    1254,
+    1254
+  ],
+  "expressions": {
+    "calm": {
+      "source_box": [
+        0,
+        0,
+        627,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ]
+    },
+    "fear": {
+      "source_box": [
+        627,
+        0,
+        1254,
+        627
+      ],
+      "size": [
+        627,
+        627
+      ]
+    },
+    "sad": {
+      "source_box": [
+        0,
+        627,
+        627,
+        1254
+      ],
+      "size": [
+        627,
+        627
+      ]
+    },
+    "peace": {
+      "source_box": [
+        627,
+        627,
+        1254,
+        1254
+      ],
+      "size": [
+        627,
+        627
+      ]
+    }
+  },
+  "alpha": "Remove generated low-opacity glow; remap alpha 224..251 to 0..255 and keep the largest connected foreground component (also rejects neighbouring atlas-cell fragments)",
+  "contours": "OpenCV connected colour-region contours with holes; approxPolyDP epsilon 0.45 source pixels; minimum region area 1.7 px2",
+  "shading": "Fixed semantic mint, ivory, skin, pink and dark teal inks; no dithering, no Canny edge overlay",
+  "limitations": "Automatic colour/alpha segmentation can simplify fine lace and transparent wisps. SVG traces the current pose; it is not a new independent pose or a hidden-part rig.",
+  "source_sha256": "fed47a3e24f1e80f3fdb7d4baad018e0ae0d1c7c30376a4a0d39db86e1f507d4",
+  "seated": {
+    "size": [
+      1536,
+      1024
+    ],
+    "alpha_bbox": [
+      283,
+      4,
+      1380,
+      1015
+    ],
+    "source_sha256": "48d57acdcae32864f2e06d64f45b522a30de9b93a6f9f0bfd3f03efda5b96559",
+    "source_prompt_summary": "Same Xiaochu identity, seated side view facing left, hands posed for typing, mint long hair, pink eyes, mint/ivory lolita outfit, ears and tail; isolated transparent source",
+    "local_processing": "Same fixed palette, alpha cleanup and real automatic colour-region contour trace as the standing pose"
+  }
+}

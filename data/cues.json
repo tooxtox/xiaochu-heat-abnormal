@@ -1,0 +1,887 @@
+{
+  "duration": 242.538333,
+  "sourceZeroPreserved": true,
+  "musicStart": 2.729292,
+  "musicEnd": 241.417271,
+  "timingStatus": "lyric-line-semantic-edit-with-audio-verified-cover-offset",
+  "bpmCandidate": 92.285,
+  "bpmVerified": false,
+  "scenes": [
+    {
+      "id": 1,
+      "segment": 1,
+      "start": 0,
+      "label": "INIT",
+      "state": "NORMAL",
+      "color": "#9DE4C2",
+      "timing": "editorial-interlude-boundary"
+    },
+    {
+      "id": 2,
+      "segment": 2,
+      "start": 2.795875,
+      "label": "DEAD VARIABLES",
+      "state": "OBSERVE",
+      "color": "#9DE4C2",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 3,
+      "segment": 3,
+      "start": 24.252875,
+      "label": "FEAR / VASCULAR CURRENT",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 4,
+      "segment": 4,
+      "start": 29.727875,
+      "label": "ERASE / PERSIST",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 5,
+      "start": 34.965875,
+      "label": "BROKEN VOICE / CRESCENT",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 9,
+      "segment": 6,
+      "start": 40.296875,
+      "label": "APPROACH I",
+      "state": "CORRUPTED",
+      "color": "#D93B4A",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 7,
+      "start": 46.700875,
+      "label": "BURNING SALVATION",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 4,
+      "segment": 8,
+      "start": 52.141875,
+      "label": "WHISPER / ANOMALY",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 9,
+      "start": 57.225875,
+      "label": "UTOPIA / SHIPWRECK",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 5,
+      "segment": 10,
+      "start": 62.452875,
+      "label": "BLACK STAR I",
+      "state": "VOID",
+      "color": "#C8CCD1",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 9,
+      "segment": 11,
+      "start": 68.958875,
+      "label": "FLASH / FAREWELL",
+      "state": "CORRUPTED",
+      "color": "#D93B4A",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 12,
+      "start": 74.211875,
+      "label": "HISTORY INTO SAND",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 2,
+      "segment": 13,
+      "start": 79.513875,
+      "label": "RETURN / DEAD VARIABLES",
+      "state": "OBSERVE",
+      "color": "#9DE4C2",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 5,
+      "segment": 14,
+      "start": 84.742875,
+      "label": "EYES / DISTANT STAR",
+      "state": "VOID",
+      "color": "#C8CCD1",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 7,
+      "segment": 15,
+      "start": 90.215,
+      "label": "INTERLUDE / SMALL MEMORY",
+      "state": "MEMORY",
+      "color": "#E9ACC8",
+      "timing": "editorial-interlude-boundary"
+    },
+    {
+      "id": 6,
+      "segment": 16,
+      "start": 112.723875,
+      "label": "GRIEF / CRYSTALLISATION",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 2,
+      "segment": 17,
+      "start": 115.499875,
+      "label": "VALUATION / PRAYER",
+      "state": "OBSERVE",
+      "color": "#9DE4C2",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 4,
+      "segment": 18,
+      "start": 118.062875,
+      "label": "TURN AWAY / HEAR",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 19,
+      "start": 123.354875,
+      "label": "SELF CONSCIOUS OCEAN",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 5,
+      "segment": 20,
+      "start": 128.580875,
+      "label": "BLACK STAR II",
+      "state": "VOID",
+      "color": "#C8CCD1",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 10,
+      "segment": 21,
+      "start": 134.593,
+      "label": "INTERLUDE / SIGNAL STUDY",
+      "state": "NORMAL",
+      "color": "#9DE4C2",
+      "timing": "editorial-interlude-boundary"
+    },
+    {
+      "id": 2,
+      "segment": 22,
+      "start": 167.982875,
+      "label": "RECURSION / RETURN",
+      "state": "OBSERVE",
+      "color": "#9DE4C2",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 23,
+      "start": 188.993875,
+      "label": "CELLS / RETURN TO SEA",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 7,
+      "segment": 24,
+      "start": 194.266875,
+      "label": "SWALLOW / GREY CLOUD",
+      "state": "MEMORY",
+      "color": "#E9ACC8",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 25,
+      "start": 199.447875,
+      "label": "BORROWED HONOUR",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 7,
+      "segment": 26,
+      "start": 204.731875,
+      "label": "YOUR CLEAR EYES",
+      "state": "MEMORY",
+      "color": "#E9ACC8",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 7,
+      "segment": 27,
+      "start": 209.982875,
+      "label": "HANDS / IMPOSSIBLE DREAM",
+      "state": "MEMORY",
+      "color": "#E9ACC8",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 8,
+      "segment": 28,
+      "start": 212.568875,
+      "label": "CORE / HEAT ABNORMAL",
+      "state": "CRITICAL",
+      "color": "#D93B4A",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 9,
+      "segment": 29,
+      "start": 215.235875,
+      "label": "REALITY / REFUSAL",
+      "state": "CORRUPTED",
+      "color": "#D93B4A",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 6,
+      "segment": 30,
+      "start": 220.588875,
+      "label": "BROKEN VOICE / REPRISE",
+      "state": "WARNING",
+      "color": "#ED8B50",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 9,
+      "segment": 31,
+      "start": 225.871875,
+      "label": "APPROACH II",
+      "state": "CORRUPTED",
+      "color": "#D93B4A",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 5,
+      "segment": 32,
+      "start": 229.768875,
+      "label": "ARRIVAL / BLACK STAR",
+      "state": "VOID",
+      "color": "#C8CCD1",
+      "timing": "lyric-line-semantic-edit"
+    },
+    {
+      "id": 10,
+      "segment": 33,
+      "start": 231.69,
+      "label": "THE LAST MESSAGE",
+      "state": "NORMAL",
+      "color": "#9DE4C2",
+      "timing": "editorial-interlude-boundary"
+    },
+    {
+      "id": 11,
+      "segment": 34,
+      "start": 238,
+      "label": "SHUTDOWN",
+      "state": "SILENCE",
+      "color": "#C8CCD1",
+      "timing": "editorial-interlude-boundary"
+    }
+  ],
+  "events": [],
+  "characterFx": [
+    {
+      "start": 0,
+      "end": 2.795875,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INIT",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 2.795875,
+      "end": 8.178875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "DEAD VARIABLES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 8.178875,
+      "end": 13.152875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "DEAD VARIABLES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 13.152875,
+      "end": 18.654875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "DEAD VARIABLES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 18.654875,
+      "end": 24.252875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "DEAD VARIABLES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 24.252875,
+      "end": 26.989875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "FEAR / VASCULAR CURRENT",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 26.989875,
+      "end": 29.727875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "FEAR / VASCULAR CURRENT",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 29.727875,
+      "end": 34.965875,
+      "mode": "blueprint",
+      "intensity": 0.9,
+      "intent": "ERASE / PERSIST",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 34.965875,
+      "end": 37.550875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BROKEN VOICE / CRESCENT",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 37.550875,
+      "end": 40.296875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BROKEN VOICE / CRESCENT",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 40.296875,
+      "end": 42.277875,
+      "mode": "thermal",
+      "intensity": 0.9,
+      "intent": "APPROACH I",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 42.277875,
+      "end": 46.700875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "APPROACH I",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 46.700875,
+      "end": 49.242875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BURNING SALVATION",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 49.242875,
+      "end": 52.141875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BURNING SALVATION",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 52.141875,
+      "end": 54.095875,
+      "mode": "blueprint",
+      "intensity": 0.9,
+      "intent": "WHISPER / ANOMALY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 54.095875,
+      "end": 57.225875,
+      "mode": "blueprint",
+      "intensity": 0.9,
+      "intent": "WHISPER / ANOMALY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 57.225875,
+      "end": 59.739875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "UTOPIA / SHIPWRECK",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 59.739875,
+      "end": 62.452875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "UTOPIA / SHIPWRECK",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 62.452875,
+      "end": 64.597875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR I",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 64.597875,
+      "end": 66.470875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR I",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 66.470875,
+      "end": 68.958875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR I",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 68.958875,
+      "end": 71.811875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "FLASH / FAREWELL",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 71.811875,
+      "end": 74.211875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "FLASH / FAREWELL",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 74.211875,
+      "end": 79.513875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "HISTORY INTO SAND",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 79.513875,
+      "end": 84.742875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "RETURN / DEAD VARIABLES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 84.742875,
+      "end": 87.302875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "EYES / DISTANT STAR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 87.302875,
+      "end": 90.215,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "EYES / DISTANT STAR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 90.215,
+      "end": 95.842219,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SMALL MEMORY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 95.842219,
+      "end": 101.469437,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SMALL MEMORY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 101.469437,
+      "end": 107.096656,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SMALL MEMORY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 107.096656,
+      "end": 112.723875,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SMALL MEMORY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 112.723875,
+      "end": 115.499875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "GRIEF / CRYSTALLISATION",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 115.499875,
+      "end": 118.062875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "VALUATION / PRAYER",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 118.062875,
+      "end": 120.105875,
+      "mode": "blueprint",
+      "intensity": 0.9,
+      "intent": "TURN AWAY / HEAR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 120.105875,
+      "end": 123.354875,
+      "mode": "blueprint",
+      "intensity": 0.9,
+      "intent": "TURN AWAY / HEAR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 123.354875,
+      "end": 125.983875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "SELF CONSCIOUS OCEAN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 125.983875,
+      "end": 128.580875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "SELF CONSCIOUS OCEAN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 128.580875,
+      "end": 130.724875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR II",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 130.724875,
+      "end": 132.701875,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR II",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 132.701875,
+      "end": 134.593,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "BLACK STAR II",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 134.593,
+      "end": 141.270975,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SIGNAL STUDY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 141.270975,
+      "end": 147.94895,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SIGNAL STUDY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 147.94895,
+      "end": 154.626925,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SIGNAL STUDY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 154.626925,
+      "end": 161.3049,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SIGNAL STUDY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 161.3049,
+      "end": 167.982875,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "INTERLUDE / SIGNAL STUDY",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 167.982875,
+      "end": 173.319875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "RECURSION / RETURN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 173.319875,
+      "end": 178.492875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "RECURSION / RETURN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 178.492875,
+      "end": 183.641875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "RECURSION / RETURN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 183.641875,
+      "end": 188.993875,
+      "mode": "mono",
+      "intensity": 0.9,
+      "intent": "RECURSION / RETURN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 188.993875,
+      "end": 194.266875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "CELLS / RETURN TO SEA",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 194.266875,
+      "end": 199.447875,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "SWALLOW / GREY CLOUD",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 199.447875,
+      "end": 204.731875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BORROWED HONOUR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 204.731875,
+      "end": 209.982875,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "YOUR CLEAR EYES",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 209.982875,
+      "end": 212.568875,
+      "mode": "memory",
+      "intensity": 0.72,
+      "intent": "HANDS / IMPOSSIBLE DREAM",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 212.568875,
+      "end": 215.235875,
+      "mode": "thermal",
+      "intensity": 0.9,
+      "intent": "CORE / HEAT ABNORMAL",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 215.235875,
+      "end": 220.588875,
+      "mode": "thermal",
+      "intensity": 0.9,
+      "intent": "REALITY / REFUSAL",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 220.588875,
+      "end": 223.130875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BROKEN VOICE / REPRISE",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 223.130875,
+      "end": 225.871875,
+      "mode": "print",
+      "intensity": 0.9,
+      "intent": "BROKEN VOICE / REPRISE",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 225.871875,
+      "end": 227.786875,
+      "mode": "thermal",
+      "intensity": 0.9,
+      "intent": "APPROACH II",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 227.786875,
+      "end": 229.768875,
+      "mode": "ghost",
+      "intensity": 0.9,
+      "intent": "APPROACH II",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 229.768875,
+      "end": 231.69,
+      "mode": "defocus",
+      "intensity": 0.9,
+      "intent": "ARRIVAL / BLACK STAR",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 231.69,
+      "end": 238,
+      "mode": "fade",
+      "intensity": 0.72,
+      "intent": "THE LAST MESSAGE",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    },
+    {
+      "start": 238,
+      "end": 242.538333,
+      "mode": "fade",
+      "intensity": 0.9,
+      "intent": "SHUTDOWN",
+      "scope": "character-only",
+      "timing": "lyric-semantic-shot"
+    }
+  ]
+}

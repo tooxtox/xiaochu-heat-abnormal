@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LAST SIGNAL · 导演预览台</title>
+<style>
+@font-face{font-family:'Noto Serif JP';src:url('./assets/fonts/NotoSerifJP.ttf')}@font-face{font-family:'Noto Sans JP';src:url('./assets/fonts/NotoSansJP.ttf')}@font-face{font-family:'Noto Sans SC';src:url('./assets/fonts/NotoSansSC.ttf')}
+*{box-sizing:border-box}body{margin:0;background:#090c13;color:#c8ccd1;font:13px Consolas,'Noto Sans JP',sans-serif}header{padding:22px 32px;border-bottom:1px solid #294f4c;display:flex;align-items:end;justify-content:space-between}h1{font-weight:400;font-size:22px;letter-spacing:4px;margin:0;color:#9de4c2}header p{margin:5px 0 0;font-size:11px;letter-spacing:2px}.tag{color:#ed8b50;font-size:12px}main{max-width:1600px;margin:auto;padding:24px 32px}canvas{width:100%;height:auto;display:block;background:#090c13;outline:1px solid #294f4c}.transport{display:flex;gap:12px;align-items:center;margin:18px 0}button,select,label.file{font:inherit;color:#9de4c2;background:#102021;border:1px solid #294f4c;border-radius:0;padding:9px 13px;cursor:pointer}button:hover,label.file:hover{background:#294f4c}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #e9acc8;outline-offset:3px}button:disabled{opacity:.4;cursor:default}input[type=range]{flex:1;accent-color:#9de4c2}input[type=file]{display:none}.timeline{height:90px;margin:18px 0;position:relative;border:1px solid #294f4c}.timeline canvas{width:100%;height:88px;outline:none}.notes{display:flex;justify-content:space-between;gap:20px;color:#8eaaa5;line-height:1.8}.chapters{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0}.chapters button{font-size:11px;padding:8px}.current{color:#e9acc8}.status{margin:10px 0;font-size:12px;color:#ed8b50}a{color:#9de4c2}kbd{padding:2px 5px;border:1px solid #294f4c}footer{padding:24px 0;border-top:1px solid #294f4c;color:#78938b}#source{font-size:11px}progress{accent-color:#9de4c2}@media(max-width:700px){main{padding:14px}header{padding:16px}.transport{flex-wrap:wrap}.notes{display:block}input[type=range]{min-width:160px}}
+</style>
+<header><div><h1>熱異常 / LAST SIGNAL</h1><p>XIAOCHU — LAST OBSERVATORY / 05</p></div><span class="tag">RHYTHM MONTAGE · CLIMAX DECONSTRUCTION · 1080p60</span></header>
+<main>
+<canvas id="film" width="1920" height="1080" aria-label="MV 画面"></canvas>
+<div class="transport"><button id="play">播放</button><button id="prev" title="向前一帧">−1 帧</button><button id="next" title="向后一帧">+1 帧</button><input id="seek" type="range" min="0" max="242.538333" step="0.0166666667" value="0" aria-label="歌曲时间"><output id="clock">00:00.000</output><button id="still">保存此帧</button><select id="quality" aria-label="预览分辨率"><option value="1920">1080p</option><option value="1280">720p</option><option value="960">540p</option></select></div>
+<div class="timeline"><canvas id="wave" width="1500" height="88" aria-label="真实音频波形与镜头时间轴"></canvas></div>
+<div class="transport"><label><input id="fxEnabled" type="checkbox" checked> 人物特效</label><label><input id="glitchEnabled" type="checkbox" checked> 崩坏后期</label><select id="fxReview" aria-label="动画、转场与人物效果检查"><option value="">跳转查看动画与特效</option></select><span>新增疾走快切与高潮爆点入口；循环段保持中量崩坏，高潮逐段增强。可切换崩坏开关对照同一帧。</span></div>
+<div id="chapters" class="chapters"></div>
+<div class="notes"><div><span class="current" id="scene"></span><br><kbd>空格</kbd> 播放 / 暂停　<kbd>←</kbd> <kbd>→</kbd> 逐帧　<kbd>Shift</kbd> + 方向键 1 秒</div><div><label class="file">导入本地 LRC<input id="lyricFile" type="file" accept=".lrc,.json"></label> <label class="file">替换本地音频<input id="audioFile" type="file" accept="audio/*,video/mp4"></label></div></div>
+<p id="status" class="status">加载素材与真实音轨…</p>
+<p id="source">音源：<a href="https://www.bilibili.com/video/BV1eGZLBkE5X/" target="_blank" rel="noopener">25時、ナイトコードで。 × KAITO / BV1eGZLBkE5X</a>　242.538 秒 · 保留源零点</p>
+<footer>126 行日中歌词融入场景，156 个镜头、7 类文字编排与 10 类歌词意象动画。快节奏段随实际鼓点切换远景、人物、眼部与手部取景，短串快切之后用较长主构图停顿，配合短促推拉与外缘速度线。高潮增加斜向快门、放大残影和图像碎裂，爆发后迅速恢复清晰；7 处循环歌词保持中量崩坏。阅读文字延续原有构图和时间轴，人物动作跨快切连续。日文行级时间已用同版音频校准；入字属于图形动画，未声明逐字演唱对齐。</footer>
+</main>
+<audio id="audio" preload="auto" src="./assets/audio/song.m4a"></audio>
+<script type="module" src="./src/preview.mjs"></script>
+</html>

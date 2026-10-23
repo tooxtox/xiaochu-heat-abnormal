@@ -1,0 +1,15 @@
+# 逐字节保留：本工程混用 CRLF 与 LF，歌词与时间校准工具依赖精确字节布局。
+* -text
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.mp4 binary
+*.m4a binary
+*.mp3 binary

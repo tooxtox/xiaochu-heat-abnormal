@@ -1,0 +1,485 @@
+{
+  "method": "Offline grayscale, ink/halftone, cold negative and premultiplied-alpha Gaussian defocus. Original art untouched.",
+  "records": [
+    {
+      "source": "assets/character/xiaochu-recolored.png",
+      "mode": "mono",
+      "output": "assets/character/fx/xiaochu-recolored-mono.png",
+      "sha256": "fdd5e8c6f4f2ca8f25e3114fe2c281201c0a0ad7571ae858e4ed34342d233448"
+    },
+    {
+      "source": "assets/character/xiaochu-recolored.png",
+      "mode": "ink",
+      "output": "assets/character/fx/xiaochu-recolored-ink.png",
+      "sha256": "9529889ed96752e4bec215d30d645de44a025a6baef7683df2c74a3182e2e90c"
+    },
+    {
+      "source": "assets/character/xiaochu-recolored.png",
+      "mode": "negative",
+      "output": "assets/character/fx/xiaochu-recolored-negative.png",
+      "sha256": "1431734052a963ad05556e91ab34c800578782c9f9b7e71dcf179e2a9a2a48e3"
+    },
+    {
+      "source": "assets/character/xiaochu-recolored.png",
+      "mode": "soft",
+      "output": "assets/character/fx/xiaochu-recolored-soft.png",
+      "sha256": "6d262e791afe15643bd92eb21dc9da06cf0a2d57d37a9babb1592cd6157a98c5"
+    },
+    {
+      "source": "assets/character/seated-recolored.png",
+      "mode": "mono",
+      "output": "assets/character/fx/seated-recolored-mono.png",
+      "sha256": "b842c8fdad66c94eb9f9b2c517c12d18a55c9c2bbfbcba95190da357c275f0d9"
+    },
+    {
+      "source": "assets/character/seated-recolored.png",
+      "mode": "ink",
+      "output": "assets/character/fx/seated-recolored-ink.png",
+      "sha256": "444f4bcefe34ee8638251f8abeabb2cfa9b91e9132c80503def17f4ce5194952"
+    },
+    {
+      "source": "assets/character/seated-recolored.png",
+      "mode": "negative",
+      "output": "assets/character/fx/seated-recolored-negative.png",
+      "sha256": "29fcf480bf92d85fb3956f11d3564da12c56e9ca596645291c80dc6ced354532"
+    },
+    {
+      "source": "assets/character/seated-recolored.png",
+      "mode": "soft",
+      "output": "assets/character/fx/seated-recolored-soft.png",
+      "sha256": "d0a6fe822d420993f439765dbd731a15a21fc31c3cb7bf59a04af2bfcec1e217"
+    },
+    {
+      "source": "assets/character/expression-calm.png",
+      "mode": "mono",
+      "output": "assets/character/fx/expression-calm-mono.png",
+      "sha256": "ae3fd2fd809a45fb69e16dec136f9894f0e15366ac2adcc7af64785bc40e374f"
+    },
+    {
+      "source": "assets/character/expression-calm.png",
+      "mode": "ink",
+      "output": "assets/character/fx/expression-calm-ink.png",
+      "sha256": "8921742e1625eb33a93b97e08e82f5ed6ae1990dec045420e5b183c86dfce20a"
+    },
+    {
+      "source": "assets/character/expression-calm.png",
+      "mode": "negative",
+      "output": "assets/character/fx/expression-calm-negative.png",
+      "sha256": "8ac5e09ebe7a44e7712338a3b81fb9a0996511375e3db02bb181d3e8153524b4"
+    },
+    {
+      "source": "assets/character/expression-calm.png",
+      "mode": "soft",
+      "output": "assets/character/fx/expression-calm-soft.png",
+      "sha256": "d081c1c7e9eaf4493e8fdfd93d78b1daf143dd21d2c32431ba7c922322a6d1f8"
+    },
+    {
+      "source": "assets/character/expression-fear.png",
+      "mode": "mono",
+      "output": "assets/character/fx/expression-fear-mono.png",
+      "sha256": "96f410a42ff9b4346e603a845a3e1164f5560d718c63fd52dbd32e8ebaeaeeff"
+    },
+    {
+      "source": "assets/character/expression-fear.png",
+      "mode": "ink",
+      "output": "assets/character/fx/expression-fear-ink.png",
+      "sha256": "281bec9788716ee36993adfcd0b0b5959f39a677c04c08ec9b7d224aefcd341e"
+    },
+    {
+      "source": "assets/character/expression-fear.png",
+      "mode": "negative",
+      "output": "assets/character/fx/expression-fear-negative.png",
+      "sha256": "d128fd0a9a5169931edff30424616b8a4cf3b25936c72d48d5edb14d0d1f9245"
+    },
+    {
+      "source": "assets/character/expression-fear.png",
+      "mode": "soft",
+      "output": "assets/character/fx/expression-fear-soft.png",
+      "sha256": "af41695798e7616a9513418360d188c49b202623f05677d90c107035e1776e8a"
+    },
+    {
+      "source": "assets/character/expression-sad.png",
+      "mode": "mono",
+      "output": "assets/character/fx/expression-sad-mono.png",
+      "sha256": "bfe9231e6ba7a1bca84b11d7871d3e81e4b5340891c9b42eee755456c65acb5e"
+    },
+    {
+      "source": "assets/character/expression-sad.png",
+      "mode": "ink",
+      "output": "assets/character/fx/expression-sad-ink.png",
+      "sha256": "eb80d04e09a53b25780680c141cede9fe51a9141caf5d4623a055e73879ba324"
+    },
+    {
+      "source": "assets/character/expression-sad.png",
+      "mode": "negative",
+      "output": "assets/character/fx/expression-sad-negative.png",
+      "sha256": "c37b2f68fc0891bd4deaac14a4446314f21e2de0209ade644d2e9a4c92b5ca1a"
+    },
+    {
+      "source": "assets/character/expression-sad.png",
+      "mode": "soft",
+      "output": "assets/character/fx/expression-sad-soft.png",
+      "sha256": "92f9dbce0198089488fc97c03a9910d40b095b5e7ea891f9008aa76c7fea982b"
+    },
+    {
+      "source": "assets/character/expression-peace.png",
+      "mode": "mono",
+      "output": "assets/character/fx/expression-peace-mono.png",
+      "sha256": "a47d9d89ad76d1d2b1ad92b8bc59018fabe9ba75e3131486058e626814e5b7d4"
+    },
+    {
+      "source": "assets/character/expression-peace.png",
+      "mode": "ink",
+      "output": "assets/character/fx/expression-peace-ink.png",
+      "sha256": "b8ebabae7168194b8977a9b3255a97df8cf7e39a92768a3871326fa97f4347ba"
+    },
+    {
+      "source": "assets/character/expression-peace.png",
+      "mode": "negative",
+      "output": "assets/character/fx/expression-peace-negative.png",
+      "sha256": "9a6ecfeefb728633022d8e30d656a54fd253edf0499bd090301d862482b8c488"
+    },
+    {
+      "source": "assets/character/expression-peace.png",
+      "mode": "soft",
+      "output": "assets/character/fx/expression-peace-soft.png",
+      "sha256": "b3a21287d6d16630d73a14497ee5dbd0822ec7371c1c0dcf1d69e3c2ea6801dc"
+    },
+    {
+      "source": "assets/character/eyes-recolored.png",
+      "mode": "mono",
+      "output": "assets/character/fx/eyes-recolored-mono.png",
+      "sha256": "5ddaac399a64d0d77f62a2cbbc3d4911a0d7034071d1798a4f69f691fea1c113"
+    },
+    {
+      "source": "assets/character/eyes-recolored.png",
+      "mode": "ink",
+      "output": "assets/character/fx/eyes-recolored-ink.png",
+      "sha256": "2eaea6a3814c25760cdbbaab68c9927706d10299e5fe87a1ddeb3fd8ae523d25"
+    },
+    {
+      "source": "assets/character/eyes-recolored.png",
+      "mode": "negative",
+      "output": "assets/character/fx/eyes-recolored-negative.png",
+      "sha256": "1a1d2a4a4632477299bbb434f0e40627790bc98ac2cc6ec865e8520fc0356391"
+    },
+    {
+      "source": "assets/character/eyes-recolored.png",
+      "mode": "soft",
+      "output": "assets/character/fx/eyes-recolored-soft.png",
+      "sha256": "ea0fc3b40403706e3b0550b38d465ffc6ee32e5afdf5145a2688856553bb457b"
+    },
+    {
+      "source": "assets/character/hand-recolored.png",
+      "mode": "mono",
+      "output": "assets/character/fx/hand-recolored-mono.png",
+      "sha256": "6f66ccbae0ce780c982c6aa34e5803d84f91d461b0d6fb1f28d04fc7d3a6979c"
+    },
+    {
+      "source": "assets/character/hand-recolored.png",
+      "mode": "ink",
+      "output": "assets/character/fx/hand-recolored-ink.png",
+      "sha256": "2c581a56a4e48b1e8e4120a24fb7994e5e3a081d1d314ab244e51f02cb6e2eb1"
+    },
+    {
+      "source": "assets/character/hand-recolored.png",
+      "mode": "negative",
+      "output": "assets/character/fx/hand-recolored-negative.png",
+      "sha256": "2c78adc726b33afaed5389a784e13222c0882375660c0f5c11433d99ef00bd5a"
+    },
+    {
+      "source": "assets/character/hand-recolored.png",
+      "mode": "soft",
+      "output": "assets/character/fx/hand-recolored-soft.png",
+      "sha256": "15a5ae25106894b063a188abf86c32eab904aa8f3bd3fd82ee883c9ef3c699c4"
+    },
+    {
+      "source": "assets/character/rig/full-base.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-base-mono.png",
+      "sha256": "244d9b6e5cc5e95c3320a64f680d8a341a90f9283cc1223c2319a9ed3a567f6e"
+    },
+    {
+      "source": "assets/character/rig/full-base.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-base-ink.png",
+      "sha256": "50a5de7bedac446e132a03ad48d9e1507e5cf4ca33c019be8cd5c20f07aedaf9"
+    },
+    {
+      "source": "assets/character/rig/full-base.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-base-negative.png",
+      "sha256": "0332abbd35a6af90bf48c0003017688fee5a7767a88f3986583b5db2d0025e6a"
+    },
+    {
+      "source": "assets/character/rig/full-base.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-base-soft.png",
+      "sha256": "69dff2020b4cae2a85992f0fe33769690647e346ab2226d2328f337cb89f95ca"
+    },
+    {
+      "source": "assets/character/rig/full-ear_left.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-ear_left-mono.png",
+      "sha256": "60bf6b7538efb7ec8a5ecb50852b7200d7be60c08417afde5699f5852f497a80"
+    },
+    {
+      "source": "assets/character/rig/full-ear_left.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-ear_left-ink.png",
+      "sha256": "87abb666143dc1d7225cfd9e9f5ab999ddb0b7e730881abd23bac1c6a0f07fe2"
+    },
+    {
+      "source": "assets/character/rig/full-ear_left.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-ear_left-negative.png",
+      "sha256": "8c7d96bb36b3cf547bb8197f1f41551a58b4f5fbd05428a315908a129c47903f"
+    },
+    {
+      "source": "assets/character/rig/full-ear_left.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-ear_left-soft.png",
+      "sha256": "c479f46a50822e1ea4bdd9fb411cad9814c125ef80ea856479cba276688df744"
+    },
+    {
+      "source": "assets/character/rig/full-ear_right.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-ear_right-mono.png",
+      "sha256": "b86b958d9ae50b80bdf2d6727c966cf020ae01797012839fef85f1b1112581d9"
+    },
+    {
+      "source": "assets/character/rig/full-ear_right.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-ear_right-ink.png",
+      "sha256": "c0c557f3095a2a5fbfc50a639f01ed60cb44e0042ac16b42a16fa7ae0473a8d4"
+    },
+    {
+      "source": "assets/character/rig/full-ear_right.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-ear_right-negative.png",
+      "sha256": "6519baa2d09f7ab729b3ef4e5e0e30fa9d89dabf1fdce71c78e7923957dfe0ad"
+    },
+    {
+      "source": "assets/character/rig/full-ear_right.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-ear_right-soft.png",
+      "sha256": "5b0ed006561b8472e1cd99143df4df572cde89c144206cb22f84ac31deaef582"
+    },
+    {
+      "source": "assets/character/rig/full-tail.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-tail-mono.png",
+      "sha256": "a6c587133ac085568f3e9486600b65991b87ed5b8ad946af7fe2246071fc445a"
+    },
+    {
+      "source": "assets/character/rig/full-tail.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-tail-ink.png",
+      "sha256": "96dce352006bd8221e853de61f187f3305d96f730aa26c000b2ad59b64d05a8b"
+    },
+    {
+      "source": "assets/character/rig/full-tail.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-tail-negative.png",
+      "sha256": "351caef20d6fb0ffb3da8a0c17e29c1c28d7c5a8cc400ae984baccb6cf713eea"
+    },
+    {
+      "source": "assets/character/rig/full-tail.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-tail-soft.png",
+      "sha256": "75e440b99ee707391f9bc21a9a78882cfe72defa7b94e47f957d5122554a022d"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_left.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-hair_back_left-mono.png",
+      "sha256": "c3819a6f5b4920d1023b362ac8683f903720eb7eb0236a5fb70abf0afb1e4a1d"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_left.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-hair_back_left-ink.png",
+      "sha256": "5087df18cf704b01a3e070948b6a0ae323285d83fa0250ef6439bb734b31c51d"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_left.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-hair_back_left-negative.png",
+      "sha256": "d9702e35a68606b124fa24b0ae4af2b03bbce8918e424e3a977ba3cd330d5c1d"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_left.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-hair_back_left-soft.png",
+      "sha256": "52beb347efce67858f7b126d1ab0d1e9c5789f4a07b318c79cd8d0d279cc810c"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_right.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-hair_back_right-mono.png",
+      "sha256": "6c17abfc40e3fbeff6e9f1164b8875a869f567e6abb66bb81edae4356d5ef32d"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_right.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-hair_back_right-ink.png",
+      "sha256": "9d0477c8e5314e90685c47d0511b0a1d2adab1264b07d4dcdce6bf22ecb1ca37"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_right.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-hair_back_right-negative.png",
+      "sha256": "a33111dce3f486061688a17fddea1454c0fddfa5d1f219f8284e0d6a75012dd8"
+    },
+    {
+      "source": "assets/character/rig/full-hair_back_right.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-hair_back_right-soft.png",
+      "sha256": "e2adfd084facdc55688ca75e417bc60cfd711759ebca4fe621160d20c2568a07"
+    },
+    {
+      "source": "assets/character/rig/full-raised_hand.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-raised_hand-mono.png",
+      "sha256": "97099688d7e41000cb1781c340fb5395eee2d0a7f193018084fb3ce5f6b93927"
+    },
+    {
+      "source": "assets/character/rig/full-raised_hand.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-raised_hand-ink.png",
+      "sha256": "6fd953996062944395c71688730df5025c28b6c6d68bfe6bb0e944715b2377fb"
+    },
+    {
+      "source": "assets/character/rig/full-raised_hand.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-raised_hand-negative.png",
+      "sha256": "384b16acf863636b6b2a2e5de3d4a9a2317ed8798c3c1ad03f2162c6eba5214f"
+    },
+    {
+      "source": "assets/character/rig/full-raised_hand.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-raised_hand-soft.png",
+      "sha256": "c3513116cafadd96cef73a31572657fafeafa52d4bd28a844043d48f064215d0"
+    },
+    {
+      "source": "assets/character/rig/full-hair_front.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-hair_front-mono.png",
+      "sha256": "bb4820a3ad18b25c823cb6c2c2cdefa4612fe751798e9d53cd0f329a1c2fb971"
+    },
+    {
+      "source": "assets/character/rig/full-hair_front.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-hair_front-ink.png",
+      "sha256": "4f5b2a0b78275b07b487a5aec2b07671a814c0a234f09347bdc5f0ea6a29ed27"
+    },
+    {
+      "source": "assets/character/rig/full-hair_front.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-hair_front-negative.png",
+      "sha256": "168e827d82a544559d888fb1682ae7a5b518eff2a3f0a2107a3f231da7c86ef6"
+    },
+    {
+      "source": "assets/character/rig/full-hair_front.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-hair_front-soft.png",
+      "sha256": "9a4b05128230f78ca3f5fbcc0e5e19ea15d99056002755934002d282e447957e"
+    },
+    {
+      "source": "assets/character/rig/full-blink.png",
+      "mode": "mono",
+      "output": "assets/character/fx/full-blink-mono.png",
+      "sha256": "72ff0807395e10a5f527b6feb17d64b2e24801de0e3a7bae315253d4ba474a77"
+    },
+    {
+      "source": "assets/character/rig/full-blink.png",
+      "mode": "ink",
+      "output": "assets/character/fx/full-blink-ink.png",
+      "sha256": "4d3bdf7d4d0ae3420c04c17fb5391101a2dbd7f8d72cfbd2e270be9a4ec3d419"
+    },
+    {
+      "source": "assets/character/rig/full-blink.png",
+      "mode": "negative",
+      "output": "assets/character/fx/full-blink-negative.png",
+      "sha256": "7025bec0446b26c2b93c8038f17237d2e9bda049975684425fad374e783e99a0"
+    },
+    {
+      "source": "assets/character/rig/full-blink.png",
+      "mode": "soft",
+      "output": "assets/character/fx/full-blink-soft.png",
+      "sha256": "8a0e4a3ba3d31d5e0c09b1e3152932ac6506d13e069c6e038b9d81cab75d2ad0"
+    },
+    {
+      "source": "assets/character/rig/calm-blink.png",
+      "mode": "mono",
+      "output": "assets/character/fx/calm-blink-mono.png",
+      "sha256": "9e238ff388d79f88cea6839a0c6cefe57fe69ebf3b9d855fe25fdc7a6967b332"
+    },
+    {
+      "source": "assets/character/rig/calm-blink.png",
+      "mode": "ink",
+      "output": "assets/character/fx/calm-blink-ink.png",
+      "sha256": "4ce10cb53d92484b4ba9430800d24b1be76801e13dbae15129abefb55e73b665"
+    },
+    {
+      "source": "assets/character/rig/calm-blink.png",
+      "mode": "negative",
+      "output": "assets/character/fx/calm-blink-negative.png",
+      "sha256": "944d70e78e26353d8e7b59b174bf1f4fe4b29b074fd306d1cc2dba1c649216c7"
+    },
+    {
+      "source": "assets/character/rig/calm-blink.png",
+      "mode": "soft",
+      "output": "assets/character/fx/calm-blink-soft.png",
+      "sha256": "1aca64115dc59964db72274592fa81e5fca86374b3e9297c0e6745b5fc732f2d"
+    },
+    {
+      "source": "assets/character/rig/fear-blink.png",
+      "mode": "mono",
+      "output": "assets/character/fx/fear-blink-mono.png",
+      "sha256": "bb97fe2b2f7758d6350a9010acb018af56fe40d608d56d18c13df7c09d7d680c"
+    },
+    {
+      "source": "assets/character/rig/fear-blink.png",
+      "mode": "ink",
+      "output": "assets/character/fx/fear-blink-ink.png",
+      "sha256": "93b4392ac9c23dee6cdb48b472a522bd9dffff55ab98534ab0eed12ab5220f32"
+    },
+    {
+      "source": "assets/character/rig/fear-blink.png",
+      "mode": "negative",
+      "output": "assets/character/fx/fear-blink-negative.png",
+      "sha256": "5206a6aeb23487e2a78f2c196ab0fc58198a21424bc6bd204a32e1274e861ead"
+    },
+    {
+      "source": "assets/character/rig/fear-blink.png",
+      "mode": "soft",
+      "output": "assets/character/fx/fear-blink-soft.png",
+      "sha256": "c96397517ae2c335b58f2fad1cd258a8a5784a49b2c0b453a195911ca9494e27"
+    },
+    {
+      "source": "assets/character/rig/sad-blink.png",
+      "mode": "mono",
+      "output": "assets/character/fx/sad-blink-mono.png",
+      "sha256": "5ea21cb3673a6d423bc4a3fce7bd1d1fda2fb6f10192d7bbc5a5a62228953c18"
+    },
+    {
+      "source": "assets/character/rig/sad-blink.png",
+      "mode": "ink",
+      "output": "assets/character/fx/sad-blink-ink.png",
+      "sha256": "5bdb446779b137e1d6c55210a382ce4f341d8b545b30d7a76993b8d757db9301"
+    },
+    {
+      "source": "assets/character/rig/sad-blink.png",
+      "mode": "negative",
+      "output": "assets/character/fx/sad-blink-negative.png",
+      "sha256": "ce706c452531b68190dfbdae743d257c6cf83bde051861982c0570d80437403a"
+    },
+    {
+      "source": "assets/character/rig/sad-blink.png",
+      "mode": "soft",
+      "output": "assets/character/fx/sad-blink-soft.png",
+      "sha256": "684cbb6be47f36159de781beb32baee2c05e67cd6c1a46ebb8bd14678be17b38"
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "version": "v12",
+  "note": "Environment layer stacks per scene theme. Drawn back to front; zone=front layers are drawn over the subject. parallax is the per-layer travel multiplier. Colors are semantic roles resolved through src/palette.mjs.",
+  "themes": {
+    "1": {
+      "title": "INIT / OBSERVATORY INTERIOR",
+      "layers": [
+        { "kind": "observatory", "parallax": 0.04, "opts": { "color": "#9DE4C2" } },
+        { "kind": "racks", "parallax": 0.16, "opts": { "x": 150, "y": 330, "cols": 4, "rows": 1, "cw": 168, "chh": 330, "color": "#9DE4C2" } },
+        { "kind": "monitors", "parallax": 0.2, "opts": { "x": 1290, "y": 286, "cols": 3, "rows": 2, "cw": 172, "chh": 132, "color": "#9DE4C2" } },
+        { "kind": "beam", "parallax": 0.28, "opts": { "x": 860, "y": 96, "angle": 0.09, "spread": 300, "length": 980, "color": "#9DE4C2", "strength": 0.2 } },
+        { "kind": "beam", "parallax": 0.32, "opts": { "x": 1420, "y": 120, "angle": -0.13, "spread": 210, "length": 900, "color": "#C8CCD1", "strength": 0.12 } },
+        { "kind": "truss", "parallax": 0.4, "opts": { "x0": -40, "x1": 1960, "yTop": 26, "yBottom": 118, "bays": 14, "color": "#1D353B", "rim": "#9DE4C2" } },
+        { "kind": "dust", "parallax": 0.5, "opts": { "count": 70, "color": "#E9EDE5", "area": [520, 120, 1300, 880], "speed": 0.8 } },
+        { "kind": "console", "zone": "front", "parallax": 0.85, "opts": { "y": 940, "color": "#0C171D", "rim": "#9DE4C2" } },
+        { "kind": "cable", "zone": "front", "parallax": 0.95, "opts": { "y": 92, "color": "#05090E", "width": 9, "sway": 26, "rim": "#9DE4C2" } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.35, "opts": { "count": 4, "color": "#04070B", "speed": 0.16, "scale": 1.1, "y": 520, "spreadY": 700, "opacity": 0.8 } }
+      ]
+    },
+    "2": {
+      "title": "DEAD VARIABLES / DATA SPACE",
+      "layers": [
+        { "kind": "haze", "parallax": 0.04, "opts": { "y0": 240, "y1": 1080, "color": "#294F4C", "strength": 0.4, "bands": 3 } },
+        { "kind": "corridor", "parallax": 0.55, "opts": { "vanishX": 940, "vanishY": 520, "color": "#9DE4C2", "depth": 18, "speed": 0.085, "halfWidth": 1050, "halfHeight": 640 } },
+        { "kind": "clock", "parallax": 0.2, "opts": { "x": 1430, "y": 396, "digitW": 88, "digitH": 160, "color": "#C8CCD1", "opacity": 0.42, "hour": 4, "minute": 37, "frozenSecond": 12 } },
+        { "kind": "panels", "parallax": 0.42, "opts": { "count": 6, "seed": 3, "color": "#9DE4C2", "speed": 0.035, "w": 320, "h": 180, "x0": 130, "x1": 1790, "y0": 150, "y1": 880, "opacity": 0.85 } },
+        { "kind": "dust", "parallax": 0.6, "opts": { "count": 60, "color": "#9DE4C2", "area": [0, 0, 1920, 1080], "speed": 1.1 } },
+        { "kind": "ticker", "parallax": 0.75, "opts": { "x": 0, "y": 1000, "w": 1920, "h": 26, "color": "#9DE4C2", "opacity": 0.5 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.3, "opts": { "count": 3, "color": "#04070B", "speed": 0.2, "scale": 0.9, "y": 480, "spreadY": 720, "opacity": 0.7 } }
+      ]
+    },
+    "3": {
+      "title": "FEAR / VASCULAR CURRENT",
+      "layers": [
+        { "kind": "observatory", "parallax": 0.04, "opts": { "color": "#ED8B50", "dim": 0.12 } },
+        { "kind": "racks", "parallax": 0.16, "opts": { "x": 140, "y": 330, "cols": 3, "rows": 1, "cw": 160, "chh": 300, "color": "#ED8B50" } },
+        { "kind": "monitors", "parallax": 0.22, "opts": { "x": 1330, "y": 250, "cols": 3, "rows": 2, "cw": 168, "chh": 124, "color": "#ED8B50" } },
+        { "kind": "beam", "parallax": 0.28, "opts": { "x": 820, "y": 80, "angle": 0.1, "spread": 320, "length": 1000, "color": "#ED8B50", "strength": 0.17 } },
+        { "kind": "trace", "parallax": 0.3, "opts": { "x": 118, "y": 690, "w": 560, "h": 150, "color": "#ED8B50", "opacity": 0.75, "volatility": 1.6, "drift": 0.2 } },
+        { "kind": "truss", "parallax": 0.42, "opts": { "x0": -40, "x1": 1960, "yTop": 20, "yBottom": 112, "bays": 14, "color": "#20343A", "rim": "#ED8B50" } },
+        { "kind": "ticker", "parallax": 0.7, "opts": { "x": 0, "y": 996, "w": 1920, "h": 24, "color": "#ED8B50", "opacity": 0.55 } },
+        { "kind": "dust", "parallax": 0.55, "opts": { "count": 64, "color": "#ED8B50", "area": [400, 120, 1400, 860], "speed": 1.3 } },
+        { "kind": "pool", "parallax": 0.5, "opts": { "x": 980, "y": 880, "rx": 760, "ry": 150, "color": "#ED8B50", "strength": 0.16 } },
+        { "kind": "console", "zone": "front", "parallax": 0.85, "opts": { "y": 962, "color": "#0B161B", "rim": "#ED8B50" } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.3, "opts": { "count": 4, "color": "#04070B", "speed": 0.19, "scale": 1.0, "y": 500, "spreadY": 680, "opacity": 0.78 } }
+      ]
+    },
+    "4": {
+      "title": "ERASE / PERSIST LOOP",
+      "layers": [
+        { "kind": "haze", "parallax": 0.04, "opts": { "y0": 220, "y1": 1080, "color": "#3C1115", "strength": 0.44, "bands": 3 } },
+        { "kind": "banner", "parallax": 0.3, "opts": { "x": 118, "y": 148, "w": 560, "h": 46, "color": "#ED8B50", "text": "RECURSION BUFFER / CHECKSUM MISMATCH" } },
+        { "kind": "corridor", "parallax": 0.6, "opts": { "vanishX": 960, "vanishY": 500, "color": "#ED8B50", "depth": 20, "speed": 0.16, "halfWidth": 980, "halfHeight": 600 } },
+        { "kind": "panels", "parallax": 0.45, "opts": { "count": 7, "seed": 11, "color": "#ED8B50", "speed": 0.08, "w": 300, "h": 165, "x0": 110, "x1": 1810, "y0": 140, "y1": 900, "opacity": 0.8 } },
+        { "kind": "rubble", "parallax": 0.7, "opts": { "count": 14, "seed": 5, "fill": "#0A1116", "rim": "#ED8B50", "x0": 60, "x1": 1860, "y0": 140, "y1": 940, "opacity": 0.7 } },
+        { "kind": "dust", "parallax": 0.62, "opts": { "count": 66, "color": "#ED8B50", "area": [0, 0, 1920, 1080], "speed": 1.4 } },
+        { "kind": "ticker", "parallax": 0.78, "opts": { "x": 0, "y": 1002, "w": 1920, "h": 24, "color": "#ED8B50", "opacity": 0.6 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.4, "opts": { "count": 4, "color": "#04070B", "speed": 0.24, "scale": 1.05, "y": 470, "spreadY": 720, "opacity": 0.75 } }
+      ]
+    },
+    "5": {
+      "title": "BLACK STAR / VOID",
+      "layers": [
+        { "kind": "sky", "parallax": 0.02, "opts": { "skyTop": "#130509", "skyMid": "#7A1920", "skyLow": "#C33A2E", "rim": "#FF8A63", "base": 756 } },
+        { "kind": "haze", "parallax": 0.03, "opts": { "y0": 380, "y1": 1080, "color": "#8A271E", "strength": 0.3, "bands": 2 } },
+        { "kind": "stars", "parallax": 0.03, "opts": { "count": 150, "color": "#C8CCD1" } },
+        { "kind": "clouds", "parallax": 0.07, "opts": { "y": 300, "count": 9, "color": "#2A0C12", "gap": 48, "width": 1700 } },
+        { "kind": "blackstar", "parallax": 0.09, "opts": { "x": 1080, "y": 372, "r": 268, "color": "#D93B4A", "core": "#090C13", "halo": "#FF7A4A" } },
+        { "kind": "district", "parallax": 0.14, "opts": { "seed": 21, "step": 168, "baseY": 700, "scroll": 2.6, "depth": 0.4, "w": [44, 104], "h": [110, 300], "fill": "#0B1218", "rim": "#FF8A63", "lit": 0.14, "x0": -280, "x1": 2200, "styles": ["tower", "block", "shed", "block", "tower"] } },
+        { "kind": "ground", "parallax": 0.2, "opts": { "horizon": 700, "vanishX": 960, "color": "#18242B", "near": "#22303A", "deep": "#080D12", "rim": "#FF8A63", "seam": "#ED8B50", "haze": "#3A1A18" } },
+        { "kind": "elevated", "parallax": 0.26, "opts": { "y": 452, "color": "#070C11", "rim": "#FF8A63", "deck": 44, "speed": 34 } },
+        { "kind": "district", "parallax": 0.34, "opts": { "seed": 47, "step": 206, "baseY": 782, "scroll": 4.6, "depth": 0.7, "w": [58, 136], "h": [170, 430], "fill": "#050A0F", "rim": "#FF8A63", "lit": 0.24, "x0": -280, "x1": 2200, "styles": ["block", "tower", "block", "spire", "shed", "tower"] } },
+        { "kind": "street", "parallax": 0.4, "opts": { "horizon": 782, "vanishX": 960, "color": "#111E24", "deep": "#060A0E", "rim": "#FF8A63", "seam": "#ED8B50", "reflect": 0.22, "speed": 0.02 } },
+        { "kind": "props", "parallax": 0.5, "opts": { "horizon": 782, "vanishX": 960, "rim": "#FF8A63", "pole": "#060B10" } },
+        { "kind": "rubble", "parallax": 0.62, "opts": { "count": 16, "seed": 9, "fill": "#080E13", "rim": "#ED8B50", "x0": 0, "x1": 1920, "y0": 180, "y1": 900, "opacity": 0.75 } },
+        { "kind": "dust", "parallax": 0.7, "opts": { "count": 80, "color": "#FF8A63", "area": [0, 0, 1920, 1080], "speed": 1.5 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.45, "opts": { "count": 4, "color": "#04070B", "speed": 0.22, "scale": 1.25, "y": 460, "spreadY": 760, "opacity": 0.8 } }
+      ]
+    },
+    "6": {
+      "title": "THE FALL / RUINED WORLD",
+      "layers": [
+        { "kind": "ruins", "parallax": 0.05, "opts": { "color": "#ED8B50", "collapse": 0.4 } },
+        { "kind": "haze", "parallax": 0.08, "opts": { "y0": 330, "y1": 1080, "color": "#8A271E", "strength": 0.3, "bands": 3 } },
+        { "kind": "rubble", "parallax": 0.66, "opts": { "count": 20, "seed": 13, "fill": "#070D11", "rim": "#ED8B50", "x0": 0, "x1": 1920, "y0": 120, "y1": 1000, "opacity": 0.8 } },
+        { "kind": "dust", "parallax": 0.74, "opts": { "count": 90, "color": "#FF6A45", "area": [0, 0, 1920, 1080], "speed": 1.6 } },
+        { "kind": "cable", "zone": "front", "parallax": 1.05, "opts": { "y": 110, "color": "#05090E", "width": 8, "sway": 30, "rim": "#FF6A45" } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.5, "opts": { "count": 5, "color": "#04070B", "speed": 0.26, "scale": 1.3, "y": 460, "spreadY": 780, "opacity": 0.82 } }
+      ]
+    },
+    "7": {
+      "title": "LAST MEMORY / SUNLIT ROOM",
+      "layers": [
+        { "kind": "memoryroom", "parallax": 0.04, "opts": { "color": "#E9EDE5" } },
+        { "kind": "beam", "parallax": 0.22, "opts": { "x": 320, "y": 40, "angle": 0.5, "spread": 430, "length": 1240, "color": "#FFF6E4", "strength": 0.26 } },
+        { "kind": "beam", "parallax": 0.26, "opts": { "x": 540, "y": 40, "angle": 0.48, "spread": 210, "length": 1120, "color": "#FFFFFF", "strength": 0.15 } },
+        { "kind": "dust", "parallax": 0.4, "opts": { "count": 96, "color": "#FFFFFF", "area": [120, 100, 1300, 920], "speed": 0.55 } },
+        { "kind": "pool", "parallax": 0.5, "opts": { "x": 1180, "y": 1010, "rx": 520, "ry": 90, "color": "#FFF3DC", "strength": 0.34 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.1, "opts": { "count": 3, "color": "#C9C4B4", "speed": 0.09, "scale": 0.8, "y": 520, "spreadY": 700, "opacity": 0.45 } }
+      ]
+    },
+    "8": {
+      "title": "CORE / HEAT ABNORMAL",
+      "layers": [
+        { "kind": "sky", "parallax": 0.02, "opts": { "skyTop": "#1A0509", "skyMid": "#521C2D", "skyLow": "#8E2434", "rim": "#FF6A4A", "base": 900 } },
+        { "kind": "haze", "parallax": 0.04, "opts": { "y0": 180, "y1": 1080, "color": "#521C2D", "strength": 0.5, "bands": 3 } },
+        { "kind": "clouds", "parallax": 0.1, "opts": { "y": 240, "count": 7, "color": "#2A0C12", "gap": 56, "width": 1500 } },
+        { "kind": "corestructure", "parallax": 0.22, "opts": { "x": 960, "y": 520, "r": 520, "color": "#D93B4A" } },
+        { "kind": "rubble", "parallax": 0.55, "opts": { "count": 18, "seed": 31, "fill": "#160A0E", "rim": "#D93B4A", "x0": -60, "x1": 1980, "y0": 80, "y1": 1000, "opacity": 0.85 } },
+        { "kind": "dust", "parallax": 0.7, "opts": { "count": 80, "color": "#ED8B50", "area": [0, 0, 1920, 1080], "speed": 1.7 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.4, "opts": { "count": 4, "color": "#0A0305", "speed": 0.25, "scale": 1.2, "y": 480, "spreadY": 740, "opacity": 0.8 } }
+      ]
+    },
+    "9": {
+      "title": "REALITY ERROR / BROKEN CITY",
+      "layers": [
+        { "kind": "sky", "parallax": 0.02, "opts": { "skyTop": "#120409", "skyMid": "#6B151C", "skyLow": "#AE3026", "rim": "#FF7A55", "base": 712 } },
+        { "kind": "haze", "parallax": 0.03, "opts": { "y0": 260, "y1": 1080, "color": "#521C2D", "strength": 0.4, "bands": 3 } },
+        { "kind": "stars", "parallax": 0.03, "opts": { "count": 90, "color": "#C8CCD1" } },
+        { "kind": "blackstar", "parallax": 0.1, "opts": { "x": 980, "y": 440, "r": 310, "color": "#D93B4A", "core": "#090C13", "halo": "#FF7A4A" } },
+        { "kind": "district", "parallax": 0.16, "opts": { "seed": 131, "step": 158, "baseY": 690, "scroll": 2.2, "depth": 0.38, "w": [42, 98], "h": [120, 320], "fill": "#120A10", "rim": "#D93B4A", "lit": 0.12, "x0": -280, "x1": 2200, "styles": ["block", "tower", "block", "shed", "spire"] } },
+        { "kind": "ground", "parallax": 0.22, "opts": { "horizon": 690, "vanishX": 960, "color": "#1E1018", "near": "#27141E", "deep": "#0A060C", "rim": "#D93B4A", "seam": "#D93B4A", "haze": "#3C1115" } },
+        { "kind": "elevated", "parallax": 0.28, "opts": { "y": 430, "color": "#080409", "rim": "#D93B4A", "deck": 40, "speed": 30 } },
+        { "kind": "district", "parallax": 0.34, "opts": { "seed": 157, "step": 212, "baseY": 772, "scroll": 4.2, "depth": 0.68, "w": [56, 132], "h": [170, 430], "fill": "#070409", "rim": "#D93B4A", "lit": 0.2, "x0": -280, "x1": 2200, "styles": ["tower", "block", "shed", "block", "tower", "spire"] } },
+        { "kind": "street", "parallax": 0.42, "opts": { "horizon": 772, "vanishX": 960, "color": "#1A0E16", "deep": "#08040A", "rim": "#D93B4A", "seam": "#D93B4A", "reflect": 0.2, "speed": 0.02 } },
+        { "kind": "rubble", "parallax": 0.6, "opts": { "count": 22, "seed": 41, "fill": "#0A060C", "rim": "#D93B4A", "x0": -60, "x1": 1980, "y0": 60, "y1": 1020, "opacity": 0.8 } },
+        { "kind": "ticker", "parallax": 0.76, "opts": { "x": 0, "y": 1004, "w": 1920, "h": 24, "color": "#D93B4A", "opacity": 0.6 } },
+        { "kind": "dust", "parallax": 0.72, "opts": { "count": 74, "color": "#D93B4A", "area": [0, 0, 1920, 1080], "speed": 1.4 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.45, "opts": { "count": 4, "color": "#04070B", "speed": 0.23, "scale": 1.15, "y": 470, "spreadY": 760, "opacity": 0.8 } }
+      ]
+    },
+    "10": {
+      "title": "THE LAST MESSAGE / SIGNAL PATH",
+      "layers": [
+        { "kind": "sky", "parallax": 0.02, "opts": { "skyTop": "#05090F", "skyMid": "#0E1E26", "skyLow": "#1C3A40", "rim": "#9DE4C2", "base": 940 } },
+        { "kind": "haze", "parallax": 0.03, "opts": { "y0": 200, "y1": 1080, "color": "#14292F", "strength": 0.4, "bands": 3 } },
+        { "kind": "stars", "parallax": 0.03, "opts": { "count": 190, "color": "#C8CCD1" } },
+        { "kind": "district", "parallax": 0.14, "opts": { "seed": 211, "step": 182, "baseY": 880, "scroll": 2.0, "depth": 0.34, "w": [46, 106], "h": [110, 280], "fill": "#070D12", "rim": "#9DE4C2", "lit": 0.14, "x0": -280, "x1": 2200, "styles": ["block", "tower", "block", "shed", "tower"] } },
+        { "kind": "ground", "parallax": 0.18, "opts": { "horizon": 880, "vanishX": 960, "color": "#0E2026", "near": "#152B32", "deep": "#060C10", "rim": "#9DE4C2", "seam": "#9DE4C2", "haze": "#14292F" } },
+        { "kind": "elevated", "parallax": 0.22, "opts": { "y": 610, "color": "#050A0E", "rim": "#9DE4C2", "deck": 34, "speed": 22 } },
+        { "kind": "beam", "parallax": 0.3, "opts": { "x": 1440, "y": 220, "angle": 0.2, "spread": 520, "length": 1100, "color": "#9DE4C2", "strength": 0.16 } },
+        { "kind": "dust", "parallax": 0.66, "opts": { "count": 96, "color": "#9DE4C2", "area": [0, 0, 1920, 1080], "speed": 0.9 } },
+        { "kind": "occluder", "zone": "front", "parallax": 1.3, "opts": { "count": 3, "color": "#04070B", "speed": 0.14, "scale": 1.0, "y": 460, "spreadY": 720, "opacity": 0.75 } }
+      ]
+    },
+    "11": {
+      "title": "SHUTDOWN / EMPTY OBSERVATORY",
+      "layers": [
+        { "kind": "observatory", "parallax": 0.03, "opts": { "color": "#C8CCD1", "dim": 0.3 } },
+        { "kind": "racks", "parallax": 0.16, "opts": { "x": 140, "y": 340, "cols": 4, "rows": 1, "cw": 168, "chh": 320, "color": "#C8CCD1" } },
+        { "kind": "monitors", "parallax": 0.2, "opts": { "x": 1300, "y": 320, "cols": 3, "rows": 2, "cw": 168, "chh": 128, "color": "#C8CCD1" } },
+        { "kind": "beam", "parallax": 0.3, "opts": { "x": 900, "y": 100, "angle": 0.08, "spread": 300, "length": 980, "color": "#C8CCD1", "strength": 0.1 } },
+        { "kind": "truss", "parallax": 0.42, "opts": { "x0": -40, "x1": 1960, "yTop": 28, "yBottom": 120, "bays": 14, "color": "#1A2C33", "rim": "#C8CCD1" } },
+        { "kind": "dust", "parallax": 0.54, "opts": { "count": 60, "color": "#C8CCD1", "area": [520, 140, 1300, 860], "speed": 0.5 } },
+        { "kind": "console", "zone": "front", "parallax": 0.85, "opts": { "y": 950, "color": "#0A1218", "rim": "#C8CCD1" } },
+        { "kind": "cable", "zone": "front", "parallax": 0.95, "opts": { "y": 96, "color": "#05090E", "width": 9, "sway": 16, "rim": "#C8CCD1" } }
+      ]
+    }
+  }
+}

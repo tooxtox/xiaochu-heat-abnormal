@@ -1,0 +1,946 @@
+{
+  "title": "熱異常 / LAST SIGNAL",
+  "subtitle": "SYSTEM TEMPERATURE: CRITICAL",
+  "width": 1920,
+  "height": 1080,
+  "fps": 60,
+  "duration": 242.538333,
+  "audio": "assets/audio/song.m4a",
+  "images": {
+    "full": "assets/character/xiaochu-recolored.png",
+    "seated": "assets/character/seated-recolored.png",
+    "calm": "assets/character/expression-calm.png",
+    "fear": "assets/character/expression-fear.png",
+    "sad": "assets/character/expression-sad.png",
+    "peace": "assets/character/expression-peace.png",
+    "eyes": "assets/character/eyes-recolored.png",
+    "hand": "assets/character/hand-recolored.png",
+    "rig_full_base": "assets/character/rig/full-base.png",
+    "rig_full_ear_left": "assets/character/rig/full-ear_left.png",
+    "rig_full_ear_right": "assets/character/rig/full-ear_right.png",
+    "rig_full_tail": "assets/character/rig/full-tail.png",
+    "rig_full_hair_back_left": "assets/character/rig/full-hair_back_left.png",
+    "rig_full_hair_back_right": "assets/character/rig/full-hair_back_right.png",
+    "rig_full_raised_hand": "assets/character/rig/full-raised_hand.png",
+    "rig_full_hair_front": "assets/character/rig/full-hair_front.png",
+    "rig_full_blink": "assets/character/rig/full-blink.png",
+    "rig_calm_base": "assets/character/expression-calm.png",
+    "rig_calm_blink": "assets/character/rig/calm-blink.png",
+    "rig_fear_base": "assets/character/expression-fear.png",
+    "rig_fear_blink": "assets/character/rig/fear-blink.png",
+    "rig_sad_base": "assets/character/expression-sad.png",
+    "rig_sad_blink": "assets/character/rig/sad-blink.png",
+    "rig_peace_base": "assets/character/expression-peace.png",
+    "fx_mono_full": "assets/character/fx/xiaochu-recolored-mono.png",
+    "fx_ink_full": "assets/character/fx/xiaochu-recolored-ink.png",
+    "fx_negative_full": "assets/character/fx/xiaochu-recolored-negative.png",
+    "fx_soft_full": "assets/character/fx/xiaochu-recolored-soft.png",
+    "fx_mono_seated": "assets/character/fx/seated-recolored-mono.png",
+    "fx_ink_seated": "assets/character/fx/seated-recolored-ink.png",
+    "fx_negative_seated": "assets/character/fx/seated-recolored-negative.png",
+    "fx_soft_seated": "assets/character/fx/seated-recolored-soft.png",
+    "fx_mono_calm": "assets/character/fx/expression-calm-mono.png",
+    "fx_ink_calm": "assets/character/fx/expression-calm-ink.png",
+    "fx_negative_calm": "assets/character/fx/expression-calm-negative.png",
+    "fx_soft_calm": "assets/character/fx/expression-calm-soft.png",
+    "fx_mono_fear": "assets/character/fx/expression-fear-mono.png",
+    "fx_ink_fear": "assets/character/fx/expression-fear-ink.png",
+    "fx_negative_fear": "assets/character/fx/expression-fear-negative.png",
+    "fx_soft_fear": "assets/character/fx/expression-fear-soft.png",
+    "fx_mono_sad": "assets/character/fx/expression-sad-mono.png",
+    "fx_ink_sad": "assets/character/fx/expression-sad-ink.png",
+    "fx_negative_sad": "assets/character/fx/expression-sad-negative.png",
+    "fx_soft_sad": "assets/character/fx/expression-sad-soft.png",
+    "fx_mono_peace": "assets/character/fx/expression-peace-mono.png",
+    "fx_ink_peace": "assets/character/fx/expression-peace-ink.png",
+    "fx_negative_peace": "assets/character/fx/expression-peace-negative.png",
+    "fx_soft_peace": "assets/character/fx/expression-peace-soft.png",
+    "fx_mono_eyes": "assets/character/fx/eyes-recolored-mono.png",
+    "fx_ink_eyes": "assets/character/fx/eyes-recolored-ink.png",
+    "fx_negative_eyes": "assets/character/fx/eyes-recolored-negative.png",
+    "fx_soft_eyes": "assets/character/fx/eyes-recolored-soft.png",
+    "fx_mono_hand": "assets/character/fx/hand-recolored-mono.png",
+    "fx_ink_hand": "assets/character/fx/hand-recolored-ink.png",
+    "fx_negative_hand": "assets/character/fx/hand-recolored-negative.png",
+    "fx_soft_hand": "assets/character/fx/hand-recolored-soft.png",
+    "fx_mono_rig_full_base": "assets/character/fx/full-base-mono.png",
+    "fx_ink_rig_full_base": "assets/character/fx/full-base-ink.png",
+    "fx_negative_rig_full_base": "assets/character/fx/full-base-negative.png",
+    "fx_soft_rig_full_base": "assets/character/fx/full-base-soft.png",
+    "fx_mono_rig_full_ear_left": "assets/character/fx/full-ear_left-mono.png",
+    "fx_ink_rig_full_ear_left": "assets/character/fx/full-ear_left-ink.png",
+    "fx_negative_rig_full_ear_left": "assets/character/fx/full-ear_left-negative.png",
+    "fx_soft_rig_full_ear_left": "assets/character/fx/full-ear_left-soft.png",
+    "fx_mono_rig_full_ear_right": "assets/character/fx/full-ear_right-mono.png",
+    "fx_ink_rig_full_ear_right": "assets/character/fx/full-ear_right-ink.png",
+    "fx_negative_rig_full_ear_right": "assets/character/fx/full-ear_right-negative.png",
+    "fx_soft_rig_full_ear_right": "assets/character/fx/full-ear_right-soft.png",
+    "fx_mono_rig_full_tail": "assets/character/fx/full-tail-mono.png",
+    "fx_ink_rig_full_tail": "assets/character/fx/full-tail-ink.png",
+    "fx_negative_rig_full_tail": "assets/character/fx/full-tail-negative.png",
+    "fx_soft_rig_full_tail": "assets/character/fx/full-tail-soft.png",
+    "fx_mono_rig_full_hair_back_left": "assets/character/fx/full-hair_back_left-mono.png",
+    "fx_ink_rig_full_hair_back_left": "assets/character/fx/full-hair_back_left-ink.png",
+    "fx_negative_rig_full_hair_back_left": "assets/character/fx/full-hair_back_left-negative.png",
+    "fx_soft_rig_full_hair_back_left": "assets/character/fx/full-hair_back_left-soft.png",
+    "fx_mono_rig_full_hair_back_right": "assets/character/fx/full-hair_back_right-mono.png",
+    "fx_ink_rig_full_hair_back_right": "assets/character/fx/full-hair_back_right-ink.png",
+    "fx_negative_rig_full_hair_back_right": "assets/character/fx/full-hair_back_right-negative.png",
+    "fx_soft_rig_full_hair_back_right": "assets/character/fx/full-hair_back_right-soft.png",
+    "fx_mono_rig_full_raised_hand": "assets/character/fx/full-raised_hand-mono.png",
+    "fx_ink_rig_full_raised_hand": "assets/character/fx/full-raised_hand-ink.png",
+    "fx_negative_rig_full_raised_hand": "assets/character/fx/full-raised_hand-negative.png",
+    "fx_soft_rig_full_raised_hand": "assets/character/fx/full-raised_hand-soft.png",
+    "fx_mono_rig_full_hair_front": "assets/character/fx/full-hair_front-mono.png",
+    "fx_ink_rig_full_hair_front": "assets/character/fx/full-hair_front-ink.png",
+    "fx_negative_rig_full_hair_front": "assets/character/fx/full-hair_front-negative.png",
+    "fx_soft_rig_full_hair_front": "assets/character/fx/full-hair_front-soft.png",
+    "fx_mono_rig_full_blink": "assets/character/fx/full-blink-mono.png",
+    "fx_ink_rig_full_blink": "assets/character/fx/full-blink-ink.png",
+    "fx_negative_rig_full_blink": "assets/character/fx/full-blink-negative.png",
+    "fx_soft_rig_full_blink": "assets/character/fx/full-blink-soft.png",
+    "fx_mono_rig_calm_base": "assets/character/fx/expression-calm-mono.png",
+    "fx_ink_rig_calm_base": "assets/character/fx/expression-calm-ink.png",
+    "fx_negative_rig_calm_base": "assets/character/fx/expression-calm-negative.png",
+    "fx_soft_rig_calm_base": "assets/character/fx/expression-calm-soft.png",
+    "fx_mono_rig_calm_blink": "assets/character/fx/calm-blink-mono.png",
+    "fx_ink_rig_calm_blink": "assets/character/fx/calm-blink-ink.png",
+    "fx_negative_rig_calm_blink": "assets/character/fx/calm-blink-negative.png",
+    "fx_soft_rig_calm_blink": "assets/character/fx/calm-blink-soft.png",
+    "fx_mono_rig_fear_base": "assets/character/fx/expression-fear-mono.png",
+    "fx_ink_rig_fear_base": "assets/character/fx/expression-fear-ink.png",
+    "fx_negative_rig_fear_base": "assets/character/fx/expression-fear-negative.png",
+    "fx_soft_rig_fear_base": "assets/character/fx/expression-fear-soft.png",
+    "fx_mono_rig_fear_blink": "assets/character/fx/fear-blink-mono.png",
+    "fx_ink_rig_fear_blink": "assets/character/fx/fear-blink-ink.png",
+    "fx_negative_rig_fear_blink": "assets/character/fx/fear-blink-negative.png",
+    "fx_soft_rig_fear_blink": "assets/character/fx/fear-blink-soft.png",
+    "fx_mono_rig_sad_base": "assets/character/fx/expression-sad-mono.png",
+    "fx_ink_rig_sad_base": "assets/character/fx/expression-sad-ink.png",
+    "fx_negative_rig_sad_base": "assets/character/fx/expression-sad-negative.png",
+    "fx_soft_rig_sad_base": "assets/character/fx/expression-sad-soft.png",
+    "fx_mono_rig_sad_blink": "assets/character/fx/sad-blink-mono.png",
+    "fx_ink_rig_sad_blink": "assets/character/fx/sad-blink-ink.png",
+    "fx_negative_rig_sad_blink": "assets/character/fx/sad-blink-negative.png",
+    "fx_soft_rig_sad_blink": "assets/character/fx/sad-blink-soft.png",
+    "fx_mono_rig_peace_base": "assets/character/fx/expression-peace-mono.png",
+    "fx_ink_rig_peace_base": "assets/character/fx/expression-peace-ink.png",
+    "fx_negative_rig_peace_base": "assets/character/fx/expression-peace-negative.png",
+    "fx_soft_rig_peace_base": "assets/character/fx/expression-peace-soft.png"
+  },
+  "source": "https://www.bilibili.com/video/BV1eGZLBkE5X/",
+  "version": "25時、ナイトコードで。 × KAITO / 2DMV",
+  "palette": {
+    "NORMAL": "#9DE4C2",
+    "OBSERVE": "#294F4C",
+    "WARNING": "#ED8B50",
+    "CRITICAL": "#D93B4A",
+    "CORRUPTED": "#241726",
+    "MEMORY": "#E9ACC8",
+    "VOID": "#090C13",
+    "SILENCE": "#C8CCD1"
+  },
+  "revision": "v5-scene-typography",
+  "rigs": {
+    "schemaVersion": 1,
+    "method": "Limited raster cutout animation with original-pixel layers and local closed-eyelid overlays. Not a reconstructed 3D character or a new hand-drawn pose.",
+    "full": {
+      "width": 1024,
+      "height": 1536,
+      "base": "assets/character/rig/full-base.png",
+      "baseDrawOrder": 20,
+      "layers": [
+        {
+          "name": "ear_left",
+          "path": "assets/character/rig/full-ear_left.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            467,
+            138
+          ],
+          "amplitudeDeg": 3.5,
+          "drawOrder": 8,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+          "actual": true,
+          "imageKey": "rig_full_ear_left"
+        },
+        {
+          "name": "ear_right",
+          "path": "assets/character/rig/full-ear_right.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            609,
+            96
+          ],
+          "amplitudeDeg": 3,
+          "drawOrder": 9,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+          "actual": true,
+          "imageKey": "rig_full_ear_right"
+        },
+        {
+          "name": "tail",
+          "path": "assets/character/rig/full-tail.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            354,
+            765
+          ],
+          "amplitudeDeg": 3.5,
+          "drawOrder": 1,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+          "actual": true,
+          "imageKey": "rig_full_tail"
+        },
+        {
+          "name": "hair_back_left",
+          "path": "assets/character/rig/full-hair_back_left.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            335,
+            382
+          ],
+          "amplitudeDeg": 1.2,
+          "drawOrder": 3,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+          "actual": true,
+          "imageKey": "rig_full_hair_back_left"
+        },
+        {
+          "name": "hair_back_right",
+          "path": "assets/character/rig/full-hair_back_right.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            719,
+            403
+          ],
+          "amplitudeDeg": 1.2,
+          "drawOrder": 4,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original pixels with conservative hidden attachment overlap; no painted new anatomy.",
+          "actual": true,
+          "imageKey": "rig_full_hair_back_right"
+        },
+        {
+          "name": "raised_hand",
+          "path": "assets/character/rig/full-raised_hand.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            439,
+            526
+          ],
+          "amplitudeDeg": 2.8,
+          "drawOrder": 30,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Only the small revealed hand/cuff underlay is OpenCV inpainted, then quantised to the fixed palette.",
+          "actual": true,
+          "imageKey": "rig_full_raised_hand"
+        },
+        {
+          "name": "hair_front",
+          "path": "assets/character/rig/full-hair_front.png",
+          "width": 1024,
+          "height": 1536,
+          "pivot": [
+            519,
+            318
+          ],
+          "amplitudeDeg": 1,
+          "drawOrder": 35,
+          "parent": "body_static",
+          "mode": "rotate",
+          "available": true,
+          "reconstruction": "Original mint/ink foreground lock; the hidden clothing beneath it is locally inpainted and quantised only inside the cut region.",
+          "actual": true,
+          "imageKey": "rig_full_hair_front"
+        }
+      ],
+      "head": {
+        "available": false,
+        "reason": "Head/neck and scalp fringe are not safely separable from this single raster without inventing hidden hair and collar. Head remains in the static base; ears are real separate layers."
+      },
+      "qa": {
+        "restMeanAbsoluteChannelDifference": 0.0075,
+        "restDifferingPixels": 1468,
+        "maximumAnglesVerified": true,
+        "visualReview": "Source-resolution ear, tail, wrist, front-lock and back-hair attachment crops inspected at both declared rotation limits on 2026-10-22.",
+        "independentMotion": [
+          {
+            "name": "ear_left",
+            "changedPixels": 1957,
+            "changedBounds": [
+              421,
+              59,
+              509,
+              160
+            ]
+          },
+          {
+            "name": "ear_right",
+            "changedPixels": 1973,
+            "changedBounds": [
+              555,
+              9,
+              655,
+              117
+            ]
+          },
+          {
+            "name": "tail",
+            "changedPixels": 15415,
+            "changedBounds": [
+              80,
+              564,
+              369,
+              833
+            ]
+          },
+          {
+            "name": "hair_back_left",
+            "changedPixels": 21410,
+            "changedBounds": [
+              89,
+              332,
+              362,
+              688
+            ]
+          },
+          {
+            "name": "hair_back_right",
+            "changedPixels": 11447,
+            "changedBounds": [
+              697,
+              332,
+              897,
+              677
+            ]
+          },
+          {
+            "name": "raised_hand",
+            "changedPixels": 5462,
+            "changedBounds": [
+              325,
+              397,
+              454,
+              553
+            ]
+          },
+          {
+            "name": "hair_front",
+            "changedPixels": 2842,
+            "changedBounds": [
+              497,
+              285,
+              576,
+              507
+            ]
+          }
+        ]
+      },
+      "blink": {
+        "path": "assets/character/rig/full-blink.png",
+        "available": true,
+        "mode": "local-overlay",
+        "eyes": [
+          {
+            "cover": [
+              [
+                503,
+                220
+              ],
+              [
+                513,
+                208
+              ],
+              [
+                530,
+                203
+              ],
+              [
+                550,
+                207
+              ],
+              [
+                561,
+                218
+              ],
+              [
+                561,
+                235
+              ],
+              [
+                553,
+                250
+              ],
+              [
+                538,
+                256
+              ],
+              [
+                519,
+                249
+              ],
+              [
+                506,
+                239
+              ]
+            ],
+            "anchors": [
+              [
+                516,
+                240
+              ],
+              [
+                553,
+                227
+              ]
+            ]
+          },
+          {
+            "cover": [
+              [
+                587,
+                199
+              ],
+              [
+                596,
+                185
+              ],
+              [
+                611,
+                180
+              ],
+              [
+                626,
+                184
+              ],
+              [
+                640,
+                195
+              ],
+              [
+                642,
+                213
+              ],
+              [
+                634,
+                231
+              ],
+              [
+                615,
+                236
+              ],
+              [
+                599,
+                226
+              ]
+            ],
+            "anchors": [
+              [
+                597,
+                219
+              ],
+              [
+                630,
+                207
+              ]
+            ]
+          }
+        ],
+        "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained.",
+        "imageKey": "rig_full_blink"
+      },
+      "baseImageKey": "rig_full_base"
+    },
+    "calm": {
+      "width": 627,
+      "height": 627,
+      "base": "assets/character/expression-calm.png",
+      "blink": {
+        "path": "assets/character/rig/calm-blink.png",
+        "available": true,
+        "mode": "local-overlay",
+        "eyes": [
+          {
+            "cover": [
+              [
+                294,
+                226
+              ],
+              [
+                311,
+                215
+              ],
+              [
+                333,
+                214
+              ],
+              [
+                352,
+                225
+              ],
+              [
+                357,
+                239
+              ],
+              [
+                350,
+                258
+              ],
+              [
+                331,
+                267
+              ],
+              [
+                312,
+                260
+              ],
+              [
+                299,
+                251
+              ]
+            ],
+            "anchors": [
+              [
+                300,
+                251
+              ],
+              [
+                349,
+                237
+              ]
+            ]
+          },
+          {
+            "cover": [
+              [
+                396,
+                211
+              ],
+              [
+                408,
+                196
+              ],
+              [
+                426,
+                192
+              ],
+              [
+                443,
+                198
+              ],
+              [
+                450,
+                213
+              ],
+              [
+                446,
+                235
+              ],
+              [
+                430,
+                246
+              ],
+              [
+                413,
+                240
+              ],
+              [
+                402,
+                230
+              ]
+            ],
+            "anchors": [
+              [
+                402,
+                225
+              ],
+              [
+                440,
+                211
+              ]
+            ]
+          }
+        ],
+        "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained.",
+        "imageKey": "rig_calm_blink"
+      },
+      "baseImageKey": "rig_calm_base"
+    },
+    "fear": {
+      "width": 627,
+      "height": 627,
+      "base": "assets/character/expression-fear.png",
+      "blink": {
+        "path": "assets/character/rig/fear-blink.png",
+        "available": true,
+        "mode": "local-overlay",
+        "eyes": [
+          {
+            "cover": [
+              [
+                271,
+                222
+              ],
+              [
+                289,
+                212
+              ],
+              [
+                311,
+                211
+              ],
+              [
+                329,
+                225
+              ],
+              [
+                332,
+                239
+              ],
+              [
+                325,
+                257
+              ],
+              [
+                308,
+                264
+              ],
+              [
+                288,
+                259
+              ],
+              [
+                277,
+                250
+              ]
+            ],
+            "anchors": [
+              [
+                277,
+                245
+              ],
+              [
+                324,
+                232
+              ]
+            ]
+          },
+          {
+            "cover": [
+              [
+                376,
+                209
+              ],
+              [
+                390,
+                194
+              ],
+              [
+                410,
+                191
+              ],
+              [
+                425,
+                201
+              ],
+              [
+                431,
+                218
+              ],
+              [
+                423,
+                238
+              ],
+              [
+                405,
+                246
+              ],
+              [
+                388,
+                237
+              ],
+              [
+                380,
+                228
+              ]
+            ],
+            "anchors": [
+              [
+                382,
+                223
+              ],
+              [
+                423,
+                211
+              ]
+            ]
+          }
+        ],
+        "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained.",
+        "imageKey": "rig_fear_blink"
+      },
+      "baseImageKey": "rig_fear_base"
+    },
+    "sad": {
+      "width": 627,
+      "height": 627,
+      "base": "assets/character/expression-sad.png",
+      "blink": {
+        "path": "assets/character/rig/sad-blink.png",
+        "available": true,
+        "mode": "local-overlay",
+        "eyes": [
+          {
+            "cover": [
+              [
+                294,
+                238
+              ],
+              [
+                310,
+                226
+              ],
+              [
+                332,
+                223
+              ],
+              [
+                352,
+                233
+              ],
+              [
+                359,
+                246
+              ],
+              [
+                353,
+                264
+              ],
+              [
+                334,
+                276
+              ],
+              [
+                312,
+                269
+              ],
+              [
+                300,
+                260
+              ]
+            ],
+            "anchors": [
+              [
+                301,
+                258
+              ],
+              [
+                352,
+                244
+              ]
+            ]
+          },
+          {
+            "cover": [
+              [
+                399,
+                216
+              ],
+              [
+                413,
+                202
+              ],
+              [
+                433,
+                199
+              ],
+              [
+                449,
+                209
+              ],
+              [
+                453,
+                225
+              ],
+              [
+                447,
+                243
+              ],
+              [
+                431,
+                251
+              ],
+              [
+                412,
+                244
+              ],
+              [
+                404,
+                235
+              ]
+            ],
+            "anchors": [
+              [
+                405,
+                232
+              ],
+              [
+                447,
+                220
+              ]
+            ]
+          }
+        ],
+        "source": "Aligned closed-eyelash strokes extracted from expression-peace.png, plus local skin-colour eye-aperture covers; original mouth and face retained.",
+        "imageKey": "rig_sad_blink"
+      },
+      "baseImageKey": "rig_sad_base"
+    },
+    "peace": {
+      "width": 627,
+      "height": 627,
+      "base": "assets/character/expression-peace.png",
+      "blink": {
+        "available": false,
+        "reason": "Original eyes are already closed."
+      },
+      "baseImageKey": "rig_peace_base"
+    },
+    "limitations": [
+      "The head remains static; it is not claimed as an independently rotatable layer.",
+      "Back-hair layers contain the original outer locks; the separate foreground lock retains a short attachment at its root.",
+      "Small hidden hand/cuff and front-lock underlays are inferred by local inpainting and palette quantisation, not newly generated anatomy.",
+      "All rotations are intentionally small. Do not exceed the manifest amplitudes without inspecting seams.",
+      "Blink overlays preserve the original expression mouth and face; eyelash strokes come from the already-generated closed-eye portrait."
+    ]
+  },
+  "fxAssets": {
+    "mono": {
+      "full": "fx_mono_full",
+      "seated": "fx_mono_seated",
+      "calm": "fx_mono_calm",
+      "fear": "fx_mono_fear",
+      "sad": "fx_mono_sad",
+      "peace": "fx_mono_peace",
+      "eyes": "fx_mono_eyes",
+      "hand": "fx_mono_hand",
+      "rig_full_base": "fx_mono_rig_full_base",
+      "rig_full_ear_left": "fx_mono_rig_full_ear_left",
+      "rig_full_ear_right": "fx_mono_rig_full_ear_right",
+      "rig_full_tail": "fx_mono_rig_full_tail",
+      "rig_full_hair_back_left": "fx_mono_rig_full_hair_back_left",
+      "rig_full_hair_back_right": "fx_mono_rig_full_hair_back_right",
+      "rig_full_raised_hand": "fx_mono_rig_full_raised_hand",
+      "rig_full_hair_front": "fx_mono_rig_full_hair_front",
+      "rig_full_blink": "fx_mono_rig_full_blink",
+      "rig_calm_base": "fx_mono_rig_calm_base",
+      "rig_calm_blink": "fx_mono_rig_calm_blink",
+      "rig_fear_base": "fx_mono_rig_fear_base",
+      "rig_fear_blink": "fx_mono_rig_fear_blink",
+      "rig_sad_base": "fx_mono_rig_sad_base",
+      "rig_sad_blink": "fx_mono_rig_sad_blink",
+      "rig_peace_base": "fx_mono_rig_peace_base"
+    },
+    "ink": {
+      "full": "fx_ink_full",
+      "seated": "fx_ink_seated",
+      "calm": "fx_ink_calm",
+      "fear": "fx_ink_fear",
+      "sad": "fx_ink_sad",
+      "peace": "fx_ink_peace",
+      "eyes": "fx_ink_eyes",
+      "hand": "fx_ink_hand",
+      "rig_full_base": "fx_ink_rig_full_base",
+      "rig_full_ear_left": "fx_ink_rig_full_ear_left",
+      "rig_full_ear_right": "fx_ink_rig_full_ear_right",
+      "rig_full_tail": "fx_ink_rig_full_tail",
+      "rig_full_hair_back_left": "fx_ink_rig_full_hair_back_left",
+      "rig_full_hair_back_right": "fx_ink_rig_full_hair_back_right",
+      "rig_full_raised_hand": "fx_ink_rig_full_raised_hand",
+      "rig_full_hair_front": "fx_ink_rig_full_hair_front",
+      "rig_full_blink": "fx_ink_rig_full_blink",
+      "rig_calm_base": "fx_ink_rig_calm_base",
+      "rig_calm_blink": "fx_ink_rig_calm_blink",
+      "rig_fear_base": "fx_ink_rig_fear_base",
+      "rig_fear_blink": "fx_ink_rig_fear_blink",
+      "rig_sad_base": "fx_ink_rig_sad_base",
+      "rig_sad_blink": "fx_ink_rig_sad_blink",
+      "rig_peace_base": "fx_ink_rig_peace_base"
+    },
+    "negative": {
+      "full": "fx_negative_full",
+      "seated": "fx_negative_seated",
+      "calm": "fx_negative_calm",
+      "fear": "fx_negative_fear",
+      "sad": "fx_negative_sad",
+      "peace": "fx_negative_peace",
+      "eyes": "fx_negative_eyes",
+      "hand": "fx_negative_hand",
+      "rig_full_base": "fx_negative_rig_full_base",
+      "rig_full_ear_left": "fx_negative_rig_full_ear_left",
+      "rig_full_ear_right": "fx_negative_rig_full_ear_right",
+      "rig_full_tail": "fx_negative_rig_full_tail",
+      "rig_full_hair_back_left": "fx_negative_rig_full_hair_back_left",
+      "rig_full_hair_back_right": "fx_negative_rig_full_hair_back_right",
+      "rig_full_raised_hand": "fx_negative_rig_full_raised_hand",
+      "rig_full_hair_front": "fx_negative_rig_full_hair_front",
+      "rig_full_blink": "fx_negative_rig_full_blink",
+      "rig_calm_base": "fx_negative_rig_calm_base",
+      "rig_calm_blink": "fx_negative_rig_calm_blink",
+      "rig_fear_base": "fx_negative_rig_fear_base",
+      "rig_fear_blink": "fx_negative_rig_fear_blink",
+      "rig_sad_base": "fx_negative_rig_sad_base",
+      "rig_sad_blink": "fx_negative_rig_sad_blink",
+      "rig_peace_base": "fx_negative_rig_peace_base"
+    },
+    "soft": {
+      "full": "fx_soft_full",
+      "seated": "fx_soft_seated",
+      "calm": "fx_soft_calm",
+      "fear": "fx_soft_fear",
+      "sad": "fx_soft_sad",
+      "peace": "fx_soft_peace",
+      "eyes": "fx_soft_eyes",
+      "hand": "fx_soft_hand",
+      "rig_full_base": "fx_soft_rig_full_base",
+      "rig_full_ear_left": "fx_soft_rig_full_ear_left",
+      "rig_full_ear_right": "fx_soft_rig_full_ear_right",
+      "rig_full_tail": "fx_soft_rig_full_tail",
+      "rig_full_hair_back_left": "fx_soft_rig_full_hair_back_left",
+      "rig_full_hair_back_right": "fx_soft_rig_full_hair_back_right",
+      "rig_full_raised_hand": "fx_soft_rig_full_raised_hand",
+      "rig_full_hair_front": "fx_soft_rig_full_hair_front",
+      "rig_full_blink": "fx_soft_rig_full_blink",
+      "rig_calm_base": "fx_soft_rig_calm_base",
+      "rig_calm_blink": "fx_soft_rig_calm_blink",
+      "rig_fear_base": "fx_soft_rig_fear_base",
+      "rig_fear_blink": "fx_soft_rig_fear_blink",
+      "rig_sad_base": "fx_soft_rig_sad_base",
+      "rig_sad_blink": "fx_soft_rig_sad_blink",
+      "rig_peace_base": "fx_soft_rig_peace_base"
+    }
+  }
+}

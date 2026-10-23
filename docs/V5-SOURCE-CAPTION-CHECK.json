@@ -1,0 +1,167 @@
+{
+  "status": "timing research completed; exact selected source corroborated; not word-level forced alignment",
+  "selectedBvid": "BV1eGZLBkE5X",
+  "selectedPart": 1,
+  "selectedCid": 36966107291,
+  "audioDurationSeconds": 242.538333,
+  "videoDurationSeconds": 242.533,
+  "videoFps": 23.976023976023978,
+  "sourceVideo1080": "work/timing_research.source1080.mp4",
+  "sourceVideo480": "work/timing_research.source.mp4",
+  "subtitleApi": {
+    "metadataSubtitleId": "1982012316635627520",
+    "language": "zh",
+    "publicViewMetadataPresent": true,
+    "playerV2PublicSubtitleArraysEmptyForCids": [
+      36966107291,
+      36966304503
+    ],
+    "wbiPlayerPublicSubtitleArrayEmpty": true,
+    "accountOrCookiesUsed": false
+  },
+  "alignment": {
+    "albumTrack": "NetEase 2702706957; N25 × KAITO full version",
+    "offsetSeconds": 2.186875,
+    "scale": 1.0,
+    "sourceMappingRule": "selected MV time = album LRC time + 2.186875 seconds",
+    "independentAudioEvidence": "data/lyric_timing_source.json / audioOffsetCheck",
+    "offsetEvidenceOwner": "v4_edit_plan agent: six 12-second decoded-audio correlation windows, 0.945–0.965 correlation, 2.625 ms offset spread",
+    "lyricTextSource": "User-supplied 126-line bilingual TSV; no lyric text copied into this report"
+  },
+  "confirmedVisibleAnchors": [
+    {
+      "userLine": 1,
+      "userIndex": 0,
+      "albumLrcStart": 0.609,
+      "offsetMappedStart": 2.795875,
+      "sampleRequestedTime": 3.4,
+      "actualVideoFrame": 82,
+      "actualSampleTime": 3.420083,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 2,
+      "userIndex": 1,
+      "albumLrcStart": 5.992,
+      "offsetMappedStart": 8.178875,
+      "sampleRequestedTime": 9.2,
+      "actualVideoFrame": 221,
+      "actualSampleTime": 9.217542,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 48,
+      "userIndex": 47,
+      "albumLrcStart": 57.553,
+      "offsetMappedStart": 59.739875,
+      "sampleRequestedTime": 60.3,
+      "actualVideoFrame": 1446,
+      "actualSampleTime": 60.31025,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 66,
+      "userIndex": 65,
+      "albumLrcStart": 85.116,
+      "offsetMappedStart": 87.302875,
+      "sampleRequestedTime": 87.6,
+      "actualVideoFrame": 2100,
+      "actualSampleTime": 87.5875,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 67,
+      "userIndex": 66,
+      "albumLrcStart": 110.537,
+      "offsetMappedStart": 112.723875,
+      "sampleRequestedTime": 113.3,
+      "actualVideoFrame": 2716,
+      "actualSampleTime": 113.279833,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": "Source subtitle combines user lines 67 and 68 in one displayed block."
+    },
+    {
+      "userLine": 91,
+      "userIndex": 90,
+      "albumLrcStart": 130.515,
+      "offsetMappedStart": 132.701875,
+      "sampleRequestedTime": 132.9,
+      "actualVideoFrame": 3186,
+      "actualSampleTime": 132.88275,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 107,
+      "userIndex": 106,
+      "albumLrcStart": 211.17,
+      "offsetMappedStart": 213.356875,
+      "sampleRequestedTime": 213.8,
+      "actualVideoFrame": 5126,
+      "actualSampleTime": 213.796917,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    },
+    {
+      "userLine": 126,
+      "userIndex": 125,
+      "albumLrcStart": 227.582,
+      "offsetMappedStart": 229.768875,
+      "sampleRequestedTime": 230.1,
+      "actualVideoFrame": 5517,
+      "actualSampleTime": 230.104875,
+      "manualSourceCaptionReview": "confirmed corresponding user line is displayed",
+      "note": ""
+    }
+  ],
+  "unconfirmedSamples": [
+    {
+      "userLine": 92,
+      "requestedTime": 168.5,
+      "reason": "Deliberately glitched source typography not readable enough; not counted as verified."
+    }
+  ],
+  "gapTailDisplayClearEvidence": [
+    {
+      "userLine": 66,
+      "lastVisibleSample": 89.798042,
+      "firstConfirmedClearSample": 90.215125,
+      "editorialHoldUpperReference": 90.2,
+      "evidence": "work/timing_research.ends66.png"
+    },
+    {
+      "userLine": 91,
+      "lastVisibleSample": 134.217417,
+      "note": "At last visible sample only red Chinese remains; Japanese has faded.",
+      "firstConfirmedClearSample": 134.592792,
+      "editorialHoldUpperReference": 134.6,
+      "evidence": "work/timing_research.ends91.png"
+    },
+    {
+      "userLine": 126,
+      "lastClearlyVisibleSample": 231.48125,
+      "faintResidualSample": 231.606375,
+      "firstConfirmedClearSample": 231.689792,
+      "editorialHoldUpperReference": 231.7,
+      "evidence": "work/timing_research.ends126.png"
+    }
+  ],
+  "evidenceContactSheet": "work/timing_research.anchor-contact.png",
+  "limitations": [
+    "Visible subtitle boundaries are evidence of source video display timing, not exact vocal/word boundaries.",
+    "Bilingual source subtitles sometimes combine multiple user lines.",
+    "No duration rescaling was applied; same-recording alignment is supported by the independent audio check.",
+    "Tiny Whisper exists locally, but its installed Torch CUDA build does not support the RTX5060 sm_120; no ASR was needed for this route."
+  ],
+  "packagedEvidenceImages": [
+    "docs/evidence/v5-caption-anchors.png",
+    "docs/evidence/v5-caption-end66.png",
+    "docs/evidence/v5-caption-end91.png",
+    "docs/evidence/v5-caption-end126.png"
+  ],
+  "sourceVideosIncludedInSourceArchive": false
+}
