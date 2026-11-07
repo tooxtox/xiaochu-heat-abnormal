@@ -8,7 +8,7 @@ import {activeLyricCues,drawLyricArt} from './lyric_art.mjs';
 import {applyGlitch,glitchAt} from './glitch.mjs';
 import {drawLyricMotifs} from './lyric_motifs.mjs';
 import {
-  composeLayers,composeForeground,musicState,contactShadow,mixHex,
+  composeLayers,composeForeground,musicState,contactShadow,castShadow,reactorDeck,nearBarrier,mixHex,
 } from './scene_layers.mjs';
 export const W = 1920, H = 1080;
 const TAU = Math.PI * 2;
@@ -184,9 +184,9 @@ function memoryRoom(c,t,opts={}){
  }
  c.restore();
  // 窗光在墙脚与地面上的落点：房间因此有方向。
- c.save();c.globalCompositeOperation='lighter';
- const wash=c.createLinearGradient(760,180,150,1000);
- wash.addColorStop(0,alpha('#FFF3DC',.30));wash.addColorStop(1,alpha('#FFF3DC',0));
+ c.save();
+ const wash=c.createLinearGradient(1430,135,250,1060);
+ wash.addColorStop(0,alpha('#FFF3DC',.35));wash.addColorStop(.65,alpha('#FFF3DC',.16));wash.addColorStop(1,alpha('#FFF3DC',0));
  c.fillStyle=wash;c.beginPath();c.moveTo(1180,60);c.lineTo(1920,60);c.lineTo(430,1080);c.lineTo(-120,1080);c.closePath();c.fill();
  c.restore();
  // 桌面：从左下角斜切进来，占住画面下缘，作为前景层。
@@ -226,17 +226,114 @@ function terminal(c,t,data,x,y,w,h,color,mode='OBSERVE'){
  for(let i=0;i<3;i++){const d=fract(t*.24+i/3)*(2*w+2*h);let xx=x,yy=y;if(d<w)xx+=d;else if(d<w+h){xx+=w;yy+=d-w}else if(d<2*w+h){xx+=2*w+h-d;yy+=h}else yy+=2*w+2*h-d;c.fillStyle=color;c.fillRect(xx-3,yy-2,6,4)}c.restore();
 }
 function observatory(c,t,data,color){architecture(c,t,color);terminal(c,t,data,95,640,370,230,color);terminal(c,t,data,1475,580,340,210,color)}
-function imageFit(c,img,x,y,h){if(!img)return;const w=img.width/img.height*h;c.drawImage(img,x-w/2,y-h,w,h)}
-function seatedTerminal(c,resources,t,data,x=1320,y=1030,h=740){
- c.fillStyle='#12252A';c.fillRect(x+100,y-h*.58,24,h*.57);c.fillRect(x-60,y-h*.28,270,17);line(c,x+105,y-h*.32,x+210,y,P.teal,7);
- character(c,resources,t,x,y,h,'seated',.16);
- c.fillStyle='#142B2E';path(c,[[x-500,y-h*.5],[x-180,y-h*.5],[x-60,y-h*.36],[x-470,y-h*.36]],'#142B2E',1,true);
- line(c,x-480,y-h*.36,x-480,y+20,P.teal,6);line(c,x-90,y-h*.36,x-90,y+20,P.teal,6);
- terminal(c,t,data,x-590,y-h*.87,330,220,P.mint);
- for(let i=0;i<11;i++)line(c,x-430+i*21,y-h*.45,x-408+i*21,y-h*.41,P.mint,.6);
+// Stable shoe landmarks measured from the existing transparent originals (near shoe last).
+const FOOTPRINT={full:{w:1024,h:1536,shoes:[[454,1498,43],[555,1527,46]]},seated:{w:1536,h:1024,shoes:[[329,977,54],[521,1013,58]]}};
+const FLOOR_TRAVEL={1:.04,2:.55,3:.04,4:.6,5:.4,6:.05,7:.04,8:.10,9:.42,10:.18};
+const STAGE_LIGHT={
+ 1:{key:'#BCDCD6',bounce:'#3D7770',shadow:'#101B29',sourceX:980},
+ 2:{key:'#ABD8CD',bounce:'#37746E',shadow:'#101C2A',sourceX:930},
+ 3:{key:'#F9CD9A',bounce:'#9B5649',shadow:'#251622',sourceX:860},
+ 4:{key:'#F3BC8A',bounce:'#9B503D',shadow:'#261720',sourceX:960},
+ 5:{key:'#FFB080',bounce:'#96383D',shadow:'#281420',sourceX:1080},
+ 6:{key:'#EDAA85',bounce:'#A35342',shadow:'#24141F',sourceX:990},
+ 7:{key:'#FFF1CC',bounce:'#A29E71',shadow:'#4A483D',sourceX:1550},
+ 8:{key:'#FFD19B',bounce:'#B13843',shadow:'#311525',sourceX:960},
+ 9:{key:'#F7A078',bounce:'#9A334A',shadow:'#231221',sourceX:980},
+ 10:{key:'#ABDAD0',bounce:'#326866',shadow:'#0C1A28',sourceX:1390},
+};
+function floorX(c,x){const s=stages.get(c);return s?x-(s.t-s.s.start)*(THEME_TRAVEL[s.s.id]??12)*(FLOOR_TRAVEL[s.s.id]??0):x}
+const drawPlanted=(...args)=>drawCharacter(...args,true);
+// The lyric back plane is a reading layer, not part of the scene drawing, so it must not
+// inherit the alpha or the transform of whatever call site happened to trigger it. The
+// trigger is the first character() call of the frame, and scene 2 draws three ghost
+// copies at 4.5% opacity — without this reset the whole line inherited that 4.5% and
+// became invisible.
+function paintLyricBack(c,resources){
+  const st=stages.get(c);
+  if(!st||st.lyricBackDrawn)return;
+  st.lyricBackDrawn=true;
+  if(!resources.jizuraDraw){drawLyricMotifs(c,st.t,resources,st.data,'back');drawLyricArt(c,st.t,resources,st.data,'back');return;}
+  c.save();
+  c.setTransform(1,0,0,1,0,0);
+  c.scale(st.scaleX,st.scaleY);
+  c.globalAlpha=1;
+  c.globalCompositeOperation='source-over';
+  resources.jizuraDraw(c,st.t,st.data,'back');
+  c.restore();
 }
-function paintLyricBack(c,resources){const st=stages.get(c);if(st&&!st.lyricBackDrawn){st.lyricBackDrawn=true;drawLyricMotifs(c,st.t,resources,st.data,'back');drawLyricArt(c,st.t,resources,st.data,'back')}}
-function character(c,resources,t,x,y,h,expression='full',wind=.3,opacity=1){paintLyricBack(c,resources);const st=stages.get(c);if(st){const arrive=ease(st.age/1.05),dir=st.shot.mode==='portrait'?1:(st.shot.id%2?1:-1),quiet=st.s.id===7?.4:1;x+=(1-arrive)*dir*84+(st.progress-.5)*28*quiet;y+=(1-arrive)*38-Math.sin(st.progress*Math.PI)*16*quiet;h*=.96+.04*arrive;c.save();c.translate(x,y);c.rotate(Math.sin(st.progress*Math.PI)*dir*.011*quiet);drawCharacterFx(c,resources,t,0,0,h,expression,wind,opacity,drawCharacter);c.restore()}else drawCharacterFx(c,resources,t,x,y,h,expression,wind,opacity,drawCharacter)}
+function stageShadows(c,x,y,h,pose,light,daylight){
+ const d=FOOTPRINT[pose],q=h/d.h;
+ const shoes=d.shoes.map(([sx,sy,rx])=>[x+(sx-d.w/2)*q,y+(sy-d.shoes[1][1])*q,rx*q]);
+ const center=(shoes[0][0]+shoes[1][0])*.5,depth=(shoes[0][1]+shoes[1][1])*.5;
+ const dx=clamp((center-light.sourceX)*(daylight?.38:.24),-222,202),dy=daylight?67:72;
+ const color=daylight?'#59554A':'#05080F';
+ if(!daylight)contactShadow(c,{x:center,y:depth+10,rx:h*.20,ry:h*.052,color:light.bounce,strength:.23});
+ castShadow(c,{x:center,y:depth,dx,dy,width:h*(pose==='seated'?.11:.103),color,strength:daylight?.39:.58});
+ contactShadow(c,{x:center,y:depth+6,rx:h*.175,ry:h*.037,color,strength:daylight?.31:.54});
+ for(const [sx,sy,rx] of shoes){
+  contactShadow(c,{x:sx,y:sy-1,rx:rx*1.38,ry:Math.max(9,h*.021),color,strength:daylight?.76:.98});
+ }
+ return y+(d.h-d.shoes[1][1])*q;
+}
+function litCharacter(c,resources,t,x,y,h,pose,wind,opacity,light,planted){
+ const draw=planted?drawPlanted:drawCharacter,im=resources[pose]||resources.full;
+ if(!light||!im||!resources.makeCanvas||opacity<.9||c.globalAlpha<.8){drawCharacterFx(c,resources,t,x,y,h,pose,wind,opacity,draw);return}
+ // Only the character's compact RGBA bounds are relit; no second full-frame filter or readback.
+ const artWidth=h*im.width/im.height,pad=42,m=c.getTransform(),raster=clamp(Math.hypot(m.a,m.b),.25,1);
+ const w=Math.ceil((artWidth+2*pad)*raster),hh=Math.ceil((h+2*pad)*raster),key=`${w}x${hh}`;
+ resources.stageCharacterCanvases??=new Map();
+ let cache=resources.stageCharacterCanvases.get(key);
+ if(!cache){cache=resources.makeCanvas(w,hh);resources.stageCharacterCanvases.set(key,cache);if(resources.stageCharacterCanvases.size>8)resources.stageCharacterCanvases.delete(resources.stageCharacterCanvases.keys().next().value)}
+ const local=cache.getContext('2d');if(local.reset)local.reset();else{local.setTransform(1,0,0,1,0,0);local.globalAlpha=1;local.globalCompositeOperation='source-over'}
+ local.clearRect(0,0,w,hh);local.scale(raster,raster);
+ const anchor=artWidth/2+pad,base=h+pad;
+ drawCharacterFx(local,resources,t,anchor,base,h,pose,wind,1,draw);
+ const tone=resources.fxOverride?.style||resources.fx?.mode,mono=['mono','ink','print','fade'].includes(tone);
+ const left=x>light.sourceX,keyColor=mono?'#D1D1D1':light.key,bounce=mono?'#5B5B5B':light.bounce,shadow=mono?'#171717':light.shadow;
+ const g=local.createLinearGradient(left?pad:artWidth+pad,pad,left?artWidth+pad:pad,base);
+ g.addColorStop(0,alpha(keyColor,.30));g.addColorStop(.39,alpha(keyColor,.025));g.addColorStop(.67,alpha(bounce,.145));g.addColorStop(1,alpha(shadow,.34));
+ local.globalCompositeOperation='source-atop';local.fillStyle=g;local.fillRect(0,0,w/raster,hh/raster);
+ c.save();c.globalAlpha*=opacity;c.drawImage(cache,x-anchor,y-base,w/raster,hh/raster);c.restore();
+}
+function character(c,resources,t,x,y,h,expression='full',wind=.3,opacity=1,{placed=false}={}){
+ const st=stages.get(c),light=STAGE_LIGHT[st?.s.id],planted=Boolean(FOOTPRINT[expression]);
+ if(!placed)x=floorX(c,x);
+ if(light&&planted&&opacity>=.9&&c.globalAlpha>=.8)y=stageShadows(c,x,y,h,expression,light,st.s.id===7);
+ paintLyricBack(c,resources);
+ litCharacter(c,resources,t,x,y,h,expression,wind,opacity,light,planted);
+}
+function chair(c,x,y,h,daylight=false){
+ const q=h/1024,px=v=>x+(v-768)*q,py=v=>y+(v-1013)*q;
+ const body=daylight?'#756B58':'#17262D',top=daylight?'#A7997B':'#324550',rim=daylight?'#D8C6A7':'#7BAFAE';
+ // Backrest and seat pad align to the pelvis in the seated art, not to the PNG center.
+ path(c,[[px(1020),py(806)],[px(1058),py(505)],[px(1250),py(541)],[px(1170),py(867)]],body,1,true);
+ path(c,[[px(1045),py(519)],[px(1250),py(541)],[px(1230),py(558)],[px(1042),py(539)]],top,1,true);
+ for(const [sx,ex] of [[760,718],[1118,1144]]){
+  path(c,[[px(sx-20),py(824)],[px(sx+18),py(824)],[px(ex+17),y],[px(ex-19),y]],body,1,true);
+  contactShadow(c,{x:px(ex),y:y+1,rx:35*q,ry:10*q,strength:daylight?.60:.84});
+ }
+ line(c,px(749),py(925),px(1128),py(925),body,9*q);
+ path(c,[[px(711),py(821)],[px(1090),py(797)],[px(1194),py(826)],[px(805),py(854)]],top,1,true);
+ path(c,[[px(805),py(854)],[px(1194),py(826)],[px(1194),py(858)],[px(805),py(880)]],body,1,true);
+ line(c,px(808),py(853),px(1184),py(826),rim,Math.max(1,2*q));
+}
+function seatedTerminal(c,resources,t,data,x=1320,y=978,h=740){
+ x=floorX(c,x);const q=h/1024,px=v=>x+(v-768)*q,py=v=>y+(v-1013)*q;
+ chair(c,x,y,h);
+ // Desk supports meet the same floor as the chair; the keyboard lines up with her wrists.
+ for(const [sx,ex] of [[178,119],[483,520]]){
+  path(c,[[px(sx-22),py(505)],[px(sx+20),py(505)],[px(ex+19),y],[px(ex-22),y]],'#101D27',1,true);
+  contactShadow(c,{x:px(ex),y:y+3,rx:43*q,ry:12*q,strength:.84});
+ }
+ character(c,resources,t,x,y,h,'seated',.16,1,{placed:true});
+ const desktop=[[px(-150),py(452)],[px(477),py(453)],[px(547),py(526)],[px(-90),py(526)]];
+ path(c,desktop,'#263C46',1,true);
+ path(c,[[px(-90),py(526)],[px(547),py(526)],[px(547),py(563)],[px(-90),py(560)]],'#111F28',1,true);
+ line(c,px(-90),py(526),px(547),py(526),alpha(P.mint,.45),1.5);
+ path(c,[[px(295),py(460)],[px(495),py(460)],[px(518),py(508)],[px(324),py(508)]],'#0D1921',1,true);
+ for(let i=0;i<10;i++)line(c,px(314+i*18),py(473),px(325+i*18),py(493),alpha(P.mint,.36),1.2);
+ terminal(c,t,data,px(-120),py(156),310*q,248*q,P.mint);
+}
 function flower(c,x,y,r,t,color,alpha=1){
  const age=stages.get(c)?.age??9;c.save();c.translate(x,y);c.rotate(t*.055);c.globalAlpha=alpha;r*=.8+.2*ease(age/1.25);
  for(let layer=0;layer<3;layer++){const pts=[],grow=ease((age-layer*.14)/1.2);for(let j=0;j<=Math.floor(300*grow);j++){const a=j/300*TAU,rr=r*(.47+.5*Math.cos(a*5+layer*.23))*(1+Math.sin(t*.9+a*2)*.025);pts.push([Math.cos(a)*rr,Math.sin(a)*rr])}if(pts.length>1)path(c,pts,color,layer?1:2);c.rotate(.17)}
@@ -271,14 +368,20 @@ function sceneContext(data,scene,color,extra={}){
  };
 }
 function environment(c,t,data,scene,color,extra={}){composeLayers(c,t,themeTable(data),scene.id,sceneContext(data,scene,color,extra))}
-function foregroundLayer(c,t,data,scene,color,extra={}){composeForeground(c,t,themeTable(data),scene.id,sceneContext(data,scene,color,extra))}
+function foregroundLayer(c,t,data,scene,color,extra={}){
+ if(scene.id===5||scene.id===6||scene.id===9){
+  const side=stages.get(c)?.shot.mode==='world'?-1:1;
+  nearBarrier(c,t,{side,y:974,reach:scene.id===6?475:510,rim:scene.id===5?'#C67459':color,travel:(extra.local??0)*7});
+ }
+ composeForeground(c,t,themeTable(data),scene.id,sceneContext(data,scene,color,extra));
+}
 
 function worldShot(c,t,resources,data,scene,shot,color,progress){
  const music=musicState(data,t);
  if(scene.id===1||scene.id===3){
   environment(c,t,data,scene,color,{local:t-scene.start,energy:music.energy,progress,
    overrides:{skyline:{ruin:scene.id===3?music.onset*.8:0}}});
-  seatedTerminal(c,resources,t,data,1450,1010,570);
+  seatedTerminal(c,resources,t,data,1450,949,610);
   if(scene.id===1){largeWords(c,'LAST SIGNAL',100,330,98,P.paper);text(c,'世界最後の観測所',107,390,29,P.mint,serif);text(c,'OBSERVER / XIAOCHU',109,443,15,P.mint)}
   else{line(c,890,180,1170,385,P.orange,3);text(c,'警報  /  温度上昇',115,295,54,P.paper,serif);text(c,'SENSOR 07 / THRESHOLD EXCEEDED',120,352,18,P.orange)}
  }
@@ -301,7 +404,7 @@ function worldShot(c,t,resources,data,scene,shot,color,progress){
    environment(c,t,data,scene,accent,{local:t-scene.start,energy:music.energy,progress,
     overrides:{sky:{skyMid:mixHex('#6B151C','#C0303A',music.energy)},skyline:{ruin:music.onset*.6+progress*.3},blackstar:{r:310+music.energy*30}}});
   }
-  character(c,resources,t,scene.id===9?1410:1480,1060,scene.id===9?770:710,'full',scene.id===5?.6:1.8);
+  character(c,resources,t,scene.id===9?1410:scene.id===6?1408:1480,scene.id===6?925:938,scene.id===9?710:685,'full',scene.id===5?.6:1.8);
   if(scene.id===5)text(c,'観測不能',110,290,67,P.paper,serif);
   if(scene.id===6)text(c,'ここには、誰もいない。',110,270,42,P.paper,serif);
   if(scene.id===9){circle(c,440,410,10,P.mint,2);line(c,1350,560,440,410,P.mint,.8)}
@@ -328,8 +431,8 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  const shot=shotAt(t,data),baseShot=shot.baseShot||shot,mode=shot.mode,variant=mode==='portrait'?1:mode==='wide'?0:shot.variant,shotProgress=clamp((t-baseShot.start)/(baseShot.end-baseShot.start));
  // 快切只换取景；人物到场、终端与意象沿原镜头时间继续，避免反复重启动画。
  const narrativeShot=shot.baseShot?{...shot,start:baseShot.start,end:baseShot.end}:shot;
- const hasLyrics=activeLyricCues(data,t).length>0;
- stages.set(c,{t,data,s,shot:shot.baseShot?{...narrativeShot,id:baseShot.id}:shot,age:t-baseShot.start,progress:shotProgress,energy:e,hasLyrics,lyricBackDrawn:false,music});
+ const hasLyrics=resources.jizuraDraw?(data.lyrics?.lines||[]).some(line=>t>=line.time&&t<line.end):activeLyricCues(data,t).length>0;
+ stages.set(c,{t,data,s,shot:shot.baseShot?{...narrativeShot,id:baseShot.id}:shot,age:t-baseShot.start,progress:shotProgress,energy:e,hasLyrics,lyricBackDrawn:false,music,scaleX:width/W,scaleY:height/H});
  resources.lyricActive=hasLyrics;resources.drawLyricBack=context=>paintLyricBack(context,resources);
  const ctxExtra={local,energy:music.energy,progress};
  c.save();
@@ -340,7 +443,7 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
   environment(c,t,data,s,color,ctxExtra);
   // 仍在运行的终端：房间里"有人值守"的证据。
   terminal(c,t,data,95,640,370,230,color);terminal(c,t,data,1475,580,340,210,color);
-  seatedTerminal(c,resources,t,data,1360,1040,760);
+  seatedTerminal(c,resources,t,data,1360,971,760);
   largeWords(c,'LAST',100,370,164,P.paper);largeWords(c,'SIGNAL',92,520,164,color);
   spaced(c,'SYSTEM TEMPERATURE : NOMINAL',103,578,16,2,color);
   text(c,'世界の終わりを、記録する。',107,631,28,P.white,serif);
@@ -349,15 +452,15 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  }else if(s.id===2){
   // 无限数据空间：走廊有明确的透视与纵深，窗口挂在空间里而不是铺在画面上。
   environment(c,t,data,s,color,{...ctxExtra,overrides:{corridor:{speed:.085+music.energy*.07}}});
-  const close=variant===1;contactShadow(c,{x:close?1405:1190,y:1220,rx:210,ry:34,strength:.55});
+  const close=variant===1;
   // 复制、重叠、错位的小初残影：同一个答案在数据空间里不断返回。
   for(let i=3;i>=1;i--){
    const d=i*1.35;
    c.save();c.globalAlpha=.15-i*.035;
-   character(c,resources,t-d*.11,(close?1405:1190)-i*52+i*11,(close?1210:1050)-i*7,(close?1300:960)*(1-i*.012),'calm',.35);
+   character(c,resources,t-d*.11,(close?1405:1190)-i*52+i*11,(close?1130:941)-i*7,(close?1160:765)*(1-i*.012),'calm',.35);
    c.restore();
   }
-  character(c,resources,t,close?1405:1190,close?1210:1050,close?1300:960,close?'calm':'full',.35);
+  character(c,resources,t,close?1405:1190,close?1130:941,close?1160:765,close?'calm':'full',.35);
   text(c,'01 / DEAD VARIABLES',115,205,18,color);largeWords(c,'RETURN',98,340,116,P.paper);largeWords(c,'NULL',98,466,116,color);
   for(let i=0;i<3;i++){terminal(c,t+i*.1,data,120+i*38,540+i*78,540,230,color,i===2?'RETRY':'OBSERVE')}
   for(let i=0;i<9;i++){const yy=180+i*77;const x=1745+Math.sin(t*.4+i)*18;text(c,`[${i.toString(16).padStart(2,'0')}]`,x,yy,15,color)}
@@ -365,8 +468,7 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  }else if(s.id===3){
   // 温度真的升起来：机柜过热、屏幕报警、曲线失控、空气开始扰动。
   environment(c,t,data,s,P.teal,{...ctxExtra,overrides:{racks:{color:'#ED8B50'},monitors:{color:'#ED8B50'},trace:{volatility:1.4+music.energy*1.8}}});
-  contactShadow(c,{x:variant===1?1350:1230,y:1120,rx:200,ry:30,strength:.5});
-  character(c,resources,t,variant===1?1350:1230,1100,variant===1?1200:1010,variant===1?'fear':'full',.45);
+  character(c,resources,t,variant===1?1350:1230,variant===1?1110:941,variant===1?1130:776,variant===1?'fear':'full',.45);
   c.save();c.globalAlpha=.6;const pts=[];for(let i=0;i<160;i++){const x=90+i*9,yy=800-Math.pow(i/160,2)*(380+e*30)+Math.sin(i*.12+t*1.8)*12;pts.push([x,yy])}path(c,pts,P.orange,3);c.restore();
   largeWords(c,'異常検知',110,330,98,P.paper);text(c,'TEMPERATURE RISING',119,390,25,P.orange);text(c,`${(31+progress*18).toFixed(2)} °C`,110,530,90,P.orange);line(c,107,570,680,570,P.orange,2);text(c,'THRESHOLD / 42.00',112,603,17,P.orange);
   foregroundLayer(c,t,data,s,color,ctxExtra);
@@ -382,7 +484,7 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
   for(let i=0;i<Math.floor(wear*7);i++){const x=hash(i*3.7)*1920,y=hash(i*5.1)*1080;c.beginPath();c.moveTo(x,y);c.lineTo(x+(hash(i*7.3)-.5)*260,y+(hash(i*9.1)-.5)*220);c.stroke()}
   c.restore();
   largeWords(c,word,-30+Math.sin(local*1.7)*20,385,225,P.paper);largeWords(c,word,950,890,185,P.orange,Math.PI);
-  character(c,resources,t,mode==='portrait'?1340:970+Math.sin(t*.5)*30,mode==='portrait'?1240:1040,mode==='portrait'?1320:965,mode==='portrait'?'fear':'full',.8);text(c,`LOOP ${String(beat).padStart(4,'0')}  /  CHECKSUM MISMATCH`,130,925,19,P.orange);
+  character(c,resources,t,mode==='portrait'?1340:970,mode==='portrait'?1155:929,mode==='portrait'?1235:750,mode==='portrait'?'fear':'full',.8);text(c,`LOOP ${String(beat).padStart(4,'0')}  /  CHECKSUM MISMATCH`,130,925,19,P.orange);
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===5){
   // 黑星：它在天际线之后升起，城市因此有了前后关系。
@@ -391,17 +493,15 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
    skyline:{ruin:music.onset*.7+progress*.25},
    blackstar:{r:268+progress*40+music.energy*36},
   }});
-  contactShadow(c,{x:460,y:1120,rx:190,ry:28,strength:.45});
-  if(variant===1){character(c,resources,t,570,1320,1500,'fear',.1);c.fillStyle='#090C1320';c.fillRect(0,0,W,H);circle(c,582,380,160,P.orange,1)}
-  else character(c,resources,t,460,1110,1040,'full',.5);
+  if(variant===1){character(c,resources,t,570,1158,1320,'fear',.1);c.fillStyle='#090C1320';c.fillRect(0,0,W,H);circle(c,582,380,160,P.orange,1)}
+  else character(c,resources,t,460,939,759,'full',.5);
   text(c,'BLACK STAR',1140,878,36,P.white);text(c,'ABSORPTION / NO EMISSION',1140,915,15,P.white);text(c,'観測不能',98,253,65,P.paper,serif);
   line(c,1050,150,1660,150,P.white);text(c,`α ${((t*.018)%1).toFixed(4)}    δ −04.0021`,1320,130,15,P.white);
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===6){
   environment(c,t,data,s,color,{...ctxExtra,overrides:{ruins:{collapse:progress*.9}}});
-  contactShadow(c,{x:1080+Math.sin(local*.1)*180,y:1090,rx:200,ry:30,strength:.5});
-  if(mode==='portrait'){character(c,resources,t,1390,1260,1330,'fear',.55);text(c,'落下',100,410,150,P.paper,serif)}
-  else{character(c,resources,t,1080+Math.sin(local*.1)*180,1080,1000,'full',1.4);['世','界','崩','壊'].forEach((ch,j)=>text(c,ch,160,225+j*155,130,P.paper,serif))}
+  if(mode==='portrait'){character(c,resources,t,1390,1145,1200,'fear',.55);text(c,'落下',100,410,150,P.paper,serif)}
+  else{character(c,resources,t,1160,931,758,'full',1.4);['世','界','崩','壊'].forEach((ch,j)=>text(c,ch,160,225+j*155,130,P.paper,serif))}
   particles(c,t,P.orange,140,2);text(c,'ALL CHANNELS LOST / CITY SECTOR 07',112,922,18,P.orange);
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===7){
@@ -421,19 +521,27 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
   const glow=c.createRadialGradient(fx,fy-14,10,fx,fy-14,230);glow.addColorStop(0,alpha(P.teal,.26));glow.addColorStop(1,alpha(P.teal,0));
   c.save();c.globalCompositeOperation='lighter';c.fillStyle=glow;c.fillRect(fx-240,fy-250,480,480);c.restore();
   flower(c,fx,fy-24,84,t,P.teal,.85);
-  contactShadow(c,{x:1310,y:1200,rx:220,ry:34,strength:.34});
-  character(c,resources,t,1310,1180,1290,shot.expression==='peace'?'peace':'sad',.15);
-  text(c,'MEMORY / 0001',122,207,18,P.teal);largeWords(c,'STILL',112,396,111,P.teal);largeWords(c,'HERE.',112,515,111,P.teal);text(c,'消せない記録。',123,680,39,P.teal,serif);text(c,'ARCHIVE / SUNLIGHT / WIND / A SMALL FLOWER',124,742,14,P.teal);
+  if(mode==='portrait'){
+   character(c,resources,t,1360,1095,1140,shot.expression==='peace'?'peace':'sad',.15);
+   // A nearby sill runs in front of the cropped body, with warmer light on its top edge.
+   path(c,[[1040,1080],[1200,943],[1940,948],[1940,1080]],'#A89C84',1,true);
+   path(c,[[1115,1057],[1200,943],[1940,948],[1940,973],[1230,968],[1155,1064]],'#D7C8AA',1,true);
+   line(c,1200,943,1935,949,'#EEE0C1',2.4);
+  }else{
+   const x=floorX(c,1390),y=959,h=710;
+   chair(c,x,y,h,true);character(c,resources,t,x,y,h,'seated',.15,1,{placed:true});
+  }
+  text(c,'MEMORY / 0001',122,207,18,P.teal);largeWords(c,'STILL',112,396,111,P.teal);largeWords(c,'HERE.',112,515,111,P.teal);text(c,'消せない記録。',123,680,39,P.teal,serif);if(!hasLyrics)text(c,'ARCHIVE / SUNLIGHT / WIND / A SMALL FLOWER',124,742,14,P.teal);
   c.save();c.globalAlpha=.35;line(c,930,140,930,900,P.teal);text(c,'PLAYBACK',124,895,15,P.teal);c.restore();
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===8){
   // 核心在熔毁：结构向内塌陷，地面开裂，空气扭曲。
   environment(c,t,data,s,P.red,{...ctxExtra,overrides:{corestructure:{r:520+progress*30+music.energy*30}}});
   for(let i=0;i<5;i++){c.save();c.translate(960,520);c.rotate(t*.04+i*.61);c.globalAlpha=.25;line(c,-1300,0,1300,0,P.paper,1);c.restore()}
-  contactShadow(c,{x:mode==='portrait'?1350:980,y:1090,rx:210,ry:32,strength:.45});
-  character(c,resources,t,mode==='portrait'?1350:980,mode==='portrait'?1260:1080,mode==='portrait'?1340:1010,mode==='portrait'?'fear':'full',1.8);
-  text(c,'THERMAL',90,335,98,P.paper);text(c,'RUNAWAY',88,435,98,P.paper);text(c,'CORE STATUS: CRITICAL',mode==='portrait'?100:1070,820,29,P.paper);text(c,'RECOVERY FAILED',mode==='portrait'?100:1070,865,29,P.paper);text(c,'臨界',mode==='portrait'?105:1555,mode==='portrait'?620:325,105,P.paper,serif);
-  for(let i=0;i<11;i++){const x=85+i*162;c.fillStyle=i<8?P.paper:'#521C2D';c.fillRect(x,949,130,9)}
+  reactorDeck(c,t,{vanishX:floorX(c,1020),energy:music.energy});
+  character(c,resources,t,mode==='portrait'?1350:980,mode==='portrait'?1142:916,mode==='portrait'?1230:748,mode==='portrait'?'fear':'full',1.8);
+  text(c,'THERMAL',90,335,98,P.paper);text(c,'RUNAWAY',88,435,98,P.paper);c.save();c.globalAlpha=.68;text(c,'CORE STATUS: CRITICAL',mode==='portrait'?110:1510,863,17,P.paper);text(c,'RECOVERY FAILED',mode==='portrait'?110:1510,890,17,P.paper);c.restore();text(c,'臨界',mode==='portrait'?105:1555,mode==='portrait'?620:325,105,P.paper,serif);
+  for(let i=0;i<11;i++){const x=(mode==='portrait'?110:1510)+i*24;c.fillStyle=i<8?'#A85F4A':'#521C2D';c.fillRect(x,909,18,3)}
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===9){
   // 世界失效要留下证据：翻转的城市剖面、网格化的地面、仍在下落的碎片。
@@ -442,15 +550,14 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
    skyline:{ruin:music.onset*.6+progress*.3},
   }});
   c.save();c.translate(960,540);c.rotate(Math.sin(local*.15)*.08);for(let j=0;j<8;j++){const x=(hash(j)*2200-1100+local*42)%2200;c.globalAlpha=.35;line(c,x,-800,x+200,800,P.red,j%3?1:5)}c.restore();
-  contactShadow(c,{x:mode==='portrait'?1360:980+Math.sin(local*.18)*90,y:1080,rx:210,ry:30,strength:.45});
-  character(c,resources,t,mode==='portrait'?1360:980+Math.sin(local*.18)*90,mode==='portrait'?1240:1040+Math.sin(local*.3)*34,mode==='portrait'?1320:1030,mode==='portrait'?'fear':'full',2);
-  if(mode!=='portrait'&&variant===1){c.save();c.globalAlpha=.09;character(c,resources,t-.06,1015,1040,1030,'full',2);c.restore()}
+  character(c,resources,t,mode==='portrait'?1360:980,mode==='portrait'?1138:925,mode==='portrait'?1196:766,mode==='portrait'?'fear':'full',2);
+  if(mode!=='portrait'&&variant===1){c.save();c.globalAlpha=.09;character(c,resources,t-.06,1015,929,766,'full',2);c.restore()}
   const targetX=1420,targetY=410;circle(c,targetX,targetY,11+Math.sin(t*2)*2,P.mint,2);line(c,1120,570,targetX,targetY,P.mint,.6);text(c,'ONE SIGNAL REMAINS',1160,655,25,P.mint);largeWords(c,'REALITY',70,300,110,P.paper);largeWords(c,'ERROR',70,419,110,P.red);
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else if(s.id===10){
   // 信号要有出处，也要有去处：从观测站出发，穿过城市上空，指向星空。
   environment(c,t,data,s,P.mint,ctxExtra);
-  if(mode==='portrait'){contactShadow(c,{x:1270,y:1230,rx:200,ry:30,strength:.4});character(c,resources,t,1270,1220,1340,'peace',.1);text(c,'THE LAST MESSAGE',105,290,62,P.paper);terminal(c,t,data,108,420,640,270,P.mint);text(c,'SEND / MEMORY.ARCHIVE',130,743,24,P.mint)}
+  if(mode==='portrait'){character(c,resources,t,1270,1118,1175,'peace',.1);nearBarrier(c,t,{side:1,y:966,reach:820,rim:P.mint});text(c,'THE LAST MESSAGE',105,290,62,P.paper);terminal(c,t,data,108,420,640,270,P.mint);text(c,'SEND / MEMORY.ARCHIVE',130,743,24,P.mint)}
   else transmission(c,t,data,P.mint);
   foregroundLayer(c,t,data,s,color,ctxExtra);
  }else{
@@ -493,7 +600,7 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  // Deliberate tears are confined to a thin band and never invert the whole frame.
  const tearEvents=data.cues.events?.filter(e=>e.type==='tear')||[];for(const ev of tearEvents){const dt=t-ev.time;if(dt>=0&&dt<.14){const yy=220+hash(ev.time)*570;c.fillStyle='#090C1370';c.fillRect(60,yy,1800,16);line(c,60,yy,1860,yy,color,1)}}
  paintLyricBack(c,resources);
- drawLyricMotifs(c,t,resources,data,'front');
+ if(!resources.jizuraDraw)drawLyricMotifs(c,t,resources,data,'front');
  c.restore();
 }
 function renderOverlay(c,t,resources,data,width,height){
@@ -519,7 +626,7 @@ export function renderFrame(c,t,resources,data,width=W,height=H){
  // image wipes. Background keyword echoes still receive true scene occlusion.
  const camera=cameraAt(data,t,true);c.save();c.setTransform(1,0,0,1,0,0);
  if(camera.enabled){const ax=width*camera.anchorX,ay=height*camera.anchorY;c.translate(ax+camera.panX*width/W,ay+camera.panY*height/H);c.rotate(camera.roll);c.scale(camera.zoom,camera.zoom);c.translate(-ax,-ay)}
- c.scale(width/W,height/H);drawLyricArt(c,t,resources,data,'front');c.restore();
+ c.scale(width/W,height/H);if(resources.jizuraDraw)resources.jizuraDraw(c,t,data,'front');else drawLyricArt(c,t,resources,data,'front');c.restore();
  renderOverlay(c,t,resources,data,width,height);
  // 崩坏后期：整幅画面（含阅读层与 HUD）统一失序，只由歌曲时间驱动。
  applyGlitch(c,t,data,resources,width,height);

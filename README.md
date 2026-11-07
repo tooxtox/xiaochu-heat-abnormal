@@ -1,6 +1,6 @@
 ﻿# 熱異常 / LAST SIGNAL
 
-原创角色小初的代码动画 MV，第十三版。使用用户指定的 [25時、ナイトコードで。× KAITO / B 站 2DMV](https://www.bilibili.com/video/BV1eGZLBkE5X/)，保留源音频零点与全长 242.538333 秒。人物由图像模型生成，再在本地自动描线、分色和重新上色。
+原创角色小初的代码动画 MV，第十五版。使用用户指定的 [25時、ナイトコードで。× KAITO / B 站 2DMV](https://www.bilibili.com/video/BV1eGZLBkE5X/)，保留源音频零点与全长 242.538333 秒。人物由图像模型生成，再在本地自动描线、分色和重新上色。
 
 ## 仓库内容与缺失素材
 
@@ -12,6 +12,8 @@
 | --- | --- | --- |
 | `assets/audio/song.m4a` | 曲目与录音版权属于权利方 | 放入你自己有权使用的音频；预览页的「替换本地音源」也可直接载入 |
 | `data/lyrics.json`、`data/lyrics_user_supplied.tsv` | 歌词与译文版权属于权利方 | `python tools/import_lyrics.py 你的歌词.lrc --duration 242.538333 -o data/lyrics.json` |
+| `data/jizura_direction.json` | 语义导演表里带歌词片段（强调词与断句），同属权利方内容 | 导入歌词后跑 `python tools/build_jizura_direction.py` 重新生成 |
+| `data/jizura_lyric_marks.json` | 强调词与断句的原始标注（带歌词原文），同属权利方内容 | 随 `data/jizura_direction.json` 一起本地保存；缺失时导演表仍能生成，只是不带强调与分句 |
 | `export/`（成片与逐版 QA 报告） | 约 3.8 GB 渲染产物 | 用下面的渲染命令在本地生成 |
 | `work/`（中间件与探针） | 本地调试缓存 | 无需补充 |
 | `docs/evidence/`（字幕抽帧） | 取自受版权保护的源视频画面 | 保留在本地工作副本 |
@@ -24,7 +26,36 @@
 node tools/privacy_scan.mjs
 ```
 
-**当前全曲成片：`export/LAST-SIGNAL-1080p60-v13.mp4`。** 1920×1080、60fps、14,553 帧、242.55 秒，H.264 视频与原 AAC 立体声音轨，文件 264,274,247 字节。镜头从 63 个增至 156 个，新增 93 处吸附实测音频起音的切点，快节奏段加入最短 0.30 秒的成串快切、短促推拉与外缘速度线。高潮增加斜向快门、放大残影和图像碎裂，爆发后快速恢复清晰；7 处循环仍保持中量损坏层次。人物动作和歌词阅读机位沿原叙事时间继续。渲染器内建的 63 点确定性、首帧保留、编码规格、20 处拼接画面和原音轨包哈希检查均通过，设计与完整验收记录见 `docs/V11.md`、`docs/QA-V11.md`。
+**当前全曲成片（发布用）：`export/LAST-SIGNAL-720p30-v15.mp4`。** 1280×720、30fps、7,277 帧、242.57 秒、104,796,181 字节（3,456 kbps），H.264 + 原 AAC 立体声音轨（音轨直接复制，未重新编码）。**母版：`export/LAST-SIGNAL-1080p60-v15.mp4`** —— 1920×1080、60fps、14,553 帧、242.55 秒、312,929,948 字节。
+
+第十四版按文字 PV 手法重做 126 组日中歌词，并给人物补齐鞋底落点、接触阴影、场景受光及前景遮挡；保留原有 156 镜剪辑。第十五版把这层歌词整个换成 JIZURA 字面引擎的语义导演版（见下）。设计与成片验收见 `docs/V14.md`；`export/v14-comparison.png` 为两版编码视频的同帧对照。
+
+**第十五版用 JIZURA 字面引擎重做歌词层（2026-10-27）：** 歌词不再是"引擎自动挑版式"，而是
+**126 行逐行的语义导演表**——每一行唱什么、怎么出现、什么颜色、用什么底板都写死在
+`data/jizura_direction.json` 里，由 `tools/build_jizura_direction.py` 生成、可复查、可重跑
+（96 个语义动作、12 个计划）。
+
+本版修掉的实际问题（全部有实测证据，不是目测）：
+
+- **整行不可见**：后层歌词画在场景画布里，却继承了调用点的 4.5% 不透明度，
+  117.0 秒那一行几乎看不见。`src/film.mjs` 现在把歌词层的变换与 alpha 重置后再画。
+- **转场吞字**：后层的歌词会被画面转场整个盖掉（29.73 秒那行 68% 的时间在转场里）。
+  `tools/jizura_plane_audit.mjs` 逐行量出这个比例，11 行升到前层——前层在转场之后合成。
+- **短行只剩零点几秒**：按引擎真实的进出场时长逐行（逐分句）算"字真正清晰可见的秒数"，
+  不足四成就先砍入场、还不足就连出场一起瞬间切。**短行宁可硬切，也不能让字读不出来。**
+- **分句交接黑屏**："瞬间切走 + 后一句慢慢淡入"会在两句之间留一段没有字的空档。
+  现在版式把两句放在不同位置时让前一句溶解退场，实测空档从 0.6 秒缩到 6 帧（0.1 秒的换气）。
+- **配色跑色**：JIZURA 自带的糖果粉与薄荷绿铺成大色块时和影片暖调打架，
+  全部换成影片自己的调色板（薄荷/橙/红/粉/纸白/黑）。
+- **墨色选错**：亮背景要用深墨、暗背景要用浅字，手写名单必然过时。
+  `tools/jizura_variant_probe.mjs` 把每句话的两种极性都渲染一遍，
+  按真实画面对比度择优（本次 17 行切换），结果写进 `data/jizura_variants.json`。
+
+逐行可见性审计（`tools/jizura_visibility_audit.mjs`，在每个分句边界前后各取帧）
+从第十五版初稿的 94 strong / 26 weak / 6 missing 提升到 **116 strong / 8 weak / 2 missing**，
+两个 missing 都已用逐帧扫描证明是采样点落在换句空档里的伪阳性。
+
+设计与验收见 `docs/V15-JIZURA.md`。
 
 **第十三版补齐城市地面与转场冲击（2026-10-23）：** 第十二版的城市"楼浮在半空"、剪影单调，
 本版新增 `cityGround()`（路缘、透视砖缝、积水倒影、废弃车辆、瓦砾、地面雾带）与 `cityDistrict()`
@@ -68,6 +99,8 @@ node tools/privacy_scan.mjs
 
 设计与验收文档（均已发布在 `docs/`）：
 
+- `docs/V15-JIZURA.md`：JIZURA 字面歌词导演层（语义导演表、配色极性、转场吞字、分句交接、确定性）。
+- `docs/V14.md`：文字 PV、人物落地与成片验收。
 - `docs/V13.md`、`docs/QA-V13.md`：第十三版设计与验收（城市地面／城市多样性／转场强化）。
 - `docs/V12.md`、`docs/QA-V12.md`：第十二版设计与验收（场景表现力升级版）。
 - `docs/V11.md`、`docs/QA-V11.md`：第十一版设计与验收（疾走快切与高潮空间崩坏）。
@@ -97,8 +130,33 @@ python tools/build_lyric_direction.py --offset 2.186875
 # 检查实际字形覆盖、边界与可重复寻址；生成126行检查图
 node tools/check_lyric_layout.mjs --film --prefix v9
 
+# —— 第十五版：JIZURA 字面歌词导演层 ——
+# 顺序有依赖：先量转场吞字，再量墨色极性，最后重建导演表
+node tools/jizura_plane_audit.mjs --out data/jizura_planes.json
+node tools/jizura_variant_probe.mjs --samples 3 --margin 0.6
+python tools/build_jizura_direction.py
+node tools/validate_jizura_direction.mjs
+# 逐行客观审计：可见性（含每个分句边界）与对比度
+node tools/jizura_visibility_audit.mjs --samples 3 --prefix v15
+node tools/jizura_contrast_audit.mjs --samples 3 --prefix v15
+# 指定时间点静帧 + 联系表（肉眼复核）
+node tools/jizura_stills.mjs --times 30.04,44.05,68.01,117.49,206.33,225.05 --prefix v15
+python tools/jizura_contact_sheet.py export/v15-stills export/v15-contact.png export/v15-stills.json
+# 逐帧扫描某一行：区分"真的丢字"和"采样点正好落在换句空档"
+node tools/jizura_line_scan.mjs --id L100 --from 199.45 --to 202.35
+# 跨进程 / 分块边界的像素一致性
+node tools/jizura_chunk_determinism.mjs --boundary 24 --span 2
+# 预览带歌词层的画面
+node tools/serve.mjs --port 4173
+# 打开 http://127.0.0.1:4173/?jizura=1
+
 # 全曲1080p60。--jobs 上限 8，按本机核心数给（16 逻辑核用 5 较稳）
 node tools/render.mjs --jobs 5 --chunk-duration 24 --output export/LAST-SIGNAL-1080p60-v9.mp4
+# 第十五版（带 JIZURA 歌词层）用 --jizura 走浏览器渲染
+node tools/render.mjs --jizura --jobs 5 --chunk-duration 24 --output export/LAST-SIGNAL-1080p60-v15.mp4
+
+# 发布版：降到 720p30（隔帧 + Lanczos 缩放，音轨原样复制）
+ffmpeg -v error -y -i export/LAST-SIGNAL-1080p60-v15.mp4 -vf "scale=1280:720:flags=lanczos,fps=30" -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -c:a copy -movflags +faststart export/LAST-SIGNAL-720p30-v15.mp4
 
 # 成片音轨、逐帧变化与分段首帧对照
 python tools/check_sync.py export/LAST-SIGNAL-1080p60-v9.mp4 --output export/sync-check-v9.json

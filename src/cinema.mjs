@@ -146,7 +146,7 @@ export function architecture(c, t, color, dim = 0) {
   c.fillStyle = floor; c.fillRect(0, 650, 1920, 430);
   c.strokeStyle = '#1B3035'; c.lineWidth = 1.3;
   for (let i = 0; i < 12; i++) { const x = i * 240 - 180; c.beginPath(); c.moveTo(960 + (x - 960) * .12, 655); c.lineTo(x, 1080); c.stroke(); }
-  for (let j = 0; j < 9; j++) { const z = fract(j / 9 + t * .026); const y = 650 + z * z * 430; c.globalAlpha = .7; c.beginPath(); c.moveTo(0, y); c.lineTo(1920, y); c.stroke(); }
+  for (let j = 0; j < 9; j++) { const z = (j + 1) / 10; const y = 650 + z * z * 430; c.globalAlpha = .7; c.beginPath(); c.moveTo(0, y); c.lineTo(1920, y); c.stroke(); }
   c.globalAlpha = 1;
   // 窗光在地面上的倒影：被窗格切成一条条竖带，而不是一团团光斑。
   c.globalAlpha = .13; c.fillStyle = color;
@@ -170,7 +170,7 @@ export function architecture(c, t, color, dim = 0) {
   c.beginPath(); c.moveTo(600, 0); c.lineTo(1180, 0); c.lineTo(1120, 96); c.lineTo(660, 112); c.closePath(); c.fill();
   c.restore();
 
-  // 前景栏杆：最快的层，制造"隔着东西看"的纵深。
+  // 地面设备槽：与室内地面共面，真正的近景另由前层绘制。
   c.save();
   const near = Math.sin(t * .13) * 14;
   c.fillStyle = '#16272E'; c.fillRect(0, 996 + near * .18, 1920, 16);

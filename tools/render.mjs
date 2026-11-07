@@ -12,7 +12,7 @@ import { verifyJoins } from './check_joins.mjs';
 
 const defaults = { root: projectRoot, width: 1920, height: 1080, fps: 60, start: 0, engine: 'native', preset: 'fast', crf: 18, 'chunk-duration': 60, jobs: 1, 'encoder-threads': 4 };
 const options = { ...defaults };
-const booleanOptions = new Set(['silent', 'self-test', 'help']);
+const booleanOptions = new Set(['silent', 'self-test', 'help', 'jizura']);
 const allowedOptions = new Set([...Object.keys(defaults), ...booleanOptions, 'duration', 'output', 'audio', 'browser', 'modules', 'renderer', 'lyrics', 'lyric-direction']);
 for (let i = 2; i < process.argv.length; i++) {
   const name = process.argv[i].replace(/^--/, '');
@@ -25,7 +25,7 @@ for (let i = 2; i < process.argv.length; i++) {
   }
 }
 if (options.help) {
-  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
+  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--jizura] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
   process.exit(0);
 }
 for (const name of ['width', 'height', 'fps', 'start', 'crf']) options[name] = Number(options[name]);
@@ -37,6 +37,10 @@ if (!Number.isInteger(options['encoder-threads']) || options['encoder-threads'] 
 if(!Number.isInteger(options.jobs)||options.jobs<1||options.jobs>8)throw new Error('--jobs must be an integer between 1 and 8.');
 if (!Number.isFinite(options['chunk-duration']) || options['chunk-duration'] < 0) throw new Error('--chunk-duration must be nonnegative.');
 if (![options.width, options.height, options.fps].every(n => Number.isFinite(n) && n > 0) || !Number.isInteger(options.width) || !Number.isInteger(options.height) || options.width % 2 || options.height % 2 || options.fps > 120 || options.start < 0 || !Number.isFinite(options.start)) throw new Error('Use positive even dimensions, fps <=120, and start >=0.');
+if (options.jizura) {
+  if (options.lyrics || options['lyric-direction']) throw new Error('--jizura uses the project lyric data; custom lyric inputs are not supported.');
+  options.engine = 'browser';
+}
 if (!['native', 'browser'].includes(options.engine)) throw new Error('--engine must be native or browser');
 options.root = path.resolve(options.root);
 const bundledModules = process.env.CODEX_NODE_MODULES || path.join(process.cwd(), 'node_modules');
@@ -78,7 +82,7 @@ if (options['self-test']) {
 }
 
 const lyricFiles = { lyrics: options.lyrics || 'data/lyrics.json', lyricDirection: options['lyric-direction'] || 'data/lyric_direction.json' };
-const data = { config: await readJSON('config.json', {}), features: await readJSON('data/audio_features.json', null), cues: await readJSON('data/cues.json', { scenes: [] }), lyrics: await readJSON(lyricFiles.lyrics, options.lyrics ? undefined : { lines: [] }), lyricDirection: await readJSON(lyricFiles.lyricDirection, options['lyric-direction'] ? undefined : { cues: [] }), shots: await readJSON('data/shots.json', { shots: [] }), sceneLayers: await readJSON('data/scene_layers.json', { themes: {} }) };
+const data = { config: await readJSON('config.json', {}), features: await readJSON('data/audio_features.json', null), cues: await readJSON('data/cues.json', { scenes: [] }), lyrics: await readJSON(lyricFiles.lyrics, options.lyrics ? undefined : { lines: [] }), lyricDirection: await readJSON(lyricFiles.lyricDirection, options['lyric-direction'] ? undefined : { cues: [] }), shots: await readJSON('data/shots.json', { shots: [] }), sceneLayers: await readJSON('data/scene_layers.json', { themes: {} }), jizuraDirection: await readJSON('data/jizura_direction.json', { lines: [], plans: {}, interludes: [] }) };
 data.audio = data.features; data.audioFeatures = data.features;
 let audioPath = path.resolve(options.root, options.audio || data.config.audio || 'assets/audio/song.m4a');
 const withAudio = !options.silent && existsSync(audioPath);
@@ -103,16 +107,27 @@ if (options['chunk-duration'] > 0 && count > Math.max(1, Math.floor(options['chu
       const offset=index*chunkFrames;
       const frames = Math.min(chunkFrames, count - offset), name = `part-${String(index).padStart(4, '0')}.mp4`, part = path.join(temp, name);
       const args = [fileURLToPath(import.meta.url), '--root', options.root, '--start', String(+(options.start + offset / options.fps).toFixed(9)), '--duration', String((frames - 1e-6) / options.fps), '--chunk-duration', '0', '--silent', '--output', part];
+      if (options.jizura) args.push('--jizura');
       for (const key of ['width', 'height', 'fps', 'engine', 'preset', 'crf', 'encoder-threads', 'modules', 'renderer', 'browser', 'lyrics', 'lyric-direction']) if (options[key] !== undefined) args.push(`--${key}`, String(options[key]));
       console.log(`Rendering chunk ${index + 1}/${chunkCount}, frames ${offset}…${offset + frames - 1}.`);
-      await new Promise((resolve, reject) => {
-        const child = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform === 'win32' });
-        let errors = '';
-        child.stdout.on('data', chunk => process.stdout.write(chunk));
-        child.stderr.on('data', chunk => { errors = (errors + chunk).slice(-6000); });
-        child.on('error', reject);
-        child.on('close', code => code === 0 ? resolve() : reject(new Error(`Chunk failed (${code}): ${errors}. Validated chunks retained at ${temp}`)));
-      });
+      // Several browsers start at once; a cold Chrome can miss the navigation deadline
+      // while the engine and the fonts are loading. Retry the chunk once before giving up.
+      let lastError = null;
+      for (let attempt = 0; attempt < 2 && !lastError; attempt++) {
+        if (attempt) { console.log(`Retrying chunk ${index + 1}/${chunkCount}…`); await new Promise(r => setTimeout(r, 5000)); }
+        try {
+          await new Promise((resolve, reject) => {
+            const child = spawn(process.execPath, args, { stdio: ['ignore', 'pipe', 'pipe'], windowsHide: true, detached: process.platform === 'win32' });
+            let errors = '';
+            child.stdout.on('data', chunk => process.stdout.write(chunk));
+            child.stderr.on('data', chunk => { errors = (errors + chunk).slice(-6000); });
+            child.on('error', reject);
+            child.on('close', code => code === 0 ? resolve() : reject(new Error(`Chunk failed (${code}): ${errors}. Validated chunks retained at ${temp}`)));
+          });
+          lastError = null;
+        } catch (error) { lastError = error; }
+      }
+      if (lastError) throw lastError;
       const report = JSON.parse(await readFile(part.replace(/\.mp4$/i, '.qa.json'), 'utf8'));
       if (!report.checks.encoding.passed || report.checks.encoding.frames !== frames) throw new Error('Chunk frame verification failed.');
       segments[index]={ name, start: options.start + offset / options.fps, frames, report };
@@ -200,8 +215,10 @@ try {
     const page = await browser.newPage({ viewport: { width: options.width, height: options.height }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
     const browserErrors = [];
     page.on('pageerror', error => browserErrors.push(error.message));
-    await page.goto(`${service.url}/?export=1&width=${options.width}&height=${options.height}`, { waitUntil: 'networkidle' });
-    await page.waitForFunction(() => typeof window.renderAt === 'function' && document.querySelector('#film'));
+    // 'networkidle' never settles when several browsers load the engine and the font
+    // files at the same time, and the default 30 s deadline then kills a healthy render.
+    await page.goto(`${service.url}/?export=1&width=${options.width}&height=${options.height}${options.jizura ? '&jizura=1' : ''}`, { waitUntil: 'load', timeout: 120000 });
+    await page.waitForFunction(jizura => typeof window.renderAt === 'function' && document.querySelector('#film') && (!jizura || window.MV_READY === true), !!options.jizura, { timeout: 30000 });
     await page.evaluate(async ({ lyrics, lyricDirection }) => { Object.assign(window.MVData, { lyrics, lyricDirection }); await document.fonts.ready; window.__renderSample = document.createElement('canvas'); window.__renderSample.width = 64; window.__renderSample.height = 36; }, { lyrics: data.lyrics, lyricDirection: data.lyricDirection });
     renderer = async t => {
       const frame = await page.evaluate(async ({ t, width, height }) => {

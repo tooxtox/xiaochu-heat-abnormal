@@ -541,13 +541,66 @@ export function contactShadow(c, opts = {}) {
   const x = opts.x ?? 960, y = opts.y ?? 1040;
   const rx = opts.rx ?? 180, ry = opts.ry ?? 26;
   const strength = opts.strength ?? .5;
+  const color = opts.color ?? '#04070B';
   c.save();
-  const g = c.createRadialGradient(x, y, 1, x, y, Math.max(rx, ry));
-  g.addColorStop(0, alpha('#04070B', strength));
-  g.addColorStop(.6, alpha('#04070B', strength * .45));
-  g.addColorStop(1, alpha('#04070B', 0));
+  c.translate(x,y); c.rotate(opts.angle ?? 0); c.scale(rx,ry);
+  const g = c.createRadialGradient(0, 0, 0, 0, 0, 1);
+  g.addColorStop(0, alpha(color, strength));
+  g.addColorStop(.6, alpha(color, strength * .45));
+  g.addColorStop(1, alpha(color, 0));
   c.fillStyle = g;
-  c.beginPath(); c.ellipse(x, y, rx, ry, 0, 0, TAU); c.fill();
+  c.fillRect(-1,-1,2,2);
+  c.restore();
+}
+
+// A floor-space shadow stretches away from the source, anchored at the shoe plane.
+export function castShadow(c,{x,y,dx,dy,width,color,strength}) {
+  const g=c.createLinearGradient(x,y,x+dx,y+dy);
+  g.addColorStop(0,alpha(color,strength));g.addColorStop(.56,alpha(color,strength*.51));g.addColorStop(1,alpha(color,0));
+  const reach=Math.hypot(dx,dy),nx=dy/reach,ny=-dx/reach;
+  const p=(q,r)=>[x+dx*q+nx*r*width,y+dy*q+ny*r*width];
+  path(c,[p(0,-.4),p(.16,-.53),p(.42,-1.05),p(.73,-.63),p(.95,-.4),p(1,.08),p(.92,.43),p(.63,.63),p(.39,.95),p(.17,.52),p(0,.38)],g,true);
+}
+
+// The unstable reactor still has a fixed maintenance deck, drawn behind the actor.
+export function reactorDeck(c,t,{vanishX=1000,vanishY=682,energy=0}={}) {
+  c.save();
+  const deck=c.createLinearGradient(0,vanishY,0,1080);
+  deck.addColorStop(0,'#51212A');deck.addColorStop(.42,'#2E1822');deck.addColorStop(1,'#140E1C');
+  const edge=(y,side,offset=0)=>vanishX+(y-vanishY)*(side*.99+offset)+side*106;
+  path(c,[[edge(vanishY,-1),vanishY],[edge(vanishY,1),vanishY],[edge(1120,1),1120],[edge(1120,-1),1120]],deck,true);
+  for(const side of [-1,1]){
+    path(c,[[edge(vanishY,side),vanishY],[edge(1120,side),1120],[edge(1120,side,.08*side),1120],[edge(vanishY,side)+side*7,vanishY]],'#120C13',true);
+    line(c,edge(vanishY,side),vanishY,edge(1120,side),1120,'#B25F59',1.8);
+  }
+  for(let i=1;i<11;i++){
+    const q=i/10,y=vanishY+q*q*435,w=3+q*7;
+    line(c,edge(y,-1),y,edge(y,1),y,'#100A13',w);
+    for(const side of [-1,1])line(c,edge(y,side)-side*(9+q*41),y-4,edge(y,side)-side*5,y-4,alpha('#F49A63',.25+energy*.25),1+q*2);
+  }
+  for(let i=0;i<13;i++){
+    const q=i/12,px=(q-.5)*2;
+    line(c,vanishX+px*92,vanishY,vanishX+px*480,1120,alpha('#AB665A',i%3?.14:.29),i%3?1:2);
+  }
+  const heat=c.createLinearGradient(0,vanishY,0,950);
+  heat.addColorStop(0,alpha('#FFA067',.32));heat.addColorStop(1,alpha('#FFA067',0));
+  path(c,[[edge(vanishY,-1),vanishY],[edge(vanishY,1),vanishY],[edge(950,1),950],[edge(950,-1),950]],heat,true);
+  c.restore();
+}
+
+// A fractured parapet at the camera edge: lit cap, dark face, fast foreground travel.
+export function nearBarrier(c,t,{side=1,y=980,reach=510,rim='#B96659',travel=0}={}) {
+  const end=reach+Math.sin(t*.22)*16+(side===1?1:-1)*Math.min(travel*.42,90);
+  const ledge=[[-55,y-18],[end*.28,y-3],[end*.56,y+18],[end*.69,y+16],[end*.83,y+35],[end,y+55]];
+  c.save();if(side===1){c.translate(W,0);c.scale(-1,1)}
+  path(c,[...ledge,[end-24,1120],[-55,1120]],'#080D15',true);
+  path(c,[...ledge,...ledge.slice().reverse().map(([x,z])=>[x-12,z+11])],'#202432',true);
+  path(c,ledge,alpha(rim,.65),false,2.4);
+  for(let i=0;i<4;i++){
+    const q=.12+i*.185,x=end*q,top=y-18+q*71;
+    path(c,[[x-8,top-21],[x+5,top-18],[x+12,top+43],[x-3,top+44]],'#101824',true);
+    line(c,x-8,top-21,x+5,top-18,alpha(rim,.52),1.8);
+  }
   c.restore();
 }
 

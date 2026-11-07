@@ -1,12 +1,10 @@
 // Scene typography for locally supplied text. Geometry depends only on song time.
 //
-// 排版语言：终端打印 + 信号解码。
-// 1) 所有连续缓动都换成阶梯曲线（stepEase），运动变成逐格跳进，不再平滑滑入。
-// 2) 逐字解码：每个字按固定节奏依次解码进场，并带一次硬切强调。
-// 3) 终端装饰：四角括号 + 解码进度条，全部用矢量绘制，不额外增加文字。
-// 4) 信号损坏：循环歌词中量、高潮较强，色散边 / 掉字 / 错位与崩坏后期共用时间表。
+// Authored material plans follow the Vocaloid 文字PV / JIZURA curation method.
+// Layout, entrance, hold, exit and accents are independently chosen per phrase.
+// Main words are never dropped by the graphic effects; the text clock stays authoritative.
 import {palette as P} from './palette.mjs';
-import {signalWindowAt, signalCorrupt, hash2, quantTime} from './signal_windows.mjs';
+import {signalCorrupt, hash2, quantTime} from './signal_windows.mjs';
 
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
 const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
@@ -19,8 +17,15 @@ const layouts=['vertical','orbital','road','poster','split-columns','bezier','in
 const aliases={columns:'vertical',orbit:'orbital',perspective:'road',diagonal:'poster',split:'split-columns',flow:'bezier',quiet:'ink-reveal',handwritten:'ink-reveal'};
 const colorRoles={NORMAL:'mint',OBSERVE:'teal',WARNING:'orange',CRITICAL:'red',CORRUPTED:'purple',MEMORY:'pink',VOID:'black',SILENCE:'white',PAPER:'paper'};
 const family={serif:'"Noto Serif JP", "Noto Sans SC", "Yu Mincho", serif',sans:'"Noto Sans JP", "Noto Sans SC", sans-serif',cn:'"Noto Sans SC", "Noto Sans JP", sans-serif',mono:'Consolas, monospace'};
-// 全片统一的信号节拍：所有逐格动画都锁在这个时钟上。
 const SIGNAL_HZ=15;
+const celMaterials=new Set(['register','dispatch','erase','whisper','turn','approach','thermal','refusal','fracture']);
+const directionIndex=new WeakMap();
+function cuesByLine(cues){
+ if(directionIndex.has(cues))return directionIndex.get(cues);
+ const index=new Map();
+ for(const cue of cues){if(!cue)continue;const key=String(cue.lineId),list=index.get(key)||[];list.push(cue);index.set(key,list)}
+ directionIndex.set(cues,index);return index;
+}
 
 function seedOf(text){let h=2166136261;for(const ch of String(text)){h^=ch.codePointAt(0);h=Math.imul(h,16777619)}return (h>>>0)/4294967296}
 
@@ -86,14 +91,14 @@ function selectedRecords(line,range){
 // Manual tokenRange arrays are half-open grapheme indices; unit:'word' is explicit.
 export function activeLyricCues(data,t){
  if(!Number.isFinite(t)||!Array.isArray(data?.lyrics?.lines))return [];
- const lines=data.lyrics.lines,direction=Array.isArray(data.lyricDirection?.cues)?data.lyricDirection.cues:[],active=[];
+ const lines=data.lyrics.lines,direction=cuesByLine(Array.isArray(data.lyricDirection?.cues)?data.lyricDirection.cues:[]),active=[];
  lines.forEach((line,index)=>{
   if(!line||!String(line.text||line.translation||'').trim())return;
   const time=finite(line.time,NaN);if(!Number.isFinite(time))return;
-  const next=lines.slice(index+1).find(l=>finite(l?.time,-1)>time),givenEnd=finite(line.end,NaN);
+  const givenEnd=finite(line.end,NaN),next=Number.isFinite(givenEnd)?null:lines.slice(index+1).find(l=>finite(l?.time,-1)>time);
   const end=Number.isFinite(givenEnd)?givenEnd:finite(next?.time,Math.min(finite(data.config?.duration,time+4),time+4));
   if(end<=time)return;
-  const lineId=String(line.id??`L${String(index+1).padStart(3,'0')}`),manual=direction.filter(c=>c&&String(c.lineId)===lineId);
+  const lineId=String(line.id??`L${String(index+1).padStart(3,'0')}`),manual=direction.get(lineId)||[];
   const candidates=manual.length?manual:[{}];
   candidates.forEach((cue,cueIndex)=>{
    const start=finite(cue.start,time),stop=finite(cue.end,end);if(t<start||t>=stop||stop<=start)return;
@@ -103,12 +108,14 @@ export function activeLyricCues(data,t){
    const back=['vertical','orbital','road'].includes(layout),eye=shot.mode==='eye';
    const mainSize=eye?48:layout==='poster'?104:layout==='orbital'?47:58,baseAnchor=eye?[112,230]:layout==='orbital'?[850,530]:layout==='bezier'?[140,650]:[135,250];
    const translationAnchor=layout==='vertical'?[baseAnchor[0]+mainSize*1.7,baseAnchor[1]]:layout==='poster'?[baseAnchor[0]+12,baseAnchor[1]+Math.ceil(glyphs(String(line.text||'')).length/7)*mainSize*1.15+30]:[baseAnchor[0]+12,baseAnchor[1]+mainSize*1.5];
-   // 逐字解码：整行按固定节奏依次解码，最后一个字不晚于段落 42% 处落地。
-   const total=records.length,life=stop-start,span=Math.min(.62,Math.max(0,life*.42)),seed=seedOf(lineId);
+   const material=cue.semantic?.material,total=records.length,life=stop-start,seed=seedOf(lineId);
+   // Short refrains land whole; longer lines reveal at most the opening fraction.
+   const span=material?(cue.hardCut?0:Math.min(material==='translation'?.10:.24,life*.22)):Math.min(.62,life*.42);
+   const level=material?signalCorrupt(t):0;
    records.forEach((record,i)=>{
     record.decode=i;
     record.decodeAt=start+(total<=1?0:(i/Math.max(1,total-1))*span);
-    record.corrupt=corruptionOf(t,i,seed);
+    record.corrupt=material?(level?{level}:null):corruptionOf(t,i,seed);
     record.live=(!record.explicit||t>=record.wordTime)&&t>=record.decodeAt&&!(record.corrupt&&record.corrupt.drop);
    });
    const resolvedText=records.map(r=>r.text).join(''),tokens=records.map(record=>({...record,time:record.wordTime,visible:record.live}));
@@ -146,6 +153,15 @@ function duration(value,fallback){return clamp(finite(typeof value==='object'?va
 // 入场与退场都锁在信号时钟上，并切成离散台阶：淡入淡出不再连续滑动。
 function stateAt(cue,t){
  const life=cue.end-cue.start,entrance=Math.min(duration(cue.enter,.5),life*.32),exit=Math.min(duration(cue.exit,.35),life*.25);
+ const material=cue.semantic.material;
+ if(material){
+  const rawAge=Math.max(0,t-cue.start),age=celMaterials.has(material)?quantTime(rawAge,30):rawAge;
+  const enter=celMaterials.has(material)?stepEase(age/entrance,8):smooth(age/entrance);
+  const decay=smooth((cue.end-t)/exit),impactAt=finite(cue.semantic.impactAt,NaN),ageOfImpact=t-impactAt;
+  const pulse=ageOfImpact>=0&&ageOfImpact<.17?(1-ageOfImpact/.17)**2:0;
+  return {material,age,enter,exit:decay,entrance,exitSeconds:exit,phase:clamp(rawAge/life),
+   pressure:clamp(finite(cue.semantic.pressure,0)),pulse,accent:P[cue.semantic.accent]||P.mint,seed:seedOf(cue.lineId)};
+ }
  const clock=quantTime(t,SIGNAL_HZ),age=clock-cue.start;
  return {age,enter:stepEase(age/entrance,8),exit:stepEase((cue.end-clock)/exit,5),entrance,exitSeconds:exit};
 }
@@ -170,12 +186,39 @@ function drawGlyph(c,t,cue,record,s,x,y,size,color,angle=0,scaleX=1){
  const advance=size*(/[\u3000-\u9fff\u3040-\u30ff\uff00-\uffef]/.test(record.text)?1:.58);
  markBox(s,x,y,size,advance);
  const hit=charStyle(c,t,cue,record,color);
+ if(s.material){
+  const arriving=1-s.enter,leaving=(1-s.exit)*(cue.hardCut?.24:1),i=record.index,polarity=i%2?1:-1;
+  switch(s.material){
+   case 'register': x+=arriving*(i%3)*7;y+=arriving*polarity*17;break;
+   case 'dispatch': x+=arriving*-31+leaving*24;break;
+   case 'filament': x+=arriving*polarity*17;y-=arriving*42;angle+=polarity*arriving*.13;break;
+   case 'erase': y+=arriving*polarity*18;scaleX*=1-.11*arriving;break;
+   case 'whisper': y+=Math.sin(i*1.31)*arriving*18;scaleX*=.92+.08*s.enter;break;
+   case 'turn': x+=arriving*polarity*27;scaleX*=.81+.19*s.enter;break;
+   case 'fracture': x+=polarity*(arriving*20+leaving*32);y+=leaving*(18+i%4*8);angle+=polarity*leaving*.12;break;
+   case 'thermal': case 'refusal': x+=polarity*(arriving*12+s.pulse*15);y+=arriving*(i%3-1)*29;angle+=s.pulse*polarity*.045;break;
+   case 'tidal': y+=Math.sin(s.age*1.6+i*.49)*5+arriving*23;break;
+   case 'trace': case 'thread': x-=arriving*26;y+=arriving*(i%3)*10;break;
+   case 'silt': case 'crystal': y+=-arriving*(22+i%3*10)+leaving*(15+i%4*8);break;
+  }
+  const key=cue.semantic.keyRange;
+  if(Array.isArray(key)&&record.index>=key[0]&&record.index<key[1]&&cue.colorRole!=='teal'){
+   if(['thermal','refusal','ember','filament'].includes(s.material))c.fillStyle='#FFE3B8';
+  }
+ }
  c.save();c.translate(x+(corrupt.dx||0),y+(corrupt.dy||0));c.rotate(angle);
  const pop=1+hit*.05;c.scale(scaleX*pop,pop);c.font=fontOf(cue,size);c.lineJoin='round';
  // 硬边套印偏移：把柔和光晕换成印刷式的错位暗影，贴合终端排版。
- c.save();c.globalAlpha*=s.contrast?.92:.40;c.strokeStyle='#04060A';c.lineWidth=Math.max(1.2,size*(s.contrast?.078:.052));
+ c.save();c.globalAlpha*=s.contrast?.96:s.material?.81:.40;c.strokeStyle='#04060A';c.lineWidth=Math.max(1.2,size*(s.contrast?.102:s.material?.065:.052));
  c.strokeText(record.text,size*.022,size*.026);c.restore();
- if(corrupt.level>0){
+ const accentGhost=s.material&&['erase','thermal','refusal','fracture','filament'].includes(s.material)?
+  Math.min(.57,(1-s.enter)*.44+s.pulse*.56+(corrupt.level||0)*.10):0;
+ if(accentGhost>.015){
+  c.save();c.globalAlpha*=accentGhost;c.strokeStyle=s.accent;c.lineWidth=Math.max(1.1,size*.022);
+  c.strokeText(record.text,(-1+(record.index%2)*2)*size*.19,-size*.10);
+  c.strokeText(record.text,size*.10,size*.09);c.restore();
+ }
+ if(corrupt.level>0&&!s.material){
   // 色散边只出现在被授权的窗口内，与崩坏后期共用同一张时间表。
   // 描边必须比字画细，否则中文细笔画会被红青色糊成一团。
   c.save();c.globalAlpha*=.55;c.lineWidth=Math.max(.8,size*.016);
@@ -195,10 +238,12 @@ function vertical(c,t,r,cue,s,color){
  cue.records.forEach((record,i)=>{const row=i%maxRows,col=Math.floor(i/maxRows),delay=(row+col*.7)/Math.max(1,maxRows+columns)*.18,q=cue.hardCut?s.enter:stepEase((s.age-delay)/Math.max(.08,s.entrance-.18),6);drawGlyph(c,t,cue,record,s,x+(columns-1-col)*size*1.4,y+row*size*1.14+(1-q)*-65,size,color,(1-q)*.09)});
 }
 function orbital(c,t,r,cue,s,color){
- const [x,y]=anchorOf(cue),rows=rowsOf(cue.records,16),size=Math.min(cue.size,rows.length>3?33:48),sweep=clamp(finite(cue.semantic.sweep,2.15),.8,3);
+ const [x,y]=anchorOf(cue),rows=rowsOf(cue.records,s.material?10:16),size=Math.min(cue.size,s.material?76:rows.length>3?33:48),sweep=clamp(finite(cue.semantic.sweep,2.15),.8,3);
  rows.forEach((row,j)=>{
   const radius=clamp(finite(cue.semantic.radius,230),100,440)+j*size*1.16,width=widthOf(c,r,cue,row,size),fit=Math.min(1,radius*sweep/Math.max(1,width));let used=0;
-  row.forEach(record=>{const w=metrics(c,r,fontOf(cue,size),record.text)*fit,fraction=(used+w/2)/Math.max(width*fit,1),lower=cue.semantic.side==='lower',a=lower?Math.PI/2+sweep/2-fraction*sweep:-Math.PI/2-sweep/2+fraction*sweep,rr=radius+(1-s.enter)*90;drawGlyph(c,t,cue,record,s,x+Math.cos(a)*rr,y+Math.sin(a)*rr,size,color,(lower?a-Math.PI/2:a+Math.PI/2)+(1-s.enter)*-.28,fit);used+=w});
+  row.forEach(record=>{const w=metrics(c,r,fontOf(cue,size),record.text)*fit,fraction=(used+w/2)/Math.max(width*fit,1),lower=cue.semantic.side==='lower',
+   sweepMove=s.material?(1-s.enter)*.16:0,a=(lower?Math.PI/2+sweep/2-fraction*sweep:-Math.PI/2-sweep/2+fraction*sweep)+sweepMove,rr=radius+(1-s.enter)*(s.material?64:90);
+   drawGlyph(c,t,cue,record,s,x+Math.cos(a)*rr,y+Math.sin(a)*rr,size,color,(lower?a-Math.PI/2:a+Math.PI/2)+(1-s.enter)*-.28,fit);used+=w});
  });
 }
 function road(c,t,r,cue,s,color){
@@ -206,11 +251,11 @@ function road(c,t,r,cue,s,color){
  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
  rows.forEach((row,j)=>{
   const tx=x+(1-s.enter)*-100+j*28,ty=y+380+j*size*1.13;
-  const width=widthOf(c,r,cue,row,size),fit=Math.min(1,760/Math.max(1,width));let xx=0;
-  c.save();c.translate(tx,ty);c.transform(1,-.18,-.46,.66,0,0);
+  const width=widthOf(c,r,cue,row,size),rise=s.material?-.105:-.18,fit=Math.min(1,(s.material?finite(cue.semantic.width,830):760)/Math.max(1,width));let xx=0;
+  c.save();c.translate(tx,ty);c.transform(1,rise,s.material?-.29:-.46,s.material?.83:.66,0,0);
   row.forEach(record=>{drawGlyph(c,t,cue,record,s,xx,0,size,color,0,fit);xx+=metrics(c,r,fontOf(cue,size),record.text)*fit});c.restore();
   const end=tx+xx;
-  minX=Math.min(minX,tx);maxX=Math.max(maxX,end);minY=Math.min(minY,ty-.18*xx);maxY=Math.max(maxY,ty);
+  minX=Math.min(minX,tx);maxX=Math.max(maxX,end);minY=Math.min(minY,ty+rise*xx);maxY=Math.max(maxY,ty);
  });
  // 透视平面：装饰框换算回世界坐标。
  if(Number.isFinite(minX))s.box={x:minX,y:minY,r:maxX,b:maxY};
@@ -235,12 +280,13 @@ function flowing(c,t,r,cue,s,color){
  const [x,y]=anchorOf(cue),custom=cue.semantic.path,points=Array.isArray(custom)&&custom.length===4&&custom.every(p=>Array.isArray(p)&&p.length>=2&&p.every(Number.isFinite))?custom:[[x,y],[x+480,y+130],[x+70,y-400],[x+650,y-370]],rows=rowsOf(cue.records,20),size=Math.min(cue.size,54);
  const table=[{u:0,length:0,point:bezierPoint(points,0)}];for(let i=1;i<=48;i++){const point=bezierPoint(points,i/48),prev=table[i-1];table.push({u:i/48,length:prev.length+Math.hypot(point[0]-prev.point[0],point[1]-prev.point[1]),point})}const length=table.at(-1).length;
  rows.forEach((row,j)=>{const width=widthOf(c,r,cue,row,size),fit=Math.min(1,length*.92/Math.max(1,width));let distance=length*.04;
-  row.forEach(record=>{const w=metrics(c,r,fontOf(cue,size),record.text)*fit,target=(distance+w/2)*s.enter,entry=table.findIndex(p=>p.length>=target),b=table[Math.max(1,entry)],a=table[Math.max(0,entry-1)],u=a.u+(b.u-a.u)*clamp((target-a.length)/Math.max(.001,b.length-a.length)),point=bezierPoint(points,u),next=bezierPoint(points,Math.min(1,u+.003)),angle=clamp(Math.atan2(next[1]-point[1],next[0]-point[0]),-.65,.65);drawGlyph(c,t,cue,record,s,point[0],point[1]+j*size*1.2,size,color,angle,fit);distance+=w});
+  row.forEach(record=>{const w=metrics(c,r,fontOf(cue,size),record.text)*fit,target=s.material?clamp(distance+w/2-(1-s.enter)*length*.025,0,length):(distance+w/2)*s.enter,entry=table.findIndex(p=>p.length>=target),b=table[Math.max(1,entry)],a=table[Math.max(0,entry-1)],u=a.u+(b.u-a.u)*clamp((target-a.length)/Math.max(.001,b.length-a.length)),point=bezierPoint(points,u),next=bezierPoint(points,Math.min(1,u+.003)),angle=clamp(Math.atan2(next[1]-point[1],next[0]-point[0]),-.65,.65);drawGlyph(c,t,cue,record,s,point[0],point[1]+j*size*1.2,size,color,angle,fit);distance+=w});
  });
 }
 function inkReveal(c,t,r,cue,s,color){
  const [x,y]=anchorOf(cue),width=finite(cue.semantic.width,cue.mode==='eye'?330:710),perRow=Math.max(3,Math.floor(width/cue.size)),rows=rowsOf(cue.records,perRow),size=Math.min(cue.size,cue.safeArea[3]/Math.max(1,rows.length)/1.3);
- rows.forEach((row,j)=>{const rowWidth=widthOf(c,r,cue,row,size),fit=Math.min(1,width/Math.max(1,rowWidth)),baseline=y+j*size*1.32;c.save();c.beginPath();c.rect(x-4,baseline-size*1.3,(rowWidth*fit+8)*(cue.hardCut?1:s.enter),size*1.6);c.clip();let xx=x;row.forEach(record=>{drawGlyph(c,t,cue,record,s,xx,baseline,size,color,0,fit);xx+=metrics(c,r,fontOf(cue,size),record.text)*fit});c.restore();
+ rows.forEach((row,j)=>{const rowWidth=widthOf(c,r,cue,row,size),fit=Math.min(1,width/Math.max(1,rowWidth)),baseline=y+j*size*1.32;c.save();if(!s.material){c.beginPath();c.rect(x-4,baseline-size*1.3,(rowWidth*fit+8)*(cue.hardCut?1:s.enter),size*1.6);c.clip()}let xx=x;row.forEach(record=>{drawGlyph(c,t,cue,record,s,xx,baseline,size,color,0,fit);xx+=metrics(c,r,fontOf(cue,size),record.text)*fit});c.restore();
+  if(s.material)return;
   const length=rowWidth*fit*s.enter;c.save();c.strokeStyle=color;c.lineWidth=Math.max(1,size*.018);c.globalAlpha*=.4;c.beginPath();c.moveTo(x,baseline+size*.17);c.bezierCurveTo(x+length*.3,baseline+size*.22,x+length*.7,baseline+size*.08,x+length,baseline+size*.14);c.stroke();c.restore();
  });
 }
@@ -271,17 +317,77 @@ function furniture(c,cue,s,color){
  c.restore();c.globalAlpha=base;
 }
 
+// Small marks share the same physical vocabulary as the words, instead of
+// stamping a terminal frame on a sky, eye, or memory shot.
+function materialMark(c,cue,s){
+ const box=s.box;if(!box||cue.semantic.decorative)return;
+ if(s.material==='register'){furniture(c,cue,s,s.accent);return}
+ const x=clamp(box.x,112,1780),y=clamp(box.y,136,925),r=clamp(box.r,x+12,1795),b=clamp(box.b,y+10,968),
+  w=r-x,base=c.globalAlpha,arriving=1-s.enter;
+ const rule=(a,f,g,h)=>{c.beginPath();c.moveTo(a,f);c.lineTo(g,h);c.stroke()};
+ c.save();c.strokeStyle=s.accent;c.fillStyle=s.accent;c.lineWidth=1.6;
+ c.globalAlpha=base*.49;
+ switch(s.material){
+  case 'translation': c.lineWidth=1.25;rule(x-8,y+4,x-8,Math.min(b,y+24));break;
+  case 'dispatch':
+   rule(x,b+13,x+w*s.enter,b+13);rule(x+w*s.enter,b+13,x+w*s.enter+22,b-1);
+   c.fillRect(x+w*s.enter-2,b+10,5,6);break;
+  case 'erase': {
+   const sweep=smooth((s.phase-.55)/.45);
+   c.globalAlpha=base*(.24+.34*sweep);rule(x-12,b+12,r+8,b+12);
+   if(sweep>0){c.globalAlpha=base*sweep*.34;rule(x-6,(y+b)*.51,x+w*sweep,(y+b)*.51)}
+   const steps=1+(cue.semantic.repeatIndex||0);
+   c.globalAlpha=base*.31;
+   for(let i=0;i<steps;i++)c.fillRect(x+i*13,b+27,8,2.7);
+   break;
+  }
+  case 'approach': case 'turn':
+   for(let i=0;i<3;i++){const cx=x-15-i*(11+s.pressure*4),cy=y+(b-y)*.53+arriving*12;
+    c.beginPath();c.moveTo(cx-10,cy-10);c.lineTo(cx,cy);c.lineTo(cx-10,cy+10);c.stroke()}
+   rule(x,b+13,x+Math.min(w,72+s.pressure*170),b+13);break;
+  case 'thermal': case 'refusal': case 'filament': {
+   c.globalAlpha=base*(.35+.42*s.pulse);c.lineWidth=2.25;
+   c.beginPath();c.moveTo(x,b+20);c.lineTo(x+w*.27,b+20);c.lineTo(x+w*.37,b+10-s.pulse*22);
+   c.lineTo(x+w*.43,b+30);c.lineTo(x+w*.50,b+20);c.lineTo(r,b+20);c.stroke();
+   for(let i=0;i<5;i++){const off=(i%2?1:-1)*s.pulse*24;c.fillRect(x+w*(.1+i*.17)+off,b+31,6+i*1.2,2)}
+   break;
+  }
+  case 'whisper':
+   c.globalAlpha=base*.32;rule(x-4,b+11,x+w*.29,b+11);rule(x+w*.68,y-8,r,y-8);break;
+  case 'fracture': case 'ember':
+   c.beginPath();c.moveTo(x,b+11);c.lineTo(x+w*.34,b+11);c.lineTo(x+w*.42,b+4);
+   c.moveTo(x+w*.47,b+15);c.lineTo(x+w*.59,b+9);c.lineTo(r,b+9);c.stroke();break;
+  case 'silt': case 'crystal':
+   for(let i=0;i<11;i++){
+    const z=(s.age*.75+hash2(i,Math.floor(s.seed*65535)))%1,cx=x+w*hash2(i,173),cy=b+10+z*48;
+    c.globalAlpha=base*.46*Math.sin(z*Math.PI);
+    if(s.material==='crystal'&&i%3===0){c.beginPath();c.moveTo(cx,cy-3.8);c.lineTo(cx+3.1,cy);c.lineTo(cx,cy+3.8);c.lineTo(cx-3.1,cy);c.closePath();c.stroke()}
+    else c.fillRect(cx,cy,1.8,1.8);
+   }break;
+  case 'tidal': case 'trace': case 'thread': case 'eclipse': break; // their own motif paths carry the decoration
+ }
+ c.restore();
+}
+
 export function drawLyricArt(c,t,resources,data,whichPlane='front'){
  if(!c||!resources)return 0;const cues=activeLyricCues(data,t).filter(cue=>cue.plane===plane(whichPlane,'front'));let count=0;
  for(const cue of cues){const s=stateAt(cue,t);s.box=null;s.contrast=cue.plane==='front'&&resources.lyricContrast;c.save();try{
-  c.globalAlpha*=(cue.hardCut?1:s.enter*s.exit)*clamp(finite(cue.opacity,cue.plane==='back'?.84:1));c.textAlign='left';c.textBaseline='alphabetic';
+  c.globalAlpha*=(cue.hardCut?1:s.material?(.38+.62*s.enter)*s.exit:s.enter*s.exit)*clamp(finite(cue.opacity,cue.plane==='back'?.84:1));c.textAlign='left';c.textBaseline='alphabetic';
+  if(s.material&&s.material!=='translation'){
+   const [ax,ay]=anchorOf(cue),q=1-s.enter;
+   if(s.material==='approach'){
+    const scale=1-q*(.22+.14*s.pressure);c.translate(ax+q*50,ay-q*18);c.scale(scale,scale);c.translate(-ax,-ay);
+   }else if(s.material==='thermal'||s.material==='refusal'){
+    const scale=1+.075*q+.039*s.pulse;c.translate(ax,ay);c.scale(scale,scale);c.translate(-ax,-ay);
+   }else if(s.material==='dispatch'){c.translate(q*-35,0)}
+  }
   const enterType=typeof cue.enter==='string'?cue.enter:cue.enter?.type;
   if(enterType==='rise')c.translate(0,(1-s.enter)*70);else if(enterType==='fall')c.translate(0,-(1-s.enter)*70);else if(enterType==='slide')c.translate(-(1-s.enter)*80,0);
   else if(enterType==='slam'){const [x,y]=anchorOf(cue);c.translate(x,y);c.scale(1+(1-s.enter)*.16,1+(1-s.enter)*.16);c.translate(-x,-y)}
   const exitType=typeof cue.exit==='string'?cue.exit:cue.exit?.type;
   if(exitType==='rise')c.translate(0,-(1-s.exit)*35);else if(exitType==='fall')c.translate(0,(1-s.exit)*35);
   painters[cue.layout](c,t,resources,cue,s,ink(cue));
-  if(plane(whichPlane,'front')==='front')furniture(c,cue,s,ink(cue));
+  if(plane(whichPlane,'front')==='front'){if(s.material)materialMark(c,cue,s);else furniture(c,cue,s,ink(cue))}
   count++;
  }finally{c.restore()}}
  return count;

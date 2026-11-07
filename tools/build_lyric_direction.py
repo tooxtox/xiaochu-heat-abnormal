@@ -4,12 +4,149 @@ import argparse, bisect, hashlib, json
 
 ROOT=Path(__file__).resolve().parents[1]
 def read(name): return json.loads((ROOT/name).read_text(encoding='utf-8-sig'))
-def write(name,data): (ROOT/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+def write(name,data): (ROOT/name).write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+
+def vocaloid_direction():
+    """Re-author type only. Lyrics, scene and shot edits remain authoritative."""
+    lyrics=read('data/lyrics.json')
+    lines=lyrics['lines']
+    scenes=read('data/cues.json')['scenes']
+    shots=read('data/shots.json')['shots']
+    onsets=read('data/audio_features.json')['onsetTimes']
+    prior=read('data/lyric_direction.json')
+    assert len(lines)==126 and lines[0]['id']=='L001', 'This authored plan is for the 126-line 熱異常 timeline.'
+    # Letterpress motion belongs to the record, while organic lines use trajectories
+    # in the world. Refrains keep a fixed grammar and grow in pressure across returns.
+    families=[
+      ('register','vertical','recursion',[1,4,17,63,69,70,92,95]),
+      ('dispatch','ink-reveal','recursion',[3,94]),
+      ('thermal','poster','heat',[2,64,93,106,107]),
+      ('filament','vertical','electric',[5,6,7,8,18,19,45,59,78,112,113,114]),
+      ('eclipse','orbital','blackstar-eye',[21,58,65,66,91,102,103,116]),
+      ('approach','poster','blackstar-eye',[22,31,117,126]),
+      ('silt','ink-reveal','bell-sand',[20,35,36,60,61,62,115]),
+      ('crystal','ink-reveal','salt-tear',[32,67,68,101,105]),
+      ('ember','road','flag',[33,34]),
+      ('fracture','split-columns','ship',[46,47,48,49,100]),
+      ('tidal','bezier','fish-ocean',[79,80,81,82,96,97]),
+      ('trace','bezier','swallow',[98,99]),
+      ('thread','bezier','thread',[104]),
+      ('refusal','poster','heat',[108,109,110,111]),
+    ]
+    families={n:(material,layout,motif) for material,layout,motif,group in families for n in group}
+    repeats=[(9,16,'erase','poster','recursion'),(23,30,'approach','poster','blackstar-eye'),
+             (37,44,'whisper','split-columns','electric'),(50,57,'eclipse','orbital','blackstar-eye'),
+             (71,77,'turn','poster','electric'),(83,90,'eclipse','orbital','blackstar-eye'),
+             (118,125,'approach','poster','blackstar-eye')]
+    pulse_roles={'thermal','filament','erase','approach','whisper','ember','fracture','refusal','turn'}
+    accents={'register':'mint','dispatch':'mint','thermal':'orange','filament':'orange','erase':'orange','approach':'red',
+             'whisper':'pink','eclipse':'pink','silt':'orange','crystal':'mint','ember':'orange','fracture':'orange',
+             'tidal':'mint','trace':'teal','thread':'teal','refusal':'red','turn':'mint'}
+    motifs_at={'recursion':[1250,455],'heat':[995,530],'electric':[1370,440],'blackstar-eye':[1080,414],
+               'bell-sand':[1180,445],'salt-tear':[1120,548],'flag':[1230,443],'ship':[1160,620],
+               'fish-ocean':[1120,700],'swallow':[1270,396],'thread':[716,388]}
+    keywords={1:'変数',2:'熱',5:'電撃',17:'無く',31:'来て',33:'火',46:'未来',49:'舟',59:'閃光',60:'鐘',62:'砂',
+              63:'変数',67:'悲しみ',68:'塩',79:'幸福',81:'海',92:'変数',93:'熱',96:'海',98:'燕',99:'雲',
+              104:'手',105:'夢',107:'熱異常',108:'現実',109:'現実',110:'現実',111:'現実',126:'来て'}
+    cues=[]
+    for n,line in enumerate(lines,1):
+        start,end=line['time'],line['end']
+        life=end-start
+        loop=next(((n-a,b-a,material,layout,motif) for a,b,material,layout,motif in repeats if a<=n<=b),None)
+        k,last,material,layout,motif=loop or (0,1,*families[n])
+        pressure=k/max(1,last)
+        if n in (22,31,117,126):pressure=.35 if n in (22,117) else .92
+        if 108<=n<=111:pressure=(n-108)/3
+        if n>=118 and material=='approach':pressure=.24+pressure*.76
+        sid=next(s['id'] for s in reversed(scenes) if s['start']<=start)
+        mode=next((s['mode'] for s in shots if s['start']<=start<s['end']),'wide')
+        eye=mode=='eye' and sid<10
+        accent=accents[material]
+        anchor=[172,420];size=76;shape={'width':730}
+        cn_anchor=[180,720];cn_layout='ink-reveal';cn_shape={'width':730}
+        if layout=='vertical':
+            anchor=[190,248];size=69;shape={'rows':8};cn_layout='vertical';cn_anchor=[437,290];cn_shape={'rows':10}
+        elif layout=='orbital':
+            anchor=[1080,371] if loop else [566,310]
+            size=76 if loop else 58
+            shape={'radius':292-round(pressure*42) if loop else 211,'sweep':1.48 if loop else 1.95,'side':'lower'}
+            cn_anchor=[1020,738] if loop else [202,695]
+        elif layout=='road':
+            anchor=[206,220];size=86;shape={'width':830};cn_anchor=[226,731]
+        elif layout=='bezier':
+            anchor=[165,600];size=59;cn_anchor=[190,759]
+            shape={'path':[[157,609],[454,482],[460,628],[857,512]]}
+            if material=='trace':shape={'path':[[169,671],[365,507],[465,329],[874,260]]};cn_anchor=[196,758]
+            if material=='thread':shape={'path':[[159,667],[348,710],[389,438],[670,395]]};cn_anchor=[188,786]
+        elif layout=='split-columns':
+            anchor=[182,384];size=83;shape={'width':735};cn_anchor=[208,716]
+        elif layout=='poster':
+            size=98;shape={'columns':8,'rotation':-.06};anchor=[170,391];cn_anchor=[177,713]
+            if material=='erase':size=104;anchor=[174,412+round(95*pressure)];shape={'columns':8,'rotation':-.035}
+            if material=='approach':size=82+round(30*pressure);anchor=[393-round(210*pressure),306+round(150*pressure)];shape={'columns':8,'rotation':-.044}
+            if material=='turn':size=88;anchor=[192,396+round(82*pressure)];shape={'columns':9,'rotation':.045}
+            if material=='refusal':size=109;anchor=[154,330+round(78*pressure)];shape={'columns':7,'rotation':-.06}
+        elif material=='silt':anchor=[200,392];size=76
+        elif material=='crystal':anchor=[180,525];size=73
+        if n==100:
+            # 編んだ名誉で / 明日を乞う — keep the noun and both phrases intact.
+            layout='poster';anchor=[185,386];size=91;shape={'columns':6,'rotation':-.028};cn_anchor=[208,715]
+        if eye:
+            # Keep the iris and central facial plane clear. Side lanes stay fixed
+            # when the picture cuts inside a lyric.
+            layout='vertical';anchor=[122,238];size=83 if loop else 65;shape={'rows':9}
+            cn_layout='vertical';cn_anchor=[1660,238];cn_shape={'rows':10}
+        hits=[t for t in onsets if start<=t<min(end,start+.105)]
+        impact=round(hits[0],6) if hits and material in pulse_roles else None
+        duration=min(.48,life*.31)
+        short=life<=.94 or loop is not None or n in (108,109,110,111)
+        semantic={**shape,'material':material,'pressure':round(pressure,3),'accent':accent,
+                  'motif':motif,'motifAnchor':motifs_at[motif],'motifColor':accent,
+                  'motifPlane':'both' if n in (49,59,68,98,104,107) else 'back'}
+        if impact is not None:semantic['impactAt']=impact
+        if loop:semantic.update({'repeatIndex':k,'loopStart':lines[n-k-1]['time']})
+        keyword=keywords.get(n) or ({'erase':'消去','approach':'そこ','whisper':'どうか','turn':'背'}.get(material) if loop else None)
+        if keyword:
+            if keyword in line['text']:
+                begin=line['text'].index(keyword)
+                semantic['keyRange']=[begin,begin+len(keyword)]
+        common={'lineId':line['id'],'plane':'front','opacity':1,'hardCut':short,
+                'enter':{'type':material,'duration':round(max(.08,duration),3)},'exit':{'duration':round(max(.08,min(.24,life*.15)),3)}}
+        role='teal' if sid==7 else 'paper'
+        cues.append({**common,'id':line['id']+'-main','layout':layout,'anchor':anchor,'size':size,
+                     'safeArea':[100,150,880,735],'font':'sans' if material in ('register','refusal','erase','thermal') else 'serif',
+                     'colorRole':role,'semantic':semantic})
+        cues.append({**common,'id':line['id']+'-translation','field':'translation','layout':cn_layout,'anchor':cn_anchor,
+                     'size':30 if eye else 36 if layout=='road' else 32,'font':'cn','colorRole':'teal' if sid==7 else 'mint',
+                     'safeArea':[90,145,780,690],'opacity':.97,'semantic':{**cn_shape,'material':'translation','accent':accent}})
+        if 'keyRange' in semantic and not eye:
+            # Actual lyric fragments occupy a different depth plane; never replace
+            # the full sung line with a separate paraphrase.
+            word=semantic['keyRange']
+            echo_color='teal' if sid==7 else accent
+            echo_anchor=[842+round(86*pressure),648] if loop else [705,631] if n in (49,107,108,126) else [850,648]
+            cues.append({'id':line['id']+'-echo','lineId':line['id'],'tokenRange':word,
+                'start':start,'end':end,'layout':'poster','plane':'back','anchor':echo_anchor,
+                'size':209 if n in (49,59,107,108,126) else 187,'font':'sans' if material in ('thermal','refusal') else 'serif',
+                'colorRole':echo_color,'opacity':.22 if loop else .46 if n in (49,59,107,108,126) else .33,
+                'safeArea':[80,120,790,650],'hardCut':short,'enter':common['enter'],'exit':common['exit'],
+                'semantic':{'decorative':True,'columns':max(2,word[1]-word[0]),'rotation':-.06 if n in (107,108) else -.03,
+                            'material':material,'pressure':round(pressure,3),'accent':accent,**({'impactAt':impact} if impact is not None else {})}})
+    write('data/lyric_direction.json',{**prior,'revision':'vocaloid-scene-typography',
+        'timingPolicy':'Unchanged existing bilingual line times. JIZURA-style curated material plans; musical accent snaps only within a line, without claiming word alignment.',
+        'materialPlans':sorted({c['semantic']['material'] for c in cues}),
+        'semanticMotifs':sorted(motifs_at),'cues':cues})
+    print(json.dumps({'lines':len(lines),'cues':len(cues),'directionOnly':True},ensure_ascii=False))
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--offset',type=float,required=True)
+    parser.add_argument('--offset',type=float)
+    parser.add_argument('--vocaloid-direction',action='store_true',help='Re-author only lyric_direction.json from the existing aligned film.')
     args=parser.parse_args()
+    if args.vocaloid_direction:
+        if args.offset is not None:parser.error('--vocaloid-direction preserves the existing offset')
+        return vocaloid_direction()
+    if args.offset is None:parser.error('--offset is required for the historical full timeline rebuild')
     pairs=[row.split('\t',1) for row in (ROOT/'data/lyrics_user_supplied.tsv').read_text(encoding='utf-8').splitlines() if row.strip()]
     evidence=read('data/lyric_timing_source.json')
     matches=evidence['matches']

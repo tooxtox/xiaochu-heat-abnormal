@@ -6,13 +6,13 @@ import {signalWindowAt, hash2} from './signal_windows.mjs';
 const TAU=Math.PI*2;
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
 const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
-// 阶梯曲线：意象动画改成逐格跳进，与歌词排版共用同一个信号节拍。
+// Graphic interference may use held cels; air, water and ash remain continuous.
 function stepEase(q,steps){q=clamp(q);const s=Math.max(1,steps|0);return Math.min(1,Math.floor(q*s+1e-9)/Math.max(1,s-1));}
 const fract=n=>n-Math.floor(n);
 const hash=n=>fract(Math.sin(n*127.1+311.7)*43758.5453);
 const SIGNAL_HZ=15;
 const seedOf=s=>[...String(s)].reduce((sum,ch,i)=>sum+ch.codePointAt(0)*(i+3),0);
-export const motifNames=Object.freeze(['recursion','electric','flag','ship','bell-sand','salt-tear','fish-ocean','swallow','heat','blackstar-eye']);
+export const motifNames=Object.freeze(['recursion','electric','flag','ship','bell-sand','salt-tear','fish-ocean','swallow','heat','blackstar-eye','thread']);
 const aliases={variable:'recursion',variables:'recursion',delete:'recursion','recursion-lattice':'recursion',veins:'electric','electric-veins':'electric',vascular:'electric',smoke:'electric',chain:'electric','burning-flag':'flag',burn:'flag','paper-ship':'ship',origami:'ship',fracture:'ship',bell:'bell-sand',sand:'bell-sand',salt:'salt-tear',tear:'salt-tear',crystal:'salt-tear',fish:'fish-ocean',ocean:'fish-ocean',cloud:'swallow','swallow-trails':'swallow',thermal:'heat','heat-rings':'heat',blackstar:'blackstar-eye','black-star':'blackstar-eye',eye:'blackstar-eye','star-eye':'blackstar-eye'};
 function line(c,x,y,X,Y,width=1){c.lineWidth=width;c.beginPath();c.moveTo(x,y);c.lineTo(X,Y);c.stroke()}
 function path(c,points,width=1,closed=false){if(!points.length)return;c.lineWidth=width;c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));if(closed)c.closePath();c.stroke()}
@@ -100,17 +100,50 @@ function heat(c,s){
  for(let i=0;i<9;i++){const points=[];for(let j=0;j<=25;j++)points.push([-300+i*77+Math.sin(j*.44+s.age*2+i)*8,-290+j*25]);c.save();c.globalAlpha*=.14;path(c,points,.8);c.restore()}
 }
 function blackstarEye(c,s){
- const growth=.65+s.q*.75,radius=140*growth;
+ const growth=.65+s.q*.50+(s.pressure||0)*.4,radius=140*growth;
  for(let i=0;i<4;i++){c.save();c.globalAlpha*=.7-i*.12;circle(c,0,-40,radius+i*34,1+i%2);c.restore()}
  c.save();c.translate(0,-40);c.rotate(s.age*.1);const star=[];for(let i=0;i<16;i++){const a=i/16*TAU,r=radius*(i%2?.28:.78);star.push([Math.cos(a)*r,Math.sin(a)*r])}traced(c,[...star,star[0]],s.enter,1.8);c.restore();
  const eyeWidth=330*growth,blink=1-.2*Math.sin(s.age*1.9)**8;c.lineWidth=1.5;c.beginPath();c.moveTo(-eyeWidth,-40);c.bezierCurveTo(-eyeWidth*.4,-40-160*blink,eyeWidth*.4,-40-160*blink,eyeWidth,-40);c.bezierCurveTo(eyeWidth*.4,-40+160*blink,-eyeWidth*.4,-40+160*blink,-eyeWidth,-40);c.stroke();
  const target=(Math.sin(s.age*.7)*.5+.5)*TAU;line(c,Math.cos(target)*(radius+50),-40+Math.sin(target)*(radius+50),Math.cos(target)*(radius+90),-40+Math.sin(target)*(radius+90),2);
 }
-const painters={recursion,electric,flag,ship,'bell-sand':bellSand,'salt-tear':saltTear,'fish-ocean':fishOcean,swallow,heat,'blackstar-eye':blackstarEye};
+function thread(c,s){
+ // Two paths meet above the existing palm insert. Short fibres go in front;
+ // the wider strands pass behind the hand with the back reading plane.
+ for(let i=0;i<2;i++){
+  const a=i?1:-1,points=[];
+  for(let j=0;j<=42;j++){
+   const u=j/42;points.push([a*(1-u)*380,130*(1-u)+Math.sin(u*Math.PI*2+s.age*3+a)*(1-u)*48]);
+  }
+  traced(c,points,s.enter,1.75);
+ }
+ for(let i=0;i<3;i++){c.save();c.globalAlpha*=1-i*.21;circle(c,0,0,6+i*8+s.q*6,1.35);c.restore()}
+}
+const painters={recursion,electric,flag,ship,'bell-sand':bellSand,'salt-tear':saltTear,'fish-ocean':fishOcean,swallow,heat,'blackstar-eye':blackstarEye,thread};
 
 function foreground(c,s){
- // Foreground depth is confined to a few low strokes, away from the face and type.
- for(let i=0;i<3;i++){const z=fract(s.age*.25+i*.31),x=-260+z*560,y=360+i*18;c.save();c.globalAlpha*=Math.sin(z*Math.PI)*.45;line(c,x,y,x+35+i*12,y-9,1);c.restore()}
+ const base=c.globalAlpha;
+ if(s.material==='fracture'||s.material==='ember'||s.material==='thermal'){
+  for(let i=0;i<12;i++){
+   const u=fract(s.age*(.39+hash(i)*.31)+hash(i+19)),x=(hash(i+s.seed)-.5)*720,y=390-u*154;
+   c.globalAlpha=base*Math.sin(u*Math.PI)*(.35+s.pulse*.51);
+   path(c,[[x,y],[x+8+hash(i+1)*13,y-u*11],[x+2,y+4]],1,true);
+  }
+ }else if(s.material==='crystal'){
+  for(let i=0;i<6;i++){
+   const u=fract(s.age*.43+i/6),x=-220+hash(i+5)*590,y=290+u*195;
+   c.globalAlpha=base*Math.sin(u*Math.PI)*.7;
+   path(c,[[x,y-4],[x+4,y],[x,y+5],[x-4,y]],1.05,true);
+  }
+ }else if(s.material==='thread'){
+  c.globalAlpha=base*.7;
+  c.beginPath();c.moveTo(-178,122);c.bezierCurveTo(-91,81,-86,167,-14,136);c.stroke();
+ }else if(s.material==='trace'){
+  c.globalAlpha=base*.65;const shift=72*s.q;
+  c.beginPath();c.moveTo(-420,275);c.quadraticCurveTo(-157,280,109+shift,132);c.stroke();
+ }else{
+  for(let i=0;i<3;i++){const z=fract(s.age*.25+i*.31),x=-260+z*560,y=360+i*18;c.globalAlpha=base*Math.sin(z*Math.PI)*.45;line(c,x,y,x+35+i*12,y-9,1)}
+ }
+ c.globalAlpha=base;
 }
 
 export function drawLyricMotifs(c,t,resources,data,plane='back'){
@@ -123,16 +156,19 @@ export function drawLyricMotifs(c,t,resources,data,plane='back'){
    const key=`${cue.lineId}:${name}`;if(seen.has(key))continue;
    const authoredPlane=cue.semantic.motifPlane||cue.motifPlane||'back';
    if(authoredPlane!=='both'&&authoredPlane!==plane)continue;seen.add(key);
-   const life=cue.end-cue.start,seed=seedOf(cue.lineId);
-   // 意象时间同样锁在信号时钟上：所有插值都变成逐格跳进。
-   const age=Math.floor((t-cue.start)*SIGNAL_HZ)/SIGNAL_HZ;
-   const s={age,q:clamp((t-cue.start)/Math.max(.01,life)),enter:stepEase(age/Math.min(.5,life*.3),6),seed};
-   const fade=s.enter*stepEase((cue.end-t)/Math.min(.4,life*.25),4),[ox,oy]=origin(cue);
+   const life=cue.end-cue.start,seed=seedOf(cue.lineId),material=cue.semantic.material;
+   const elapsed=t-cue.start,loopStart=cue.semantic.loopStart??cue.start;
+   const cel=!material||['recursion','electric','heat'].includes(name);
+   const motionAge=t-loopStart,age=cel?Math.floor(motionAge*SIGNAL_HZ)/SIGNAL_HZ:motionAge;
+   const enter=cue.hardCut&&material?1:(cel?stepEase(elapsed/Math.min(.34,life*.29),6):smooth(elapsed/Math.min(.34,life*.29)));
+   const sinceHit=t-cue.semantic.impactAt,pulse=sinceHit>=0&&sinceHit<.18?1-sinceHit/.18:0;
+   const s={age,q:clamp(elapsed/Math.max(.01,life)),enter,seed,material,pulse,pressure:cue.semantic.pressure||0};
+   const fade=enter*(cue.hardCut&&material?.82:smooth((cue.end-t)/Math.min(.26,life*.22))),[ox,oy]=origin(cue);
    // 授权窗口内，意象整体产生一次量化错位，与崩坏后期同一张时间表。
    const window=signalWindowAt(t);let x=ox,y=oy;
    if(window){const tag=Math.floor(seed*65535);const k=hash2(tag*3+1,Math.floor(t*SIGNAL_HZ));x+=Math.round((k-.5)*26*window.corrupt);y+=Math.round((hash2(tag*5+2,Math.floor(t*SIGNAL_HZ))-.5)*16*window.corrupt);}
    c.save();try{
-    c.translate(x,y);c.globalAlpha*=fade*(plane==='front'?.4:.58);c.strokeStyle=colorFor(cue);c.fillStyle=colorFor(cue);c.lineCap='round';c.lineJoin='round';
+    c.translate(x,y);c.globalAlpha*=fade*(plane==='front'?.47:.53);c.strokeStyle=colorFor(cue);c.fillStyle=colorFor(cue);c.lineCap='round';c.lineJoin='round';
     if(plane==='front')foreground(c,s);else painters[name](c,s);count++;
    }finally{c.restore()}
   }

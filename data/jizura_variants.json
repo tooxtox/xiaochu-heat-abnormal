@@ -1,0 +1,2026 @@
+{
+ "samples": 3,
+ "margin": 0.6,
+ "width": 1920,
+ "height": 1080,
+ "lines": [
+  {
+   "id": "L001",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.76,
+    "bgLum": 0.2051,
+    "invisible": 14.9
+   },
+   "alt": {
+    "contrast": 2.47,
+    "bgLum": 0.2352,
+    "invisible": 18.5
+   }
+  },
+  {
+   "id": "L002",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.92,
+    "bgLum": 0.0922,
+    "invisible": 5.9
+   },
+   "alt": {
+    "contrast": 1.72,
+    "bgLum": 0.0934,
+    "invisible": 27.8
+   }
+  },
+  {
+   "id": "L003",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 8.22,
+    "bgLum": 0.2386,
+    "invisible": 22
+   },
+   "alt": {
+    "contrast": 4.97,
+    "bgLum": 0.3273,
+    "invisible": 41.7
+   }
+  },
+  {
+   "id": "L004",
+   "family": "data",
+   "plan": "dataAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.46,
+    "bgLum": 0.498,
+    "invisible": 17.9
+   },
+   "alt": {
+    "contrast": 3.76,
+    "bgLum": 0.5133,
+    "invisible": 8.1
+   }
+  },
+  {
+   "id": "L005",
+   "family": "dark",
+   "plan": "darkAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 3.25,
+    "bgLum": 0.5655,
+    "invisible": 7.2
+   },
+   "alt": {
+    "contrast": 4.42,
+    "bgLum": 0.5683,
+    "invisible": 2.7
+   }
+  },
+  {
+   "id": "L006",
+   "family": "dark",
+   "plan": "darkAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.4,
+    "bgLum": 0.5757,
+    "invisible": 31.3
+   },
+   "alt": {
+    "contrast": 7.44,
+    "bgLum": 0.5835,
+    "invisible": 4.2
+   }
+  },
+  {
+   "id": "L007",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.22,
+    "bgLum": 0.112,
+    "invisible": 2.8
+   },
+   "alt": {
+    "contrast": 1.79,
+    "bgLum": 0.1126,
+    "invisible": 18.9
+   }
+  },
+  {
+   "id": "L008",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5,
+    "bgLum": 0.0396,
+    "invisible": 8.3
+   },
+   "alt": {
+    "contrast": 2.14,
+    "bgLum": 0.0375,
+    "invisible": 24.9
+   }
+  },
+  {
+   "id": "L009",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.86,
+    "bgLum": 0.1043,
+    "invisible": 5.6
+   },
+   "alt": {
+    "contrast": 1.44,
+    "bgLum": 0.1089,
+    "invisible": 47.9
+   }
+  },
+  {
+   "id": "L010",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.52,
+    "bgLum": 0.0391,
+    "invisible": 21.8
+   },
+   "alt": {
+    "contrast": 1.6,
+    "bgLum": 0.0402,
+    "invisible": 40.4
+   }
+  },
+  {
+   "id": "L011",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.62,
+    "bgLum": 0.1233,
+    "invisible": 6.5
+   },
+   "alt": {
+    "contrast": 1.92,
+    "bgLum": 0.1284,
+    "invisible": 25.3
+   }
+  },
+  {
+   "id": "L012",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.02,
+    "bgLum": 0.0709,
+    "invisible": 3.3
+   },
+   "alt": {
+    "contrast": 1.82,
+    "bgLum": 0.0715,
+    "invisible": 15.1
+   }
+  },
+  {
+   "id": "L013",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 8.11,
+    "bgLum": 0.029,
+    "invisible": 2.4
+   },
+   "alt": {
+    "contrast": 1.67,
+    "bgLum": 0.029,
+    "invisible": 42
+   }
+  },
+  {
+   "id": "L014",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.88,
+    "bgLum": 0.0288,
+    "invisible": 8.8
+   },
+   "alt": {
+    "contrast": 1.77,
+    "bgLum": 0.028,
+    "invisible": 41.6
+   }
+  },
+  {
+   "id": "L015",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 10.43,
+    "bgLum": 0.0208,
+    "invisible": 2
+   },
+   "alt": {
+    "contrast": 1.72,
+    "bgLum": 0.0207,
+    "invisible": 44
+   }
+  },
+  {
+   "id": "L016",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.14,
+    "bgLum": 0.0265,
+    "invisible": 8.3
+   },
+   "alt": {
+    "contrast": 1.38,
+    "bgLum": 0.0263,
+    "invisible": 53
+   }
+  },
+  {
+   "id": "L017",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.29,
+    "bgLum": 0.0245,
+    "invisible": 3.4
+   },
+   "alt": {
+    "contrast": 1.61,
+    "bgLum": 0.0248,
+    "invisible": 47.9
+   }
+  },
+  {
+   "id": "L018",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.24,
+    "bgLum": 0.1354,
+    "invisible": 15.1
+   },
+   "alt": {
+    "contrast": 1.93,
+    "bgLum": 0.1615,
+    "invisible": 35.7
+   }
+  },
+  {
+   "id": "L019",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.61,
+    "bgLum": 0.2909,
+    "invisible": 26.6
+   },
+   "alt": {
+    "contrast": 4.26,
+    "bgLum": 0.3277,
+    "invisible": 19.7
+   }
+  },
+  {
+   "id": "L020",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 9.19,
+    "bgLum": 0.0512,
+    "invisible": 8
+   },
+   "alt": {
+    "contrast": 1.48,
+    "bgLum": 0.0551,
+    "invisible": 18
+   }
+  },
+  {
+   "id": "L021",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.54,
+    "bgLum": 0.0606,
+    "invisible": 10.2
+   },
+   "alt": {
+    "contrast": 1.72,
+    "bgLum": 0.062,
+    "invisible": 28.3
+   }
+  },
+  {
+   "id": "L022",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 9.74,
+    "bgLum": 0.0452,
+    "invisible": 2.4
+   },
+   "alt": {
+    "contrast": 1.65,
+    "bgLum": 0.0454,
+    "invisible": 34.5
+   }
+  },
+  {
+   "id": "L023",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.87,
+    "bgLum": 0.0972,
+    "invisible": 42.2
+   },
+   "alt": {
+    "contrast": 1.36,
+    "bgLum": 0.122,
+    "invisible": 52.1
+   }
+  },
+  {
+   "id": "L024",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.5,
+    "bgLum": 0.0321,
+    "invisible": 24.4
+   },
+   "alt": {
+    "contrast": 1.42,
+    "bgLum": 0.0265,
+    "invisible": 51.3
+   }
+  },
+  {
+   "id": "L025",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.98,
+    "bgLum": 0.3707,
+    "invisible": 36.1
+   },
+   "alt": {
+    "contrast": 4.16,
+    "bgLum": 0.4667,
+    "invisible": 27.6
+   }
+  },
+  {
+   "id": "L026",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.62,
+    "bgLum": 0.6549,
+    "invisible": 46.5
+   },
+   "alt": {
+    "contrast": 4.68,
+    "bgLum": 0.7221,
+    "invisible": 21.7
+   }
+  },
+  {
+   "id": "L027",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 4.11,
+    "bgLum": 0.3996,
+    "invisible": 27.4
+   },
+   "alt": {
+    "contrast": 4.39,
+    "bgLum": 0.4457,
+    "invisible": 23.9
+   }
+  },
+  {
+   "id": "L028",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 8.43,
+    "bgLum": 0.032,
+    "invisible": 26.6
+   },
+   "alt": {
+    "contrast": 2.15,
+    "bgLum": 0.0283,
+    "invisible": 39.1
+   }
+  },
+  {
+   "id": "L029",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.91,
+    "bgLum": 0.3872,
+    "invisible": 35.3
+   },
+   "alt": {
+    "contrast": 3.22,
+    "bgLum": 0.4467,
+    "invisible": 30.2
+   }
+  },
+  {
+   "id": "L030",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.85,
+    "bgLum": 0.4302,
+    "invisible": 46.4
+   },
+   "alt": {
+    "contrast": 2.68,
+    "bgLum": 0.4724,
+    "invisible": 31.1
+   }
+  },
+  {
+   "id": "L031",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.74,
+    "bgLum": 0.2184,
+    "invisible": 45.5
+   },
+   "alt": {
+    "contrast": 1.31,
+    "bgLum": 0.3341,
+    "invisible": 57
+   }
+  },
+  {
+   "id": "L032",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.08,
+    "bgLum": 0.1239,
+    "invisible": 16.6
+   },
+   "alt": {
+    "contrast": 1.65,
+    "bgLum": 0.1496,
+    "invisible": 27.8
+   }
+  },
+  {
+   "id": "L033",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.06,
+    "bgLum": 0.0479,
+    "invisible": 4
+   },
+   "alt": {
+    "contrast": 1.67,
+    "bgLum": 0.0489,
+    "invisible": 27.1
+   }
+  },
+  {
+   "id": "L034",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.88,
+    "bgLum": 0.336,
+    "invisible": 15.5
+   },
+   "alt": {
+    "contrast": 4.01,
+    "bgLum": 0.3538,
+    "invisible": 28.1
+   }
+  },
+  {
+   "id": "L035",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.11,
+    "bgLum": 0.28,
+    "invisible": 36.1
+   },
+   "alt": {
+    "contrast": 4,
+    "bgLum": 0.2972,
+    "invisible": 62.4
+   }
+  },
+  {
+   "id": "L036",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.42,
+    "bgLum": 0.16,
+    "invisible": 14.8
+   },
+   "alt": {
+    "contrast": 1.65,
+    "bgLum": 0.4151,
+    "invisible": 62.8
+   }
+  },
+  {
+   "id": "L037",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.97,
+    "bgLum": 0.0698,
+    "invisible": 24.9
+   },
+   "alt": {
+    "contrast": 1.68,
+    "bgLum": 0.0715,
+    "invisible": 15.3
+   }
+  },
+  {
+   "id": "L038",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.92,
+    "bgLum": 0.0412,
+    "invisible": 32.1
+   },
+   "alt": {
+    "contrast": 1.37,
+    "bgLum": 0.043,
+    "invisible": 61.6
+   }
+  },
+  {
+   "id": "L039",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.46,
+    "bgLum": 0.0253,
+    "invisible": 32.4
+   },
+   "alt": {
+    "contrast": 1.28,
+    "bgLum": 0.0247,
+    "invisible": 62.8
+   }
+  },
+  {
+   "id": "L040",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.06,
+    "bgLum": 0.0666,
+    "invisible": 30.9
+   },
+   "alt": {
+    "contrast": 1.39,
+    "bgLum": 0.0735,
+    "invisible": 47.6
+   }
+  },
+  {
+   "id": "L041",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.14,
+    "bgLum": 0.0312,
+    "invisible": 16.6
+   },
+   "alt": {
+    "contrast": 1.5,
+    "bgLum": 0.0301,
+    "invisible": 42.4
+   }
+  },
+  {
+   "id": "L042",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.56,
+    "bgLum": 0.0684,
+    "invisible": 40.6
+   },
+   "alt": {
+    "contrast": 1.55,
+    "bgLum": 0.086,
+    "invisible": 59.3
+   }
+  },
+  {
+   "id": "L043",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.15,
+    "bgLum": 0.0638,
+    "invisible": 23.3
+   },
+   "alt": {
+    "contrast": 1.86,
+    "bgLum": 0.0695,
+    "invisible": 29
+   }
+  },
+  {
+   "id": "L044",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.58,
+    "bgLum": 0.0345,
+    "invisible": 28.9
+   },
+   "alt": {
+    "contrast": 2,
+    "bgLum": 0.0314,
+    "invisible": 39.2
+   }
+  },
+  {
+   "id": "L045",
+   "family": "dark",
+   "plan": "darkAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.67,
+    "bgLum": 0.0303,
+    "invisible": 35.3
+   },
+   "alt": {
+    "contrast": 3.38,
+    "bgLum": 0.0301,
+    "invisible": 12.8
+   }
+  },
+  {
+   "id": "L046",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.8,
+    "bgLum": 0.0393,
+    "invisible": 24.4
+   },
+   "alt": {
+    "contrast": 1.44,
+    "bgLum": 0.0408,
+    "invisible": 38.9
+   }
+  },
+  {
+   "id": "L047",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.52,
+    "bgLum": 0.0554,
+    "invisible": 6.2
+   },
+   "alt": {
+    "contrast": 1.74,
+    "bgLum": 0.0571,
+    "invisible": 34.5
+   }
+  },
+  {
+   "id": "L048",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.26,
+    "bgLum": 0.0307,
+    "invisible": 6.7
+   },
+   "alt": {
+    "contrast": 1.42,
+    "bgLum": 0.0314,
+    "invisible": 28.9
+   }
+  },
+  {
+   "id": "L049",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.77,
+    "bgLum": 0.0388,
+    "invisible": 3.6
+   },
+   "alt": {
+    "contrast": 1.96,
+    "bgLum": 0.0385,
+    "invisible": 14
+   }
+  },
+  {
+   "id": "L050",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.6,
+    "bgLum": 0.1954,
+    "invisible": 53.8
+   },
+   "alt": {
+    "contrast": 2.22,
+    "bgLum": 0.2171,
+    "invisible": 60
+   }
+  },
+  {
+   "id": "L051",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.18,
+    "bgLum": 0.1065,
+    "invisible": 20.1
+   },
+   "alt": {
+    "contrast": 2,
+    "bgLum": 0.1173,
+    "invisible": 39.4
+   }
+  },
+  {
+   "id": "L052",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.39,
+    "bgLum": 0.1202,
+    "invisible": 11.8
+   },
+   "alt": {
+    "contrast": 2,
+    "bgLum": 0.1293,
+    "invisible": 32.4
+   }
+  },
+  {
+   "id": "L053",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.89,
+    "bgLum": 0.11,
+    "invisible": 10.4
+   },
+   "alt": {
+    "contrast": 2.11,
+    "bgLum": 0.1196,
+    "invisible": 31.2
+   }
+  },
+  {
+   "id": "L054",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.66,
+    "bgLum": 0.1224,
+    "invisible": 9.8
+   },
+   "alt": {
+    "contrast": 2.46,
+    "bgLum": 0.1321,
+    "invisible": 30.2
+   }
+  },
+  {
+   "id": "L055",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.54,
+    "bgLum": 0.0869,
+    "invisible": 9.8
+   },
+   "alt": {
+    "contrast": 2.23,
+    "bgLum": 0.0905,
+    "invisible": 31.1
+   }
+  },
+  {
+   "id": "L056",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.69,
+    "bgLum": 0.344,
+    "invisible": 19.7
+   },
+   "alt": {
+    "contrast": 2.88,
+    "bgLum": 0.3716,
+    "invisible": 20.5
+   }
+  },
+  {
+   "id": "L057",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.8,
+    "bgLum": 0.465,
+    "invisible": 33.8
+   },
+   "alt": {
+    "contrast": 4.56,
+    "bgLum": 0.5149,
+    "invisible": 12.5
+   }
+  },
+  {
+   "id": "L058",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.27,
+    "bgLum": 0.5411,
+    "invisible": 41.8
+   },
+   "alt": {
+    "contrast": 3.59,
+    "bgLum": 0.6029,
+    "invisible": 22.2
+   }
+  },
+  {
+   "id": "L059",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.63,
+    "bgLum": 0.2401,
+    "invisible": 3.2
+   },
+   "alt": {
+    "contrast": 2.81,
+    "bgLum": 0.2492,
+    "invisible": 13.4
+   }
+  },
+  {
+   "id": "L060",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.25,
+    "bgLum": 0.3985,
+    "invisible": 38.7
+   },
+   "alt": {
+    "contrast": 2.66,
+    "bgLum": 0.4993,
+    "invisible": 34
+   }
+  },
+  {
+   "id": "L061",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.41,
+    "bgLum": 0.0653,
+    "invisible": 17.8
+   },
+   "alt": {
+    "contrast": 1.27,
+    "bgLum": 0.0605,
+    "invisible": 28.6
+   }
+  },
+  {
+   "id": "L062",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.15,
+    "bgLum": 0.0368,
+    "invisible": 23.9
+   },
+   "alt": {
+    "contrast": 1.43,
+    "bgLum": 0.0295,
+    "invisible": 40.9
+   }
+  },
+  {
+   "id": "L063",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.24,
+    "bgLum": 0.1806,
+    "invisible": 33.5
+   },
+   "alt": {
+    "contrast": 2.46,
+    "bgLum": 0.2736,
+    "invisible": 47.4
+   }
+  },
+  {
+   "id": "L064",
+   "family": "data",
+   "plan": "data",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.37,
+    "bgLum": 0.2729,
+    "invisible": 39.9
+   },
+   "alt": {
+    "contrast": 1.65,
+    "bgLum": 0.2938,
+    "invisible": 28.1
+   }
+  },
+  {
+   "id": "L065",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.24,
+    "bgLum": 0.1965,
+    "invisible": 41.5
+   },
+   "alt": {
+    "contrast": 1.65,
+    "bgLum": 0.2747,
+    "invisible": 32.1
+   }
+  },
+  {
+   "id": "L066",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.61,
+    "bgLum": 0.3253,
+    "invisible": 39.6
+   },
+   "alt": {
+    "contrast": 1.86,
+    "bgLum": 0.3502,
+    "invisible": 44.4
+   }
+  },
+  {
+   "id": "L067",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.41,
+    "bgLum": 0.281,
+    "invisible": 16.8
+   },
+   "alt": {
+    "contrast": 2.8,
+    "bgLum": 0.3178,
+    "invisible": 17.6
+   }
+  },
+  {
+   "id": "L068",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 4.41,
+    "bgLum": 0.3108,
+    "invisible": 19.1
+   },
+   "alt": {
+    "contrast": 4.48,
+    "bgLum": 0.3181,
+    "invisible": 14.6
+   }
+  },
+  {
+   "id": "L069",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.46,
+    "bgLum": 0.0407,
+    "invisible": 10.9
+   },
+   "alt": {
+    "contrast": 1.52,
+    "bgLum": 0.0403,
+    "invisible": 18.7
+   }
+  },
+  {
+   "id": "L070",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 2.9,
+    "bgLum": 0.0907,
+    "invisible": 5.6
+   },
+   "alt": {
+    "contrast": 3.02,
+    "bgLum": 0.0908,
+    "invisible": 5
+   }
+  },
+  {
+   "id": "L071",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.84,
+    "bgLum": 0.1236,
+    "invisible": 24
+   },
+   "alt": {
+    "contrast": 2.15,
+    "bgLum": 0.1726,
+    "invisible": 32.1
+   }
+  },
+  {
+   "id": "L072",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.33,
+    "bgLum": 0.0802,
+    "invisible": 24.7
+   },
+   "alt": {
+    "contrast": 1.53,
+    "bgLum": 0.0909,
+    "invisible": 46.4
+   }
+  },
+  {
+   "id": "L073",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.62,
+    "bgLum": 0.0336,
+    "invisible": 18.1
+   },
+   "alt": {
+    "contrast": 1.35,
+    "bgLum": 0.0389,
+    "invisible": 60.4
+   }
+  },
+  {
+   "id": "L074",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.15,
+    "bgLum": 0.0549,
+    "invisible": 14
+   },
+   "alt": {
+    "contrast": 1.36,
+    "bgLum": 0.0625,
+    "invisible": 52.1
+   }
+  },
+  {
+   "id": "L075",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.51,
+    "bgLum": 0.0254,
+    "invisible": 14.2
+   },
+   "alt": {
+    "contrast": 1.64,
+    "bgLum": 0.028,
+    "invisible": 51.7
+   }
+  },
+  {
+   "id": "L076",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.62,
+    "bgLum": 0.0261,
+    "invisible": 13.7
+   },
+   "alt": {
+    "contrast": 2.22,
+    "bgLum": 0.0271,
+    "invisible": 27.7
+   }
+  },
+  {
+   "id": "L077",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.88,
+    "bgLum": 0.0246,
+    "invisible": 16.2
+   },
+   "alt": {
+    "contrast": 1.88,
+    "bgLum": 0.0264,
+    "invisible": 39
+   }
+  },
+  {
+   "id": "L078",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.14,
+    "bgLum": 0.0235,
+    "invisible": 2.5
+   },
+   "alt": {
+    "contrast": 1.91,
+    "bgLum": 0.0233,
+    "invisible": 37.8
+   }
+  },
+  {
+   "id": "L079",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.65,
+    "bgLum": 0.0478,
+    "invisible": 8.8
+   },
+   "alt": {
+    "contrast": 1.61,
+    "bgLum": 0.0491,
+    "invisible": 30.2
+   }
+  },
+  {
+   "id": "L080",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.09,
+    "bgLum": 0.0402,
+    "invisible": 10
+   },
+   "alt": {
+    "contrast": 1.51,
+    "bgLum": 0.0418,
+    "invisible": 40.5
+   }
+  },
+  {
+   "id": "L081",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.72,
+    "bgLum": 0.0793,
+    "invisible": 26.6
+   },
+   "alt": {
+    "contrast": 1.72,
+    "bgLum": 0.1022,
+    "invisible": 38.6
+   }
+  },
+  {
+   "id": "L082",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.12,
+    "bgLum": 0.0276,
+    "invisible": 11.8
+   },
+   "alt": {
+    "contrast": 2.09,
+    "bgLum": 0.027,
+    "invisible": 19
+   }
+  },
+  {
+   "id": "L083",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.96,
+    "bgLum": 0.1566,
+    "invisible": 22.4
+   },
+   "alt": {
+    "contrast": 1.76,
+    "bgLum": 0.1969,
+    "invisible": 33.8
+   }
+  },
+  {
+   "id": "L084",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.88,
+    "bgLum": 0.2261,
+    "invisible": 15.8
+   },
+   "alt": {
+    "contrast": 3.17,
+    "bgLum": 0.2684,
+    "invisible": 30.5
+   }
+  },
+  {
+   "id": "L085",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.69,
+    "bgLum": 0.3548,
+    "invisible": 48.9
+   },
+   "alt": {
+    "contrast": 3.52,
+    "bgLum": 0.3993,
+    "invisible": 30.5
+   }
+  },
+  {
+   "id": "L086",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.51,
+    "bgLum": 0.5846,
+    "invisible": 41.7
+   },
+   "alt": {
+    "contrast": 3.61,
+    "bgLum": 0.6152,
+    "invisible": 9.8
+   }
+  },
+  {
+   "id": "L087",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.54,
+    "bgLum": 0.2585,
+    "invisible": 11.7
+   },
+   "alt": {
+    "contrast": 3.33,
+    "bgLum": 0.2824,
+    "invisible": 22.6
+   }
+  },
+  {
+   "id": "L088",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.67,
+    "bgLum": 0.1064,
+    "invisible": 9.4
+   },
+   "alt": {
+    "contrast": 2.23,
+    "bgLum": 0.1132,
+    "invisible": 28.9
+   }
+  },
+  {
+   "id": "L089",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.33,
+    "bgLum": 0.1274,
+    "invisible": 11.1
+   },
+   "alt": {
+    "contrast": 2.44,
+    "bgLum": 0.1402,
+    "invisible": 30
+   }
+  },
+  {
+   "id": "L090",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.26,
+    "bgLum": 0.1136,
+    "invisible": 7.1
+   },
+   "alt": {
+    "contrast": 2.5,
+    "bgLum": 0.1201,
+    "invisible": 28.6
+   }
+  },
+  {
+   "id": "L091",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.27,
+    "bgLum": 0.4696,
+    "invisible": 19.3
+   },
+   "alt": {
+    "contrast": 3.18,
+    "bgLum": 0.4962,
+    "invisible": 13.6
+   }
+  },
+  {
+   "id": "L092",
+   "family": "data",
+   "plan": "data",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.46,
+    "bgLum": 0.2489,
+    "invisible": 28
+   },
+   "alt": {
+    "contrast": 2.92,
+    "bgLum": 0.3095,
+    "invisible": 33.3
+   }
+  },
+  {
+   "id": "L093",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.07,
+    "bgLum": 0.1015,
+    "invisible": 6.3
+   },
+   "alt": {
+    "contrast": 1.82,
+    "bgLum": 0.0949,
+    "invisible": 19.3
+   }
+  },
+  {
+   "id": "L094",
+   "family": "data",
+   "plan": "data",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 8.71,
+    "bgLum": 0.3435,
+    "invisible": 32.8
+   },
+   "alt": {
+    "contrast": 6.06,
+    "bgLum": 0.3706,
+    "invisible": 47.6
+   }
+  },
+  {
+   "id": "L095",
+   "family": "data",
+   "plan": "dataAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.43,
+    "bgLum": 0.4622,
+    "invisible": 37.9
+   },
+   "alt": {
+    "contrast": 4.8,
+    "bgLum": 0.5002,
+    "invisible": 11.5
+   }
+  },
+  {
+   "id": "L096",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.18,
+    "bgLum": 0.0627,
+    "invisible": 24
+   },
+   "alt": {
+    "contrast": 1.27,
+    "bgLum": 0.063,
+    "invisible": 54.4
+   }
+  },
+  {
+   "id": "L097",
+   "family": "sea",
+   "plan": "sea",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.4,
+    "bgLum": 0.2056,
+    "invisible": 24.3
+   },
+   "alt": {
+    "contrast": 1.64,
+    "bgLum": 0.2339,
+    "invisible": 26.6
+   }
+  },
+  {
+   "id": "L098",
+   "family": "light",
+   "plan": "light",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.71,
+    "bgLum": 0.8873,
+    "invisible": 12.4
+   },
+   "alt": {
+    "contrast": 3.06,
+    "bgLum": 0.8859,
+    "invisible": 3.6
+   }
+  },
+  {
+   "id": "L099",
+   "family": "light",
+   "plan": "light",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 8.37,
+    "bgLum": 0.842,
+    "invisible": 5.6
+   },
+   "alt": {
+    "contrast": 1.29,
+    "bgLum": 0.8223,
+    "invisible": 53.9
+   }
+  },
+  {
+   "id": "L100",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.1,
+    "bgLum": 0.029,
+    "invisible": 100
+   },
+   "alt": {
+    "contrast": 1.1,
+    "bgLum": 0.0244,
+    "invisible": 100
+   }
+  },
+  {
+   "id": "L101",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.46,
+    "bgLum": 0.4515,
+    "invisible": 11.5
+   },
+   "alt": {
+    "contrast": 3.52,
+    "bgLum": 0.4444,
+    "invisible": 12.5
+   }
+  },
+  {
+   "id": "L102",
+   "family": "light",
+   "plan": "light",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.7,
+    "bgLum": 0.753,
+    "invisible": 38.3
+   },
+   "alt": {
+    "contrast": 1.1,
+    "bgLum": 0.6958,
+    "invisible": 72.3
+   }
+  },
+  {
+   "id": "L103",
+   "family": "light",
+   "plan": "light",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.74,
+    "bgLum": 0.8442,
+    "invisible": 19.9
+   },
+   "alt": {
+    "contrast": 1.34,
+    "bgLum": 0.8365,
+    "invisible": 50.6
+   }
+  },
+  {
+   "id": "L104",
+   "family": "light",
+   "plan": "light",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.32,
+    "bgLum": 0.6414,
+    "invisible": 6.7
+   },
+   "alt": {
+    "contrast": 1.42,
+    "bgLum": 0.6025,
+    "invisible": 52.3
+   }
+  },
+  {
+   "id": "L105",
+   "family": "light",
+   "plan": "light",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.93,
+    "bgLum": 0.8311,
+    "invisible": 9.2
+   },
+   "alt": {
+    "contrast": 1.33,
+    "bgLum": 0.8156,
+    "invisible": 50.7
+   }
+  },
+  {
+   "id": "L106",
+   "family": "red",
+   "plan": "redAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.64,
+    "bgLum": 0.4415,
+    "invisible": 45.9
+   },
+   "alt": {
+    "contrast": 6.55,
+    "bgLum": 0.5624,
+    "invisible": 42.9
+   }
+  },
+  {
+   "id": "L107",
+   "family": "red",
+   "plan": "redAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 2.75,
+    "bgLum": 0.2568,
+    "invisible": 22.4
+   },
+   "alt": {
+    "contrast": 3.53,
+    "bgLum": 0.3924,
+    "invisible": 49
+   }
+  },
+  {
+   "id": "L108",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.02,
+    "bgLum": 0.1901,
+    "invisible": 13.6
+   },
+   "alt": {
+    "contrast": 3.16,
+    "bgLum": 0.2504,
+    "invisible": 27.9
+   }
+  },
+  {
+   "id": "L109",
+   "family": "red",
+   "plan": "red",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.37,
+    "bgLum": 0.3422,
+    "invisible": 13.7
+   },
+   "alt": {
+    "contrast": 3.65,
+    "bgLum": 0.3804,
+    "invisible": 20.9
+   }
+  },
+  {
+   "id": "L110",
+   "family": "red",
+   "plan": "red",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 3.78,
+    "bgLum": 0.4636,
+    "invisible": 16.7
+   },
+   "alt": {
+    "contrast": 3.12,
+    "bgLum": 0.5342,
+    "invisible": 21.1
+   }
+  },
+  {
+   "id": "L111",
+   "family": "red",
+   "plan": "red",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 4.17,
+    "bgLum": 0.2459,
+    "invisible": 19.3
+   },
+   "alt": {
+    "contrast": 4.28,
+    "bgLum": 0.3092,
+    "invisible": 32.5
+   }
+  },
+  {
+   "id": "L112",
+   "family": "red",
+   "plan": "red",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.81,
+    "bgLum": 0.4299,
+    "invisible": 12.7
+   },
+   "alt": {
+    "contrast": 3.77,
+    "bgLum": 0.4761,
+    "invisible": 17.1
+   }
+  },
+  {
+   "id": "L113",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 2.56,
+    "bgLum": 0.0919,
+    "invisible": 26.2
+   },
+   "alt": {
+    "contrast": 1.33,
+    "bgLum": 0.0896,
+    "invisible": 46.6
+   }
+  },
+  {
+   "id": "L114",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 4.3,
+    "bgLum": 0.2233,
+    "invisible": 25.8
+   },
+   "alt": {
+    "contrast": 2.48,
+    "bgLum": 0.236,
+    "invisible": 22.2
+   }
+  },
+  {
+   "id": "L115",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.94,
+    "bgLum": 0.0627,
+    "invisible": 11.2
+   },
+   "alt": {
+    "contrast": 1.88,
+    "bgLum": 0.0695,
+    "invisible": 17.1
+   }
+  },
+  {
+   "id": "L116",
+   "family": "dark",
+   "plan": "darkAlt",
+   "reason": "manual A/B override: the probe scored the tag plate, not the arcTop ink - pale ink vanishes on the white memory room, dark ink reads",
+   "base": {
+    "contrast": 3.13,
+    "bgLum": 0.4436,
+    "invisible": 39.5
+   },
+   "alt": {
+    "contrast": 2.14,
+    "bgLum": 0.5113,
+    "invisible": 30.4
+   }
+  },
+  {
+   "id": "L117",
+   "family": "dark",
+   "plan": "dark",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 12.54,
+    "bgLum": 0.19,
+    "invisible": 20.7
+   },
+   "alt": {
+    "contrast": 4.08,
+    "bgLum": 0.2041,
+    "invisible": 76
+   }
+  },
+  {
+   "id": "L118",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 6.08,
+    "bgLum": 0.1382,
+    "invisible": 32.4
+   },
+   "alt": {
+    "contrast": 1.89,
+    "bgLum": 0.2184,
+    "invisible": 41.8
+   }
+  },
+  {
+   "id": "L119",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 3.3,
+    "bgLum": 0.2215,
+    "invisible": 34.3
+   },
+   "alt": {
+    "contrast": 2.84,
+    "bgLum": 0.3006,
+    "invisible": 28.1
+   }
+  },
+  {
+   "id": "L120",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 7.54,
+    "bgLum": 0.0357,
+    "invisible": 21.5
+   },
+   "alt": {
+    "contrast": 2.07,
+    "bgLum": 0.0331,
+    "invisible": 44.5
+   }
+  },
+  {
+   "id": "L121",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 9.52,
+    "bgLum": 0.0274,
+    "invisible": 13.5
+   },
+   "alt": {
+    "contrast": 2.14,
+    "bgLum": 0.0244,
+    "invisible": 40
+   }
+  },
+  {
+   "id": "L122",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.36,
+    "bgLum": 0.6776,
+    "invisible": 41.8
+   },
+   "alt": {
+    "contrast": 5.72,
+    "bgLum": 0.7047,
+    "invisible": 16.1
+   }
+  },
+  {
+   "id": "L123",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.32,
+    "bgLum": 0.2406,
+    "invisible": 37.3
+   },
+   "alt": {
+    "contrast": 1.98,
+    "bgLum": 0.2388,
+    "invisible": 39.3
+   }
+  },
+  {
+   "id": "L124",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "base reads better",
+   "base": {
+    "contrast": 5.46,
+    "bgLum": 0.2268,
+    "invisible": 27.9
+   },
+   "alt": {
+    "contrast": 2.74,
+    "bgLum": 0.2859,
+    "invisible": 33.4
+   }
+  },
+  {
+   "id": "L125",
+   "family": "mono",
+   "plan": "monoAlt",
+   "reason": "the other polarity reads better",
+   "base": {
+    "contrast": 1.47,
+    "bgLum": 0.491,
+    "invisible": 35.5
+   },
+   "alt": {
+    "contrast": 4.82,
+    "bgLum": 0.5423,
+    "invisible": 18.5
+   }
+  },
+  {
+   "id": "L126",
+   "family": "mono",
+   "plan": "mono",
+   "reason": "both read about the same",
+   "base": {
+    "contrast": 1.27,
+    "bgLum": 0.2346,
+    "invisible": 54.1
+   },
+   "alt": {
+    "contrast": 1.46,
+    "bgLum": 0.2653,
+    "invisible": 31.4
+   }
+  }
+ ],
+ "errors": [],
+ "switched": 17
+}

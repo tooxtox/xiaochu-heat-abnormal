@@ -20,6 +20,14 @@ __pycache__/
 !/assets/audio/provenance.json
 /data/lyrics.json
 /data/lyrics_user_supplied.tsv
+# 语义导演表里带歌词片段（强调词与断句），同属权利方内容：
+# 用 tools/build_jizura_direction.py 从你自己的 lyrics.json 重新生成
+/data/jizura_direction.json
+# 强调词与断句的原始标注（带歌词原文），同属权利方内容
+/data/jizura_lyric_marks.json
+# 审计判定报告里逐行带歌词原文，同样不入库；
+# 用 tools/jizura_final_verdict.py 重新生成
+/data/jizura_verdict.json
 *.lrc
 *.mp3
 *.m4a

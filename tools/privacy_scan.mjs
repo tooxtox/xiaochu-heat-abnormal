@@ -7,14 +7,16 @@ const SKIP_DIRS = new Set(['.git', 'node_modules', 'export', 'work', '__pycache_
 const PATTERNS = [
   ['absolute-user-path', /[A-Za-z]:[\\/]Users[\\/][^\\/"'\s]+/g],
   ['unix-home-path', /\/home\/[A-Za-z0-9._-]+/g],
-  ['email', /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g],
+  // The TLD has to be a real one: "rgb@np.array" is a numpy attribute, not a mailbox.
+  ['email', /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.(?:com|cn|net|org|io|dev|jp|me|info|co|edu|gov|mil|int|uk|us|de|fr|kr|tw|hk|sg|au|ca|in|br|it|es|nl|se|ru|pl|tr|xyz|app|cloud|ai|me)(?![A-Za-z])/gi],
   ['github-token', /gh[pousr]_[A-Za-z0-9]{16,}/g],
   ['openai-key', /sk-[A-Za-z0-9_-]{20,}/g],
   ['aws-key', /AKIA[0-9A-Z]{16}/g],
   ['generic-secret-assignment', /(?:api[_-]?key|secret|passwd|password|token|access[_-]?key)\s*[:=]\s*["'][^"']{8,}["']/gi],
   ['bearer-header', /authorization\s*:\s*bearer\s+\S{12,}/gi],
-  ['phone-cn', /(?<!\d)1[3-9]\d{9}(?!\d)/g],
-  ['id-cn', /(?<!\d)\d{17}[\dXx](?!\d)/g],
+  // Not inside a hex digest: an 11-digit run inside a sha256 is not a phone number.
+  ['phone-cn', /(?<![0-9A-Za-z])1[3-9]\d{9}(?![0-9A-Za-z])/g],
+  ['id-cn', /(?<![0-9A-Za-z])\d{17}[\dXx](?![0-9A-Za-z])/g],
 ];
 
 const hits = [];

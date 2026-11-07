@@ -39,6 +39,7 @@ const json = async (file, fallback) => {
 const lyricFiles = { lyrics: overrides['--lyrics'] || 'data/lyrics.json', lyricDirection: overrides['--lyric-direction'] || 'data/lyric_direction.json' };
 const data = { config: await json('config.json'), features: await json('data/audio_features.json'), cues: await json('data/cues.json'), lyrics: await json(lyricFiles.lyrics, overrides['--lyrics'] ? undefined : { lines: [] }), lyricDirection: await json(lyricFiles.lyricDirection, overrides['--lyric-direction'] ? undefined : { cues: [] }), shots: await json('data/shots.json') };
 data.audio = data.audioFeatures = data.features;
+data.sceneLayers = await json('data/scene_layers.json', { themes: {} });
 const resources = { images: {}, rigData: data.config.rigs, makeCanvas: createCanvas, gradeMap: data.config.fxAssets };
 for (const [key, file] of Object.entries(data.config.images)) resources[key] = resources.images[key] = await loadImage(path.join(projectRoot, file));
 const report = JSON.parse(await readFile(movie.replace(/\.mp4$/i, '.qa.json'), 'utf8'));
@@ -58,7 +59,7 @@ for (const frame of frames) {
   ctx.reset();
   renderFrame(ctx, time, resources, data, canvas.width, canvas.height);
   const expected = ffmpeg(['-f', 'rawvideo', '-pixel_format', 'rgba', '-video_size', `${canvas.width}x${canvas.height}`, '-i', 'pipe:0', '-frames:v', '1', '-vf', 'scale=160:90:flags=area', '-pix_fmt', 'rgb24', '-f', 'rawvideo', 'pipe:1'], Buffer.from(canvas.data()));
-  const actual = ffmpeg(['-ss', String(frame / fps), '-i', movie, '-frames:v', '1', '-vf', 'scale=160:90:flags=area', '-pix_fmt', 'rgb24', '-f', 'rawvideo', 'pipe:1']);
+  const actual = ffmpeg(['-ss', String(Math.max(0, (frame - .25) / fps)), '-i', movie, '-frames:v', '1', '-vf', 'scale=160:90:flags=area', '-pix_fmt', 'rgb24', '-f', 'rawvideo', 'pipe:1']);
   let difference = 0, expectedSum = 0, actualSum = 0;
   for (let p = 0; p < expected.length; p++) { difference += Math.abs(expected[p] - actual[p]); expectedSum += expected[p]; actualSum += actual[p]; }
   const mae = difference / expected.length;
