@@ -4,6 +4,8 @@
 
 V18 重新编排整片节奏，将 230 镜收为 177 镜。176 处切点来自选定录音实测的节拍、半拍或瞬态，六处停顿由连续镜头承接。窗边、档案库和抒情段延长持镜，熔毁、现实崩解和紧接的再现保留鼓点快切。黑星、废墟、水淹街区、现实崩解和城市尾声改由 Three.js 绘制，观测走廊、档案库和反应堆补充管线、柜体和检修结构。运行 `npm install` 后打开 `?v=18` 预览，用 `node tools/render.mjs --v18 --gpu --nvenc --output export/LAST-SIGNAL-1080p60-v18.mp4` 导出。
 
+**V18 全曲分享版：`export/LAST-SIGNAL-720p30-v18.mp4`。** 1280×720、30fps、7,277 帧、242.57 秒、97,452,201 字节（3,214 kbps），H.264 + 原 AAC 立体声音轨（音轨直接复制，未重新编码，音轨包 SHA-256 与源一致）。**V18 母版：`export/LAST-SIGNAL-1080p60-v18.mp4`** —— 1920×1080、60fps、14,553 帧、242.55 秒、824,477,379 字节。分享版的转换命令见下「发布版」一节。
+
 V17 更新 0:02.796–1:30.215 的前段，镜头由 66 个增至 99 个，重新编排的 73 个切点对应音轨实测瞬态。Three.js 搭建前段的观测走廊和黑星外景、冷色过渡的水下档案库和高潮的熔毁反应堆。Canvas 保留小初与动效分层，JIZURA 继续按独立的阅读机位绘制。新人物素材为操作终端、抓住发带回身、受冲击撑身三种原图裁切。运行 `npm install` 后可从预览首页选择 V17，或使用 `?v=17`。导出使用 `node tools/render.mjs --v17 --output export/v17-render.mp4`，可选 `--gpu` 和 `--nvenc`。
 
 V16 母版为 `export/LAST-SIGNAL-1080p60-v16.mp4`，也可用预览参数 `?v=16` 或 `node tools/render.mjs --v16 --output export/v16-render.mp4`。2:14.593–2:47.983 的信号过渡由 5 镜增至 16 镜，从档案室推进到黑星和信号回收。3:19.467–3:46.033 的高潮由 42 镜增至 71 镜，使用原音轨测出的节拍与半拍瞬态剪辑。新增回眸、伸手、遮光三种姿态，直接裁自 ImageGen 原图。JIZURA 和行级歌词时间沿用 V15。下次导出优先用短片实测浏览器显卡加速与 NVENC 编码。
@@ -166,6 +168,9 @@ node tools/render.mjs --jizura --jobs 5 --chunk-duration 24 --output export/LAST
 
 # 发布版：降到 720p30（隔帧 + Lanczos 缩放，音轨原样复制）
 ffmpeg -v error -y -i export/LAST-SIGNAL-1080p60-v15.mp4 -vf "scale=1280:720:flags=lanczos,fps=30" -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -c:a copy -movflags +faststart export/LAST-SIGNAL-720p30-v15.mp4
+
+# 第十八版分享版：同一配方，输出约 97 MB
+ffmpeg -v error -y -i export/LAST-SIGNAL-1080p60-v18.mp4 -vf "scale=1280:720:flags=lanczos,fps=30" -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -c:a copy -movflags +faststart export/LAST-SIGNAL-720p30-v18.mp4
 
 # 成片音轨、逐帧变化与分段首帧对照
 python tools/check_sync.py export/LAST-SIGNAL-1080p60-v9.mp4 --output export/sync-check-v9.json
