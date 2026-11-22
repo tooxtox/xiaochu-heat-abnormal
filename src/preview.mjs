@@ -2,7 +2,8 @@ import {renderFrame,sceneAt,shotAt,clamp} from './film.mjs';
 import {glitchToggle} from './glitch.mjs';
 const $=id=>document.getElementById(id), film=$('film'),ctx=film.getContext('2d'),audio=$('audio');
 const read=path=>fetch(path).then(r=>{if(!r.ok)throw Error(`加载失败 ${path}`);return r.json()});
-const query=new URLSearchParams(location.search),v16=query.get('v')==='16';
+const query=new URLSearchParams(location.search),version=query.get('v');
+const v18=version==='18',v17=v18||version==='17',v16=v17||version==='16',exporting=query.get('export')==='1';
 const AUDIO_HINT='未找到音源：请把音频放到 assets/audio/song.m4a，或用「替换本地音源」载入。';
 let audioMissing=false;
 audio.addEventListener('error',()=>{audioMissing=true;$('status').textContent=AUDIO_HINT});
@@ -18,12 +19,32 @@ if(v16){
   import('./v16_edit.mjs'),read('./data/v16_cold_shots.json'),read('./data/v16_climax_shots.json'),
  ]);
  applyV16Edit(data,cold,climax);
- $('edition').textContent='XIAOCHU — LAST OBSERVATORY / V16';
+ $('edition').textContent=`XIAOCHU — LAST OBSERVATORY / V${version}`;
+}
+if(v17){
+ const [{applyV17Edit},front]=await Promise.all([import('./v17_edit.mjs'),read('./data/v17_front_shots.json')]);
+ applyV17Edit(data,front);
+}
+if(v18){
+ const [{applyV18Edit},edit]=await Promise.all([import('./v18_edit.mjs'),read('./data/v18_shots.json')]);
+ applyV18Edit(data,edit);
 }
 const shots=data.shots,resources={rigData:config.rigs,gradeMap:config.fxAssets};
+if(v17){
+ const [effects,space,reactor,archive,city]=await Promise.all([
+  import('./v17_front_fx.mjs'),import('./v17_space.mjs'),import('./v17_reactor_3d.mjs'),
+  import('./v17_archive_3d.mjs'),v18?import('./v18_city_3d.mjs'):null,
+ ]);
+ resources.frontEffects=effects.drawFrontEffects;
+ resources.frontSpace=space.drawV17SpaceFactory({
+  reactor:()=>reactor.createReactorRoom({detail:v18}),
+  archive:()=>archive.createArchiveRoom({detail:v18}),
+  city:city?.createCityRoom,
+ },{detail:v18});
+}
 const wantsJizura=v16||query.get('jizura')==='1';
 const hasJizuraInputs=lyrics.lines.length>0&&jizuraDirection.lines.length>0;
-if(wantsJizura&&!hasJizuraInputs&&query.get('export')==='1'){
+if(wantsJizura&&!hasJizuraInputs&&exporting){
  throw Error('导出 JIZURA 版本需要 data/lyrics.json 和 data/jizura_direction.json。');
 }
 if(wantsJizura&&hasJizuraInputs){
@@ -34,6 +55,8 @@ const characterFxCues=cues.characterFx||[];
 const reviews=[['消去循环 · 中量崩坏',9,1.2],['临近循环 · 中量崩坏',23,1.2],['低语循环 · 中量崩坏',37,1.2],['黑星循环Ⅰ · 中量崩坏',50,1.2],['背向循环 · 中量崩坏',71,1.2],['黑星循环Ⅱ · 中量崩坏',83,1.2],['终章循环 · 中量崩坏',118,1.2],['道路透视',33],['眼部竖排',65],['盐晶与泪',68],['鱼群海面',80],['燕迹与云',98],['掌心曲线',104],['热异常',107],['现实裂解 · 高潮崩坏',109]];
 const sceneReviews=[['消去 · 眼部刻印',31.35],['燃旗 · 街道落点',47.8],['黑星 · 轨道字',63.1],['归海 · 城市远景',190.6],['燕迹 · 窗边记忆',195.8],['热异常 · 核心断版',214.5]];
 if(v16)sceneReviews.unshift(['冷色过渡 · 潜入档案',134.8],['冷色过渡 · 黑星与信号',148],['终章 · 对拍剪辑',199.47],['终章 · 核心熔毁',212.7]);
+if(v17)sceneReviews.unshift(['前段 · 终端扫光',5.7],['前段 · 温度警报',25.65],['前段 · 删除循环',32.2],['前段 · 黑星引力',64.2],['冷色段 · 立体下潜',146.8],['高潮 · 立体反应堆',213.05]);
+if(v18)sceneReviews.unshift(['V18 · 废城街道',48],['V18 · 黑星城上空',63.8],['V18 · 窗边长镜',96],['V18 · 临界城市',217.7],['V18 · 最后的城市灯光',234.1]);
 $('fxReview').replaceChildren(new Option('跳转查看歌词与场景',''),...sceneReviews.map(([label,t])=>new Option(`${label} · ${t.toFixed(2)}s`,String(t))),...reviews.map(([label,n,offset=.25])=>new Option(`${label} · ${lyrics.lines[n-1]?.time.toFixed(2)||'0'}s`,String((lyrics.lines[n-1]?.time||0)+offset))));
 resources.makeCanvas=(width,height)=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;return canvas};
 window.MVResources=resources;
@@ -41,7 +64,7 @@ await Promise.all(Object.entries(config.images).map(async([key,path])=>{const im
 await Promise.all(['Noto Serif JP','Noto Sans JP','Noto Sans SC'].map(name=>document.fonts.load(`32px "${name}"`)));await document.fonts.ready;window.MV={duration:config.duration,fps:config.fps};window.MVData=data;
 let time=0,playing=false,clockOrigin=0;
 const format=t=>`${Math.floor(t/60).toString().padStart(2,'0')}:${(t%60).toFixed(3).padStart(6,'0')}`;
-window.renderAt=async(t,size={})=>{if(size.width&&film.width!==size.width){film.width=size.width;film.height=size.height||size.width*9/16}time=clamp(t,0,config.duration);renderFrame(ctx,time,resources,data,film.width,film.height);$('seek').value=time;$('clock').value=format(time);const sh=shotAt(time,data);$('scene').textContent=`${sceneAt(time,data).label} / SHOT ${String(sh.id).padStart(3,'0')} / ${sh.mode}`;drawWave();return true};
+window.renderAt=async(t,size={})=>{if(size.width&&film.width!==size.width){film.width=size.width;film.height=size.height||size.width*9/16}time=clamp(t,0,config.duration);renderFrame(ctx,time,resources,data,film.width,film.height);if(!exporting){$('seek').value=time;$('clock').value=format(time);const sh=shotAt(time,data);$('scene').textContent=`${sceneAt(time,data).label} / SHOT ${String(sh.id).padStart(3,'0')} / ${sh.mode}`;drawWave()}return true};
 function drawWave(){const canvas=$('wave'),c=canvas.getContext('2d'),w=canvas.width;c.fillStyle='#0C171C';c.fillRect(0,0,w,88);const a=features.envelope;for(let i=0;i<w;i++){const v=a[Math.floor(i/w*a.length)]||0;c.fillStyle='#294f4c';c.fillRect(i,44-v*34,1,Math.max(1,v*68))}for(const s of shots.shots){const x=s.start/config.duration*w;c.fillStyle='#ED8B5040';c.fillRect(x,24,1,64)}for(const s of cues.scenes){const x=s.start/config.duration*w;c.fillStyle=s.color;c.fillRect(x,0,1,88);c.font='10px Consolas';c.fillText(String(s.id).padStart(2,'0'),x+4,14)}c.fillStyle='#e9acc8';c.fillRect(time/config.duration*w-1,0,2,88)}
 function pause(){audio.pause();playing=false;$('play').textContent='播放'}
 async function play(){if(playing){pause();return}if(audioMissing){clockOrigin=performance.now()-time*1000;playing=true;$('play').textContent='暂停';requestAnimationFrame(tick);return}audio.currentTime=time;try{await audio.play();playing=true;$('play').textContent='暂停';requestAnimationFrame(tick)}catch(e){$('status').textContent=e.message}}

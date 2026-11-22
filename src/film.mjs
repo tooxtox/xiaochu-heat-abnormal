@@ -253,6 +253,7 @@ function paintLyricBack(c,resources){
   const st=stages.get(c);
   if(!st||st.lyricBackDrawn)return;
   st.lyricBackDrawn=true;
+  drawFrontPlane(c,resources,st,'back');
   if(!resources.jizuraDraw){drawLyricMotifs(c,st.t,resources,st.data,'back');drawLyricArt(c,st.t,resources,st.data,'back');return;}
   c.save();
   c.setTransform(1,0,0,1,0,0);
@@ -261,6 +262,15 @@ function paintLyricBack(c,resources){
   c.globalCompositeOperation='source-over';
   resources.jizuraDraw(c,st.t,st.data,'back');
   c.restore();
+}
+function drawFrontPlane(c,resources,stage,plane){
+ if(!stage?.frontShot||!resources.frontEffects)return;
+ c.save();
+ c.setTransform(stage.scaleX,0,0,stage.scaleY,0,0);
+ c.globalAlpha=1;
+ c.globalCompositeOperation='source-over';
+ resources.frontEffects(c,{t:stage.t,scene:stage.s,shot:stage.frontShot,data:stage.data,music:stage.music,plane});
+ c.restore();
 }
 function stageShadows(c,x,y,h,pose,light,daylight){
  const d=FOOTPRINT[pose],q=h/d.h;
@@ -455,6 +465,116 @@ function climaxPortrait(c,t,resources,data,scene,shot,context){
  }
  foregroundLayer(c,t,data,scene,accent,context);
 }
+function frontPortrait(c,t,resources,data,scene,shot,color,context,music){
+ const dial=shot.frontLook==='console',brace=shot.frontLook==='recoil';
+ const turnsRight=shot.frontLook==='turn'&&shot.pose!=='v16Look';
+ const x=turnsRight?683:dial?1330:brace?1345:1225;
+ const y=dial?1120:brace?1152:1130;
+ const h=dial?926:brace?1040:1000;
+ const close3d=scene.id===2&&(dial||shot.pose==='v17Profile');
+ const drawn=close3d&&resources.frontSpace?.(c,'corridor',t,shot,music);
+ if(!drawn)environment(c,t,data,scene,color,context);
+
+ const aim=turnsRight?1330:520;
+ const warm=scene.id!==2;
+ const glow=c.createRadialGradient(aim,570,58,aim,570,650);
+ glow.addColorStop(0,alpha(warm?'#E27455':'#82DABD',.17+music.onset*.14));
+ glow.addColorStop(1,alpha(color,0));
+ c.fillStyle=glow;c.fillRect(0,0,W,H);
+ character(c,resources,t,x,y,h,shot.pose,brace?1.3:.35,1,{placed:true});
+
+ if(dial){
+  // Lens-side console edge crosses the waist; the hand reaches toward its illuminated keys.
+  path(c,[[518,1080],[683,960],[1690,1002],[1930,1080]],'#121E27',1,true);
+  path(c,[[522,1080],[677,960],[1710,1003],[1900,1080],[1730,1080],[695,1004]],'#2A5155',1,true);
+  line(c,677,960,1710,1003,alpha(color,.65),2);
+  for(let i=0;i<13;i++){
+   const px=705+i*43,py=985+i*2.0;
+   line(c,px,py,px+24,py+1,alpha(color,.24+(i%3)*.11),3);
+  }
+ }else{
+  nearBarrier(c,t,{side:turnsRight?-1:1,y:1077,reach:brace?435:373,rim:color,travel:context.local*6});
+ }
+ foregroundLayer(c,t,data,scene,color,context);
+}
+
+function frontExterior(c,t,resources,data,scene,shot,color,context,music){
+ const orbit=scene.id===5&&(shot.mode==='world'||shot.frontLook==='prism');
+ const hall=scene.id===2&&(shot.frontLook==='prism'||shot.mode==='world');
+ if(!orbit&&!hall)return false;
+ if(!resources.frontSpace?.(c,orbit?'star':'corridor',t,shot,music))return false;
+ if(shot.mode==='world'){
+  const x=orbit?470:1430;
+  character(c,resources,t,x,956,orbit?613:635,'full',.65);
+ }
+ nearBarrier(c,t,{side:orbit?1:-1,y:973,reach:orbit?460:345,rim:color,travel:context.local*5});
+ if(orbit)text(c,'BLACK STAR  /  OCCULTATION',112,921,18,P.paper);
+ return true;
+}
+
+function depthArchive(c,t,resources,shot,music){
+ if(!['dive','racks','lift'].includes(shot.coldScene))return false;
+ if(!resources.frontSpace?.(c,'archive',t,shot,music))return false;
+ paintLyricBack(c,resources);
+ const pitch=shot.coldScene==='racks'?'SUBMERGED INDEX':shot.coldScene==='lift'?'ASCENT / RETURN':'DESCENT / ARCHIVE WELL';
+ text(c,pitch,128,930,20,'#a1d5d8');
+ line(c,126,952,428,952,alpha('#a1d5d8',.45),1);
+ return true;
+}
+
+function depthReactor(c,t,resources,data,scene,shot,context,music){
+ if(scene.id!==8||!['portrait','abstract','world'].includes(shot.mode))return false;
+ if(!resources.frontSpace?.(c,'reactor',t,shot,music))return false;
+ if(shot.mode==='portrait'&&shot.pose&&resources[shot.pose]){
+  character(c,resources,t,1375,1150,1030,shot.pose,1.55,1,{placed:true});
+  nearBarrier(c,t,{side:1,y:1059,reach:470,rim:'#e98d62',travel:context.local*6});
+ }else if(shot.mode==='world'){
+  character(c,resources,t,486,951,578,'full',1.6,1,{placed:true});
+ }
+ foregroundLayer(c,t,data,scene,P.red,context);
+ return true;
+}
+
+function drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,context,music){
+ if(!data.v18||(![5,6,9].includes(s.id)&&s.segment!==33))return false;
+ if(!resources.frontSpace?.(c,'city',t,shot,music,s))return false;
+ const mode=shot.mode;
+ if(mode==='eye'){
+  eyeInsert(c,t,resources,s,narrativeShot,color,true);
+ }else if(mode==='hand'){
+  handInsert(c,t,resources,s,narrativeShot,color,flower,true);
+ }else if(s.segment===33){
+  if(mode==='portrait'){
+   character(c,resources,t,1395,1115,1105,'peace',.15,1,{placed:true});
+   nearBarrier(c,t,{side:1,y:1010,reach:429,rim:'#8ac6bd',travel:context.local*4});
+  }
+  transmission(c,t,data,P.mint);
+ }else if(mode==='portrait'){
+  const pose=shot.pose&&resources[shot.pose]?shot.pose:'fear';
+  const looksRight=pose==='v17Profile';
+  const x=looksRight||s.id===5?595:1370;
+  character(c,resources,t,x,1144,pose==='fear'?1165:1050,pose,1,1,{placed:true});
+  nearBarrier(c,t,{side:x<960?-1:1,y:1047,reach:410,rim:color,travel:context.local*6});
+ }else if(mode==='world'||mode==='wide'){
+  const projected=resources.frontSpace.subject;
+  const rooted=projected&&[projected.x,projected.y,projected.height].every(Number.isFinite);
+  // Keep the same ground anchor as the dolly moves; screen bounds must never switch it to another lane.
+  const x=rooted?clamp(projected.x,140,1780):s.id===5?460:1380;
+  const y=rooted?clamp(projected.y,650,1120):954;
+  const h=rooted?clamp(projected.height,195,810):645;
+  character(c,resources,t,x,y,h,'full',s.id===9?1.65:.65,1,{placed:true});
+ }
+ if(s.id===9&&mode==='abstract'){
+  // Tiny displaced survey marks give the reality-cut its visual beat over the same physical city.
+  const p=Math.exp(-Math.max(0,t-shot.start)*11);
+  for(let i=0;i<4;i++){
+   const x=280+i*440,y=325+230*hash(shot.id+i);
+   line(c,x-34*p,y,x+66*p,y-9,alpha('#E29177',.25+p*.38),1.2);
+  }
+ }
+ return true;
+}
+
 function renderBaseFrame(c,t,resources,data,width=W,height=H){
  configurePalette(data.config.palette);
  resources.fx=characterFxAt(data,t);
@@ -470,20 +590,26 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  const local=t-s.start,end=sceneEnd(s,data),progress=clamp(local/(end-s.start)),e=pulse(data,t),color=resolveInk(s.color)||P.mint;
  const music=musicState(data,t);
  const baseShot=shot.baseShot||shot,mode=shot.mode,variant=mode==='portrait'?1:mode==='wide'?0:shot.variant,shotProgress=clamp((t-baseShot.start)/(baseShot.end-baseShot.start));
+ const frontShot=data.frontEdit&&t>=data.frontEdit.start&&t<data.frontEdit.end?shot:null;
  // 快切只换取景；人物到场、终端与意象沿原镜头时间继续，避免反复重启动画。
  const narrativeShot=shot.baseShot?{...shot,start:baseShot.start,end:baseShot.end}:shot;
  const hasLyrics=resources.jizuraDraw?(data.lyrics?.lines||[]).some(line=>t>=line.time&&t<line.end):activeLyricCues(data,t).length>0;
- stages.set(c,{t,data,s,shot:shot.baseShot?{...narrativeShot,id:baseShot.id}:shot,age:t-baseShot.start,progress:shotProgress,energy:e,hasLyrics,lyricBackDrawn:false,music,scaleX:width/W,scaleY:height/H});
+ stages.set(c,{t,data,s,frontShot,shot:shot.baseShot?{...narrativeShot,id:baseShot.id}:shot,age:t-baseShot.start,progress:shotProgress,energy:e,hasLyrics,lyricBackDrawn:false,music,scaleX:width/W,scaleY:height/H});
  resources.lyricActive=hasLyrics;resources.drawLyricBack=context=>paintLyricBack(context,resources);
  const ctxExtra={local,energy:music.energy,progress};
  c.save();
- if(mode==='cold'){
+ if(drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,ctxExtra,music)){}
+ else if(mode==='cold'&&depthArchive(c,t,resources,shot,music)){}
+ else if(mode==='cold'){
   drawColdInterlude(c,{t,shot,data,resources,music,
    drawCharacter:(x,y,h,pose,wind,opacity,placement)=>character(c,resources,t,x,y,h,pose,wind,opacity,placement),
    drawLyricBack:()=>paintLyricBack(c,resources),
   });
  }
+ else if(frontShot&&mode==='portrait'&&shot.pose&&resources[shot.pose]){frontPortrait(c,t,resources,data,s,shot,color,ctxExtra,music)}
+ else if(depthReactor(c,t,resources,data,s,shot,ctxExtra,music)){}
  else if(mode==='portrait'&&shot.pose&&resources[shot.pose]){climaxPortrait(c,t,resources,data,s,shot,ctxExtra)}
+ else if(frontShot&&frontExterior(c,t,resources,data,s,shot,color,ctxExtra,music)){}
  else if(mode==='eye'&&s.id<10){eyeInsert(c,t,resources,s,narrativeShot,color)}
  else if(mode==='hand'&&s.id<11){handInsert(c,t,resources,s,narrativeShot,color,flower)}
  else if(mode==='world'&&worldShot(c,t,resources,data,s,shot,color,progress)){}
@@ -648,6 +774,7 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  // Deliberate tears are confined to a thin band and never invert the whole frame.
  const tearEvents=data.cues.events?.filter(e=>e.type==='tear')||[];for(const ev of tearEvents){const dt=t-ev.time;if(dt>=0&&dt<.14){const yy=220+hash(ev.time)*570;c.fillStyle='#090C1370';c.fillRect(60,yy,1800,16);line(c,60,yy,1860,yy,color,1)}}
  paintLyricBack(c,resources);
+ drawFrontPlane(c,resources,stages.get(c),'front');
  if(!resources.jizuraDraw)drawLyricMotifs(c,t,resources,data,'front');
  c.restore();
 }

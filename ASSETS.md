@@ -19,6 +19,16 @@
 - `assets/character/trace-details.json`、`assets/character/trace-pipeline.json`：描线与拆层的细节记录。
 - `assets/character/compare.png`、`seated-compare.png`、`eyes-compare.png`、`hand-compare.png`：原稿与处理结果的对照图。
 
+## 姿态图集（第十七版新增）
+
+`assets/character/v17/pose-atlas-original.png` 是图像模型输出的姿态图集原稿，以下三张均为**从该原稿直接裁切**，未重新生成角色设定：
+
+| 文件 | 用途 |
+| --- | --- |
+| `assets/character/v17/dial.png` | 操作终端（低头看仪表） |
+| `assets/character/v17/profile.png` | 抓住发带回身 |
+| `assets/character/v17/brace.png` | 受冲击撑身 |
+
 ## 字体
 
 `assets/fonts/` 下的 **Noto Serif JP / Noto Sans JP / Noto Sans SC** 以 SIL OFL 1.1 授权，许可全文见 `assets/fonts/NotoSansJP-LICENSE.txt`、`assets/fonts/NotoSerifJP-LICENSE.txt` 与 `assets/fonts/OFL-NotoSansSC.txt`。中文译文使用 Noto Sans SC。

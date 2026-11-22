@@ -10,6 +10,8 @@
 //   2. where the Chinese translation sits — a subtitle band that survives any background;
 //   3. determinism — every renderer is built and every paper texture is pre-warmed while a
 //      seeded Math.random shim is installed, so separate render workers agree pixel for pixel.
+import { editorialShotAt } from './transitions.mjs';
+
 const W = 1920, H = 1080;
 
 function script(src){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(Error(`Cannot load ${src}`));document.head.append(s)})}
@@ -161,8 +163,14 @@ export async function createJizuraLayer(data){
       // two ink polarities against the real picture. It only measures — the director table
       // still decides what is actually rendered.
       const probe=window.__MZ_PLAN_PROBE;
-      const plan=(probe&&probe[line.id])||d.plan;
-      return {line,d,plan,plane:d.layer==='behind'?'back':'front',interlude:false};
+      // The V17 reactor replaced the brighter V16 plate. Keep the same motion and use its light ink variant.
+      const reactorInk=data.frontEdit&&(line.id==='L106'||line.id==='L107')&&d.plan==='redAlt'?'red':d.plan;
+      const shot=data.v18?editorialShotAt(data,t):null;
+      const city=shot&&[5,6,9].includes(shot.scene);
+      const opposite=reactorInk.replace(/Alt$/,'');
+      const cityInk=city&&shot.mode!=='eye'&&direction.plans[opposite]?opposite:reactorInk;
+      const plan=(probe&&probe[line.id])||cityInk;
+      return {line,d,plan,plane:d.layer==='behind'?'back':'front',interlude:false,cityEye:city&&shot.mode==='eye'};
     }
     const gap=gapAt(t);
     if(!gap) return null;
@@ -229,7 +237,13 @@ export async function createJizuraLayer(data){
         // active impact event, so an emphasised line (chroma + shake) fades the whole lyric away.
         // The film's own glitch pass drives the screen-level impact instead.
         window.JZ.drawPlan(state.plan,layer,t,'front',{noPost:true});
-        c.drawImage(canvas,0,0,W,H);
+        if(state.cityEye){
+          c.save();
+          c.shadowColor=state.plan.endsWith('Alt')?'#E9EDE5BB':'#090C13DC';
+          c.shadowBlur=8*Math.hypot(c.getTransform().a,c.getTransform().b);
+          c.drawImage(canvas,0,0,W,H);
+          c.restore();
+        }else c.drawImage(canvas,0,0,W,H);
       }
     }
     if(plane==='front') drawTranslation(c,state);

@@ -1,6 +1,10 @@
 ﻿# 熱異常 / LAST SIGNAL
 
-原创角色小初的代码动画 MV，当前版本 V16。使用用户指定的 [25時、ナイトコードで。× KAITO / B 站 2DMV](https://www.bilibili.com/video/BV1eGZLBkE5X/)，保留源音频零点与全长 242.538333 秒。
+原创角色小初的代码动画 MV，当前工程版本 V18。使用用户指定的 [25時、ナイトコードで。× KAITO / B 站 2DMV](https://www.bilibili.com/video/BV1eGZLBkE5X/)，保留源音频零点与全长 242.538333 秒。
+
+V18 重新编排整片节奏，将 230 镜收为 177 镜。176 处切点来自选定录音实测的节拍、半拍或瞬态，六处停顿由连续镜头承接。窗边、档案库和抒情段延长持镜，熔毁、现实崩解和紧接的再现保留鼓点快切。黑星、废墟、水淹街区、现实崩解和城市尾声改由 Three.js 绘制，观测走廊、档案库和反应堆补充管线、柜体和检修结构。运行 `npm install` 后打开 `?v=18` 预览，用 `node tools/render.mjs --v18 --gpu --nvenc --output export/LAST-SIGNAL-1080p60-v18.mp4` 导出。
+
+V17 更新 0:02.796–1:30.215 的前段，镜头由 66 个增至 99 个，重新编排的 73 个切点对应音轨实测瞬态。Three.js 搭建前段的观测走廊和黑星外景、冷色过渡的水下档案库和高潮的熔毁反应堆。Canvas 保留小初与动效分层，JIZURA 继续按独立的阅读机位绘制。新人物素材为操作终端、抓住发带回身、受冲击撑身三种原图裁切。运行 `npm install` 后可从预览首页选择 V17，或使用 `?v=17`。导出使用 `node tools/render.mjs --v17 --output export/v17-render.mp4`，可选 `--gpu` 和 `--nvenc`。
 
 V16 母版为 `export/LAST-SIGNAL-1080p60-v16.mp4`，也可用预览参数 `?v=16` 或 `node tools/render.mjs --v16 --output export/v16-render.mp4`。2:14.593–2:47.983 的信号过渡由 5 镜增至 16 镜，从档案室推进到黑星和信号回收。3:19.467–3:46.033 的高潮由 42 镜增至 71 镜，使用原音轨测出的节拍与半拍瞬态剪辑。新增回眸、伸手、遮光三种姿态，直接裁自 ImageGen 原图。JIZURA 和行级歌词时间沿用 V15。下次导出优先用短片实测浏览器显卡加速与 NVENC 编码。
 
@@ -101,6 +105,9 @@ node tools/privacy_scan.mjs
 
 设计与验收文档（均已发布在 `docs/`）：
 
+- `docs/V18.md`、`docs/QA-V18.md`：第十八版设计与验收（整片重排 230→177 镜、Three.js 城市五景与房间细节）。
+- `docs/V17.md`：第十七版设计与验收（前段重排 66→99 镜、Three.js 空间）。
+- `docs/V16.md`：第十六版设计与验收（高潮切点重剪、冷段扩写）。
 - `docs/V15-JIZURA.md`：JIZURA 字面歌词导演层（语义导演表、配色极性、转场吞字、分句交接、确定性）。
 - `docs/V14.md`：文字 PV、人物落地与成片验收。
 - `docs/V13.md`、`docs/QA-V13.md`：第十三版设计与验收（城市地面／城市多样性／转场强化）。

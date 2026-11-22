@@ -8,12 +8,14 @@ const shotsOf=data=>data.shots?.shots||[];
 function shotIndex(shots,t){
  let lo=0,hi=shots.length;while(lo<hi){const m=(lo+hi)>>>1;if(shots[m].start<=t)lo=m+1;else hi=m}return Math.max(0,lo-1);
 }
-export function editorialShotAt(data,t){
- // Compare on the same side of a cut when its fractional frame time was rounded by the exporter.
- const time=data.frameLockedEdit?t+1e-8:t;
- const shots=shotsOf(data),shot=shots[shotIndex(shots,time)];
+function shotForTime(shots,time){
+ const shot=shots[shotIndex(shots,time)];
  if(shot?.baseShot&&shot.rhythm&&(time<shot.rhythm.from||time>=shot.rhythm.to))return shot.baseShot;
  return shot;
+}
+export function editorialShotAt(data,t){
+ // Compare on the same side of a cut when its fractional frame time was rounded by the exporter.
+ return shotForTime(shotsOf(data),data.frameLockedEdit?t+1e-8:t);
 }
 function sceneId(data,shot,t){
  if(shot?.scene!=null)return shot.scene;
@@ -42,16 +44,17 @@ const FRAME={
 };
 // Positions are canonical pixels; anchors are normalized. Overscan covers roll/pan.
 export function cameraAt(data,t,reading=false){
- const editShot=editorialShotAt(data,t)||{id:1,start:0,end:data.config?.duration||243,mode:'world'};
+ const oldReadingShot=reading&&data.readingShots&&shotForTime(data.readingShots,t+1e-8);
+ const editShot=oldReadingShot||editorialShotAt(data,t)||{id:1,start:0,end:data.config?.duration||243,mode:'world'};
  // 主阅读层保持原叙事镜头的平稳机位，画面可在字后快速切换。
  const shot=reading?(editShot.baseShot||editShot):editShot,rhythm=reading?null:shot.rhythm;
  const scene=sceneId(data,shot,t),p=clamp((t-shot.start)/Math.max(.001,shot.end-shot.start));
  const duration=data.config?.duration||243;
  if(t<2.73||scene===11||t>duration-1.3)return {enabled:false,shotId:shot.id,scene,mode:shot.mode,progress:p,zoom:1,panX:0,panY:0,roll:0,anchorX:.5,anchorY:.5};
- const quiet=scene===7||scene===10,critical=scene===4||scene===8||scene===9;
+ const quiet=scene===7||scene===10||(!reading&&shot.musicPacing==='held'),critical=scene===4||scene===8||scene===9;
  const direction=shot.id%2?1:-1,travel=direction===1?smooth(p):1-smooth(p);
  const span=quiet?.026:shot.mode==='eye'?.10:shot.mode==='abstract'?.095:shot.mode==='hand'?.08:.085;
- const impact=critical?onsetImpact(data,t):0;
+ const impact=critical&&!(!reading&&shot.musicPacing==='held')?onsetImpact(data,t):0;
  const frame=reading?null:(FRAME[scene]||null);
  let zoom=(1.035+span*travel+impact*.0025)*(frame?.zoom??1);
  if(rhythm){
@@ -106,6 +109,8 @@ export function transitionAt(data,t){
   };
   const sceneChanged=scene!==previousScene;
   const contrast=sceneContrast(data,previousScene,scene);
+  if(to.musicPacing==='held')return make('memory-dissolve',Math.min(.66,(to.end-to.start)*.26));
+  if(to.musicPacing==='flow'&&!sceneChanged&&!to.rhythm)return null;
   if(to.rhythm){
     // 前后反差强的段落首切：哪怕这一镜是快切，也要给观众一个"世界被换掉"的强转场。
     if(!to.rhythm.beatLocked&&sceneChanged&&contrast>=56&&scene!==7&&scene!==11&&scene!==10){

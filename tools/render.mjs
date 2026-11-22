@@ -12,7 +12,7 @@ import { verifyJoins } from './check_joins.mjs';
 
 const defaults = { root: projectRoot, width: 1920, height: 1080, fps: 60, start: 0, engine: 'native', preset: 'fast', crf: 18, 'chunk-duration': 60, jobs: 1, 'encoder-threads': 4 };
 const options = { ...defaults };
-const booleanOptions = new Set(['silent', 'self-test', 'help', 'jizura', 'v16']);
+const booleanOptions = new Set(['silent', 'self-test', 'help', 'jizura', 'v16', 'v17', 'v18', 'gpu', 'nvenc']);
 const allowedOptions = new Set([...Object.keys(defaults), ...booleanOptions, 'duration', 'output', 'audio', 'browser', 'modules', 'renderer', 'lyrics', 'lyric-direction']);
 for (let i = 2; i < process.argv.length; i++) {
   const name = process.argv[i].replace(/^--/, '');
@@ -25,7 +25,7 @@ for (let i = 2; i < process.argv.length; i++) {
   }
 }
 if (options.help) {
-  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--jizura] [--v16] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
+  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--jizura] [--v16|--v17|--v18] [--gpu] [--nvenc] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
   process.exit(0);
 }
 for (const name of ['width', 'height', 'fps', 'start', 'crf']) options[name] = Number(options[name]);
@@ -37,12 +37,13 @@ if (!Number.isInteger(options['encoder-threads']) || options['encoder-threads'] 
 if(!Number.isInteger(options.jobs)||options.jobs<1||options.jobs>8)throw new Error('--jobs must be an integer between 1 and 8.');
 if (!Number.isFinite(options['chunk-duration']) || options['chunk-duration'] < 0) throw new Error('--chunk-duration must be nonnegative.');
 if (![options.width, options.height, options.fps].every(n => Number.isFinite(n) && n > 0) || !Number.isInteger(options.width) || !Number.isInteger(options.height) || options.width % 2 || options.height % 2 || options.fps > 120 || options.start < 0 || !Number.isFinite(options.start)) throw new Error('Use positive even dimensions, fps <=120, and start >=0.');
-if (options.v16) options.jizura = true;
+if (options.v16 || options.v17 || options.v18) options.jizura = true;
 if (options.jizura) {
   if (options.lyrics || options['lyric-direction']) throw new Error('--jizura uses the project lyric data; custom lyric inputs are not supported.');
   options.engine = 'browser';
 }
 if (!['native', 'browser'].includes(options.engine)) throw new Error('--engine must be native or browser');
+if (options.gpu && options.engine !== 'browser') throw new Error('--gpu requires the browser engine.');
 options.root = path.resolve(options.root);
 const bundledModules = process.env.CODEX_NODE_MODULES || path.join(process.cwd(), 'node_modules');
 function dependency(name) {
@@ -96,6 +97,7 @@ const output = path.resolve(options.root, options.output || 'export/xiaochu-heat
 await mkdir(path.dirname(output), { recursive: true });
 const qa = { schemaVersion: 1, output: path.basename(output), engine: options.engine, start: options.start, requestedDuration: duration, encodedDuration, width: options.width, height: options.height, fps: options.fps, expectedFrames: count, withAudio, checks: {}, flashHeuristic: { certification: false, note: 'Low-resolution luminance/red transition screening only. This is not a photosensitive-epilepsy safety certification.', threshold: 'At least 6 large-area contrast transitions inside a sliding 1-second window.', sampledFrames: 0, transitions: [], flaggedWindows: [] } };
 qa.lyricInputs = Object.fromEntries(Object.entries(lyricFiles).map(([key, file]) => [key, path.resolve(options.root, file)]));
+qa.encoder = options.nvenc ? 'h264_nvenc' : 'libx264';
 if (options['chunk-duration'] > 0 && count > Math.max(1, Math.floor(options['chunk-duration'] * options.fps))) {
   // ponytail: reset native/ffmpeg allocations every60s; use copied video chunks and one final audio mux.
   const workBase = path.resolve(options.root, 'work');
@@ -108,8 +110,7 @@ if (options['chunk-duration'] > 0 && count > Math.max(1, Math.floor(options['chu
       const offset=index*chunkFrames;
       const frames = Math.min(chunkFrames, count - offset), name = `part-${String(index).padStart(4, '0')}.mp4`, part = path.join(temp, name);
       const args = [fileURLToPath(import.meta.url), '--root', options.root, '--start', String(+(options.start + offset / options.fps).toFixed(9)), '--duration', String((frames - 1e-6) / options.fps), '--chunk-duration', '0', '--silent', '--output', part];
-      if (options.jizura) args.push('--jizura');
-      if (options.v16) args.push('--v16');
+      for (const flag of ['jizura', 'v16', 'v17', 'v18', 'gpu', 'nvenc']) if (options[flag]) args.push(`--${flag}`);
       for (const key of ['width', 'height', 'fps', 'engine', 'preset', 'crf', 'encoder-threads', 'modules', 'renderer', 'browser', 'lyrics', 'lyric-direction']) if (options[key] !== undefined) args.push(`--${key}`, String(options[key]));
       console.log(`Rendering chunk ${index + 1}/${chunkCount}, frames ${offset}…${offset + frames - 1}.`);
       // Several browsers start at once; a cold Chrome can miss the navigation deadline
@@ -143,11 +144,13 @@ if (options['chunk-duration'] > 0 && count > Math.max(1, Math.floor(options['chu
     if (withAudio) args.push('-ss', String(options.start), '-i', audioPath);
     args.push('-map', '0:v:0', '-c:v', 'copy');
     if (withAudio) args.push('-map', '1:a:0', '-c:a', options.start === 0 ? 'copy' : 'aac', ...(options.start === 0 ? [] : ['-b:a', '320k']));
+    if (options.nvenc) args.push('-movie_timescale', '60000', '-video_track_timescale', '15360');
     args.push('-t', String(encodedDuration), '-movflags', '+faststart', output);
     command('ffmpeg', args);
     const metadata = probe(output), video = metadata.streams.find(stream => stream.codec_type === 'video'), audio = metadata.streams.find(stream => stream.codec_type === 'audio');
     const actualFrames = Number(video.nb_frames), frameRate = video.avg_frame_rate.split('/').map(Number).reduce((a, b) => a / b);
     qa.segments = segments.map(({ name, start, frames }) => ({ name, start, frames }));
+    if (options.gpu) qa.gpu = segments.map(({ report }) => report.gpu);
     qa.checks.determinism = { passed: segments.every(segment => segment.report.checks.determinism.passed), samples: segments.flatMap(segment => segment.report.checks.determinism.samples) };
     qa.checks.firstFrameRetention = { passed: segments.every(segment => segment.report.checks.firstFrameRetention.passed), chunks: segments.map(segment => ({ start: segment.start, ...segment.report.checks.firstFrameRetention })) };
     qa.checks.encoding = { passed: video.width === options.width && video.height === options.height && Math.abs(frameRate - options.fps) < .001 && actualFrames === count && (!withAudio || !!audio), codec: video.codec_name, pixelFormat: video.pix_fmt, width: video.width, height: video.height, fps: frameRate, frames: actualFrames, audioCodec: audio?.codec_name || null, duration: +metadata.format.duration };
@@ -213,16 +216,32 @@ try {
     const { chromium } = dependency('playwright');
     const service = await startServer(options.root);
     const browserPath = options.browser || ['C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'].find(existsSync);
-    const browser = await chromium.launch({ headless: true, ...(browserPath ? { executablePath: browserPath } : {}) });
+    const browser = await chromium.launch({
+      headless: true,
+      ...(browserPath ? { executablePath: browserPath } : {}),
+      ...(options.gpu ? { args: ['--enable-gpu', '--enable-accelerated-2d-canvas'] } : {}),
+    });
     cleanup = async () => { await browser.close(); await new Promise(resolve => service.server.close(resolve)); };
     const page = await browser.newPage({ viewport: { width: options.width, height: options.height }, deviceScaleFactor: 1, reducedMotion: 'reduce' });
     const browserErrors = [];
     page.on('pageerror', error => browserErrors.push(error.message));
     // 'networkidle' never settles when several browsers load the engine and the font
     // files at the same time, and the default 30 s deadline then kills a healthy render.
-    const version = options.v16 ? '&v=16' : options.jizura ? '&jizura=1' : '';
+    const version = options.v18 ? '&v=18' : options.v17 ? '&v=17' : options.v16 ? '&v=16' : options.jizura ? '&jizura=1' : '';
     await page.goto(`${service.url}/?export=1&width=${options.width}&height=${options.height}${version}`, { waitUntil: 'load', timeout: 120000 });
-    await page.waitForFunction(jizura => typeof window.renderAt === 'function' && document.querySelector('#film') && (!jizura || window.MV_READY === true), !!options.jizura, { timeout: 30000 });
+    await page.waitForFunction(jizura => typeof window.renderAt === 'function' && document.querySelector('#film') && (!jizura || window.MV_READY === true), !!options.jizura, { timeout: options.v18 ? 120000 : 30000 });
+    if (options.gpu) {
+      const cdp = await browser.newBrowserCDPSession();
+      const { gpu } = await cdp.send('SystemInfo.getInfo');
+      qa.gpu = {
+        devices: gpu.devices.map(device => device.deviceString),
+        canvas: gpu.featureStatus?.['2d_canvas'],
+        compositing: gpu.featureStatus?.gpu_compositing,
+        renderer: gpu.auxAttributes?.glRenderer,
+      };
+      await cdp.detach();
+      console.log(`Browser graphics: ${JSON.stringify(qa.gpu)}`);
+    }
     await page.evaluate(async ({ lyrics, lyricDirection }) => { Object.assign(window.MVData, { lyrics, lyricDirection }); await document.fonts.ready; window.__renderSample = document.createElement('canvas'); window.__renderSample.width = 64; window.__renderSample.height = 36; }, { lyrics: data.lyrics, lyricDirection: data.lyricDirection });
     renderer = async t => {
       const frame = await page.evaluate(async ({ t, width, height }) => {
@@ -243,7 +262,9 @@ try {
   // 让确定性检查测的是"同一时刻重复渲染是否一致"，而不是冷启动差异。
   const warm = async time => {
     if (options.engine !== 'browser') return;
-    for (let i = 0; i < (options.v16 ? 3 : 1); i++) await renderer(time);
+    // Chrome can switch raster paths on the fifth canvas readback in a fresh V17 worker.
+    const reads = options.v17 || options.v18 ? 6 : options.v16 ? 3 : 1;
+    for (let i = 0; i < reads; i++) await renderer(time);
   };
   await warm(options.start);
   const first = await renderer(options.start), firstHash = hash(first.buffer), repeated = await renderer(options.start);
@@ -263,7 +284,10 @@ try {
   if (withAudio) args.push('-ss', String(options.start), '-i', audioPath);
   args.push('-map', '0:v:0');
   if (withAudio) args.push('-map', '1:a:0', '-c:a', 'aac', '-b:a', '320k');
-  args.push('-c:v', 'libx264', '-preset', options.preset, '-crf', String(options.crf), '-pix_fmt', 'yuv420p', '-frames:v', String(count), '-t', String(encodedDuration), '-movflags', '+faststart', output);
+  const codec = options.nvenc
+    ? ['-c:v', 'h264_nvenc', '-preset', 'p5', '-tune', 'hq', '-rc', 'vbr', '-cq', String(options.crf), '-b:v', '0', '-profile:v', 'high', '-bf', '2', '-g', '120', '-spatial_aq', '1', '-movie_timescale', '60000', '-video_track_timescale', '15360']
+    : ['-c:v', 'libx264', '-preset', options.preset, '-crf', String(options.crf)];
+  args.push(...codec, '-pix_fmt', 'yuv420p', '-frames:v', String(count), '-t', String(encodedDuration), '-movflags', '+faststart', output);
   // Windows console Ctrl-C from another preview session must not stop this encoder.
   // 限定每个编码进程的线程与内存，给多段画面渲染保留资源。
   args.splice(args.length - 1, 0, '-threads', String(options['encoder-threads']));

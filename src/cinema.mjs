@@ -252,9 +252,9 @@ export function ruinedWorld(c, t, color, collapse = 0, local = 0, opts = {}) {
   c.restore();
 }
 
-export function eyeInsert(c, t, resources, scene, shot, color) {
+export function eyeInsert(c, t, resources, scene, shot, color, urbanBackdrop = false) {
   const im = resources.eyes || resources.fear; if (!im) return;
-  const p = clamp((t - shot.start) / (shot.end - shot.start)), q = smooth(p); c.save(); c.fillStyle = palette.black; c.fillRect(0, 0, 1920, 1080);
+  const p = clamp((t - shot.start) / (shot.end - shot.start)), q = smooth(p); c.save(); c.fillStyle = urbanBackdrop ? '#090C1360' : palette.black; c.fillRect(0, 0, 1920, 1080);
   const crop = shot.id % 3 === 1 ? [45, 255, 1080, 607] : shot.id % 3 === 2 ? [590, 155, 1080, 607] : [0, 0, 1672, 941];
   const [sx, sy, sw, sh] = crop, direction = shot.id % 2 ? 1 : -1, z = 1.12 + q * .18;
   c.translate(960 + direction * (q - .5) * 155 + Math.sin(t * .7) * 4, 540 + (q - .5) * 46); c.scale(z, z);
@@ -283,9 +283,9 @@ export function eyeInsert(c, t, resources, scene, shot, color) {
   if (!resources.lyricActive) label(c, scene.id >= 8 ? '瞳の奥で、世界がほどける。' : '観測記録 / OPTICAL MEMORY', 92, 990, 26, scene.id >= 8 ? palette.paper : palette.mint);
 }
 
-export function handInsert(c, t, resources, scene, shot, color, flower) {
-  c.save(); const memory = scene.id === 7; c.fillStyle = memory ? palette.paper : palette.black; c.fillRect(0, 0, 1920, 1080); const p = clamp((t - shot.start) / (shot.end - shot.start)), q = smooth(p);
-  if (!memory) {
+export function handInsert(c, t, resources, scene, shot, color, flower, urbanBackdrop = false) {
+  c.save(); const memory = scene.id === 7; c.fillStyle = urbanBackdrop ? '#090C1352' : memory ? palette.paper : palette.black; c.fillRect(0, 0, 1920, 1080); const p = clamp((t - shot.start) / (shot.end - shot.start)), q = smooth(p);
+  if (!memory && !urbanBackdrop) {
     starfield(c, t, 120);
     for (let j = 0; j < 5; j++) { const phase = fract(j / 5 + t * .085); c.globalAlpha = Math.sin(phase * Math.PI) * .24; circle(c, 715, 430, 65 + phase * 300, color, 1); }
     c.globalAlpha = 1;
