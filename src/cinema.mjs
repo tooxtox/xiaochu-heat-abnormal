@@ -267,6 +267,14 @@ export function eyeInsert(c, t, resources, scene, shot, color) {
     c.globalAlpha = .7; c.translate(x, y); c.rotate(t * .18); line(c, -r * 2, 0, r * 2, 0, color, .8); c.restore();
   }
   c.restore();
+  if (shot.rhythm?.beatLocked && (scene.id === 8 || scene.id === 9)) {
+    const exposure = c.createLinearGradient(0, 0, 1920, 1080);
+    exposure.addColorStop(0, '#37121EC4');
+    exposure.addColorStop(.5, '#2C101D87');
+    exposure.addColorStop(1, '#521826B3');
+    c.fillStyle = exposure;
+    c.fillRect(0, 0, 1920, 1080);
+  }
   // The shutter slides into a tighter crop across the shot, while the centre stays readable.
   resources.drawLyricBack?.(c);
   const matte = 28 + q * 45; c.fillStyle = palette.black; c.fillRect(0, 0, 1920, matte); c.fillRect(0, 1080 - matte, 1920, matte);

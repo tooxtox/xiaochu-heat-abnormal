@@ -9,8 +9,10 @@ function shotIndex(shots,t){
  let lo=0,hi=shots.length;while(lo<hi){const m=(lo+hi)>>>1;if(shots[m].start<=t)lo=m+1;else hi=m}return Math.max(0,lo-1);
 }
 export function editorialShotAt(data,t){
- const shots=shotsOf(data),shot=shots[shotIndex(shots,t)];
- if(shot?.baseShot&&shot.rhythm&&(t<shot.rhythm.from||t>=shot.rhythm.to))return shot.baseShot;
+ // Compare on the same side of a cut when its fractional frame time was rounded by the exporter.
+ const time=data.frameLockedEdit?t+1e-8:t;
+ const shots=shotsOf(data),shot=shots[shotIndex(shots,time)];
+ if(shot?.baseShot&&shot.rhythm&&(time<shot.rhythm.from||time>=shot.rhythm.to))return shot.baseShot;
  return shot;
 }
 function sceneId(data,shot,t){
@@ -88,6 +90,8 @@ export function transitionAt(data,t){
   const shots=shotsOf(data);if(shots.length<2)return null;
   const to=editorialShotAt(data,t);if(!to||to.start<=0)return null;
   const from=editorialShotAt(data,to.start-1/60);if(!from)return null;
+  if(to.mode==='cold'&&from.mode==='cold')return null;
+  if(to.rhythm?.beatLocked&&to.rhythm.cut==='hard')return null;
   const index=(to.baseShot||to).id-1,scene=sceneId(data,to,t),previousScene=sceneId(data,from,from.end-1/60);
   const dt=t-to.start;
   // Every transition is described the same way so the composite stage stays declarative.
@@ -104,7 +108,7 @@ export function transitionAt(data,t){
   const contrast=sceneContrast(data,previousScene,scene);
   if(to.rhythm){
     // 前后反差强的段落首切：哪怕这一镜是快切，也要给观众一个"世界被换掉"的强转场。
-    if(sceneChanged&&contrast>=56&&scene!==7&&scene!==11&&scene!==10){
+    if(!to.rhythm.beatLocked&&sceneChanged&&contrast>=56&&scene!==7&&scene!==11&&scene!==10){
       return make('climax-burst',Math.min(.28,(to.end-to.start)*.45));
     }
     if(to.rhythm.cut!=='snap'){

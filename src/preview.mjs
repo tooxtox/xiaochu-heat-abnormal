@@ -2,23 +2,38 @@ import {renderFrame,sceneAt,shotAt,clamp} from './film.mjs';
 import {glitchToggle} from './glitch.mjs';
 const $=id=>document.getElementById(id), film=$('film'),ctx=film.getContext('2d'),audio=$('audio');
 const read=path=>fetch(path).then(r=>{if(!r.ok)throw Error(`加载失败 ${path}`);return r.json()});
+const query=new URLSearchParams(location.search),v16=query.get('v')==='16';
 const AUDIO_HINT='未找到音源：请把音频放到 assets/audio/song.m4a，或用「替换本地音源」载入。';
 let audioMissing=false;
 audio.addEventListener('error',()=>{audioMissing=true;$('status').textContent=AUDIO_HINT});
-const [config,features,cues,lyrics,shots,lyricDirection,sceneLayers,jizuraDirection]=await Promise.all([
+const [config,features,cues,lyrics,baseShots,lyricDirection,sceneLayers,jizuraDirection]=await Promise.all([
  read('./config.json'),read('./data/audio_features.json'),read('./data/cues.json'),
  read('./data/lyrics.json').catch(()=>({lines:[]})),read('./data/shots.json'),
  read('./data/lyric_direction.json').catch(()=>({cues:[]})),read('./data/scene_layers.json'),
  read('./data/jizura_direction.json').catch(()=>({lines:[]})).then(d=>d.lines&&d.lines.length?d:{lines:[],plans:{},interludes:[]}),
 ]);
-const data={config,features,cues,lyrics,shots,lyricDirection,sceneLayers,jizuraDirection},resources={rigData:config.rigs,gradeMap:config.fxAssets};
-if(new URLSearchParams(location.search).get('jizura')==='1'){
+const data={config,features,cues,lyrics,shots:baseShots,lyricDirection,sceneLayers,jizuraDirection};
+if(v16){
+ const [{applyV16Edit},cold,climax]=await Promise.all([
+  import('./v16_edit.mjs'),read('./data/v16_cold_shots.json'),read('./data/v16_climax_shots.json'),
+ ]);
+ applyV16Edit(data,cold,climax);
+ $('edition').textContent='XIAOCHU — LAST OBSERVATORY / V16';
+}
+const shots=data.shots,resources={rigData:config.rigs,gradeMap:config.fxAssets};
+const wantsJizura=v16||query.get('jizura')==='1';
+const hasJizuraInputs=lyrics.lines.length>0&&jizuraDirection.lines.length>0;
+if(wantsJizura&&!hasJizuraInputs&&query.get('export')==='1'){
+ throw Error('导出 JIZURA 版本需要 data/lyrics.json 和 data/jizura_direction.json。');
+}
+if(wantsJizura&&hasJizuraInputs){
  const {createJizuraLayer}=await import('./jizura_layer.mjs');
  const jizura=await createJizuraLayer(data);resources.jizuraDraw=jizura.draw;window.JIZURA_INFO=jizura.info;window.JIZURA_LRC=jizura.lrc;
 }
 const characterFxCues=cues.characterFx||[];
 const reviews=[['消去循环 · 中量崩坏',9,1.2],['临近循环 · 中量崩坏',23,1.2],['低语循环 · 中量崩坏',37,1.2],['黑星循环Ⅰ · 中量崩坏',50,1.2],['背向循环 · 中量崩坏',71,1.2],['黑星循环Ⅱ · 中量崩坏',83,1.2],['终章循环 · 中量崩坏',118,1.2],['道路透视',33],['眼部竖排',65],['盐晶与泪',68],['鱼群海面',80],['燕迹与云',98],['掌心曲线',104],['热异常',107],['现实裂解 · 高潮崩坏',109]];
 const sceneReviews=[['消去 · 眼部刻印',31.35],['燃旗 · 街道落点',47.8],['黑星 · 轨道字',63.1],['归海 · 城市远景',190.6],['燕迹 · 窗边记忆',195.8],['热异常 · 核心断版',214.5]];
+if(v16)sceneReviews.unshift(['冷色过渡 · 潜入档案',134.8],['冷色过渡 · 黑星与信号',148],['终章 · 对拍剪辑',199.47],['终章 · 核心熔毁',212.7]);
 $('fxReview').replaceChildren(new Option('跳转查看歌词与场景',''),...sceneReviews.map(([label,t])=>new Option(`${label} · ${t.toFixed(2)}s`,String(t))),...reviews.map(([label,n,offset=.25])=>new Option(`${label} · ${lyrics.lines[n-1]?.time.toFixed(2)||'0'}s`,String((lyrics.lines[n-1]?.time||0)+offset))));
 resources.makeCanvas=(width,height)=>{const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;return canvas};
 window.MVResources=resources;
@@ -76,5 +91,5 @@ $('lyricFile').onchange=async e=>{
   $('status').textContent=`已加载 ${next.lines.length} 行本地歌词；${next.lines.some(l=>l.words.length)?'包含导入的词级时间，请检查对齐。':'仅含行级时间，未声明逐字对齐。'}`;
  }catch(err){data.lyrics=previous;$('status').textContent=`歌词格式错误：${err.message}`}
 };
-$('status').textContent=audioMissing?AUDIO_HINT:lyrics.lines.length?`已加载 ${lyrics.lines.length} 行场景歌词 · ${lyrics.timingNote||'请检查演唱时间。'}`:'画面粗剪已就绪 · 尚未导入本地歌词。';
+$('status').textContent=audioMissing?AUDIO_HINT:wantsJizura&&!hasJizuraInputs?'画面已就绪 · JIZURA 歌词需在本地准备（见 README）。':lyrics.lines.length?`已加载 ${lyrics.lines.length} 行场景歌词 · ${lyrics.timingNote||'请检查演唱时间。'}`:'画面粗剪已就绪 · 尚未导入本地歌词。';
 await window.renderAt(6);window.MV_READY=true;

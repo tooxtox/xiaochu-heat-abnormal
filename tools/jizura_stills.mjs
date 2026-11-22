@@ -29,7 +29,8 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error' && !/Failed to load resource/.test(message.text())) errors.push(`console: ${message.text()}`); });
-  const url = `${service.url}/?export=1&width=${width}&height=${height}${useJizura ? '&jizura=1' : ''}`;
+  const version = flag('v16') ? '&v=16' : useJizura ? '&jizura=1' : '';
+  const url = `${service.url}/?export=1&width=${width}&height=${height}${version}`;
   await page.goto(url, { waitUntil: 'load', timeout: 60000 });
   try {
     await page.waitForFunction(jizura => typeof window.renderAt === 'function' && (!jizura || window.MV_READY === true), useJizura, { timeout: 60000 });

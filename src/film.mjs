@@ -7,6 +7,7 @@ import {renderMotionFrame,cameraAt,editorialShotAt} from './transitions.mjs';
 import {activeLyricCues,drawLyricArt} from './lyric_art.mjs';
 import {applyGlitch,glitchAt} from './glitch.mjs';
 import {drawLyricMotifs} from './lyric_motifs.mjs';
+import {drawColdInterlude} from './v16_cold_interlude.mjs';
 import {
   composeLayers,composeForeground,musicState,contactShadow,castShadow,reactorDeck,nearBarrier,mixHex,
 } from './scene_layers.mjs';
@@ -342,7 +343,7 @@ function flower(c,x,y,r,t,color,alpha=1){
 }
 function hud(c,t,data,scene,color){c.save();c.globalAlpha=.8;spaced(c,'LAST SIGNAL',64,54,14,4,color);text(c,`${String(scene.id).padStart(2,'0')} / ${scene.label}`,64,81,13,P.white);c.textAlign='right';text(c,`OBSERVER  XIAOCHU    /    ${scene.state}`,1856,54,13,color);text(c,`${Math.floor(t/60).toString().padStart(2,'0')}:${(t%60).toFixed(3).padStart(6,'0')}`,1856,81,13,P.white);c.textAlign='left';for(const [x,y,sx,sy] of [[44,108,1,1],[1876,108,-1,1],[44,1000,1,-1],[1876,1000,-1,-1]]){line(c,x,y,x+sx*24,y,color);line(c,x,y,x,y+sy*24,color)}line(c,64,1021,1856,1021,color,.6);c.fillStyle=color;c.fillRect(64,1019,1792*clamp(t/(data.config?.duration||242.538333)),3);text(c,'LAST OBSERVATORY / FICTIONAL TELEMETRY',64,1051,11,P.white);c.textAlign='right';text(c,'熱異常  /  ARCHIVE 0001',1856,1051,13,color);c.restore()}
 function largeWords(c,word,x,y,size,color,angle=0){if(stages.get(c)?.hasLyrics)return;c.save();c.translate(x,y);c.rotate(angle);const st=stages.get(c);if(st?.s.id===4&&st.age>1)c.transform(1,0,st.energy*.025,1,st.energy*7,0);kineticLine(c,word,0,0,size,color,/[^\x00-\x7F]/.test(word)?serif:mono,true);c.restore()}
-export function sceneAt(t,data){const scenes=data.cues?.scenes||[];return scenes.find((s,i)=>t>=s.start&&t<(scenes[i+1]?.start??data.config.duration+.01))||scenes[0]||{id:1,start:0,label:'INIT',state:'NORMAL',color:P.mint}}
+export function sceneAt(t,data){const scenes=data.cues?.scenes||[],time=data.frameLockedEdit?t+1e-8:t;return scenes.find((s,i)=>time>=s.start&&time<(scenes[i+1]?.start??data.config.duration+.01))||scenes[0]||{id:1,start:0,label:'INIT',state:'NORMAL',color:P.mint}}
 function sceneEnd(scene,data){const index=data.cues.scenes.indexOf(scene);return data.cues.scenes[index+1]?.start??data.config.duration}
 export function shotAt(t,data){return editorialShotAt(data,t)||{id:1,start:sceneAt(t,data).start,end:data.config.duration,mode:'wide',variant:0,expression:'calm'}}
 
@@ -420,15 +421,55 @@ function transmission(c,t,data,color){
  for(let lane=0;lane<3;lane++){c.globalAlpha=.2;const pts=[];for(let j=0;j<=48;j++)pts.push(point(j/48*send,lane));path(c,pts,color,1);for(let i=0;i<11;i++){const p=fract(Math.max(0,age)*.23+i/11+lane*.17)*send,[xx,yy]=point(p,lane),[tx,ty]=point(Math.max(0,p-.032),lane);c.globalAlpha=ease(age/.6)*(.25+.65*p);line(c,tx,ty,xx,yy,color,1.4+p*2);c.fillStyle=P.paper;c.fillRect(xx-1,yy-1,3+p*3,3+p*3)}}
  c.globalAlpha=1;circle(c,origin[0],origin[1],10+Math.sin(t*2)*3,color,2);flower(c,target[0],target[1],80+send*230,t,color,ease(age/1.5)*(1-ease((age-7.5)/2)));text(c,'TRANSMISSION',112,300,60,P.paper);text(c,'TO: UNKNOWN',116,350,19,color);text(c,'すべての記憶を、光に。',116,810,32,P.white,serif);c.restore();
 }
+function climaxPortrait(c,t,resources,data,scene,shot,context){
+ const memory=scene.id===7;
+ const accent=memory?'#607F75':scene.id===8?'#EA8A56':'#E55560';
+ const charge=Math.exp(-Math.max(0,t-shot.start)*12);
+ const look=shot.pose==='v16Look',shield=shot.pose==='v16Shield';
+ const subjectX=look?650:shield?1370:1280;
+ const lightX=look?1370:470;
+ environment(c,t,data,scene,memory?P.teal:P.red,context);
+ if(!memory){
+  const glow=c.createRadialGradient(lightX,350,24,lightX,350,730);
+  glow.addColorStop(0,alpha(accent,.19+charge*.25));
+  glow.addColorStop(1,alpha(accent,0));
+  c.fillStyle=glow;c.fillRect(0,0,W,H);
+  // A flare follows the source in perspective and dies off after the accent.
+  for(let i=0;i<7;i++){
+   const y=140+i*122+Math.sin(i*4.1)*65;
+   line(c,lightX,365,look?1940:-30,y,alpha(accent,charge*(i%2?.14:.36)),i%3?1:3);
+  }
+ }
+ const height=shield?1060:look?980:1020;
+ character(c,resources,t,subjectX,1145,height,shot.pose,1.4,1,{placed:true});
+ if(memory){
+  // The sash gives the close-up a physical edge and carries the window color into the foreground.
+  path(c,[[1040,1080],[1280,1000],[1940,976],[1940,1080]],'#ACA291',1,true);
+  line(c,1225,1008,1940,978,'#F1DFB5',5);
+ }else{
+  nearBarrier(c,t,{side:look?-1:1,y:1059,reach:535,rim:accent,travel:context.local*5});
+  for(let i=0;i<4;i++){
+   const x=(look?-120:1530)+i*190,y=960+Math.sin(i*2.3)*86;
+   line(c,x,y,x+(look?1:-1)*(136+charge*135),y-76,alpha(accent,.13+charge*.27),2);
+  }
+ }
+ foregroundLayer(c,t,data,scene,accent,context);
+}
 function renderBaseFrame(c,t,resources,data,width=W,height=H){
  configurePalette(data.config.palette);
  resources.fx=characterFxAt(data,t);
+ const s=sceneAt(t,data),shot=shotAt(t,data);
  // 崩坏后期只求值一次：人物降级与 HUD 计量条共用同一份结果。
- const glitch=glitchAt(data,t);resources.glitch=glitch;resources.fxOverride=glitch?.character||null;
+ let glitch=glitchAt(data,t);
+ if(glitch&&shot.rhythm?.beatLocked&&(s.id===8||s.id===9)){
+  // The beat cuts already supply the large impulses. Break up texture and shape within the shot.
+  glitch={...glitch,pixelate:0,split:glitch.split*.32,outline:glitch.outline*.45,echo:glitch.echo*.52};
+ }
+ resources.glitch=glitch;resources.fxOverride=glitch?.character||null;
  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle=P.black;c.fillRect(0,0,width,height);c.scale(width/W,height/H);
- const s=sceneAt(t,data),local=t-s.start,end=sceneEnd(s,data),progress=clamp(local/(end-s.start)),e=pulse(data,t),color=resolveInk(s.color)||P.mint;
+ const local=t-s.start,end=sceneEnd(s,data),progress=clamp(local/(end-s.start)),e=pulse(data,t),color=resolveInk(s.color)||P.mint;
  const music=musicState(data,t);
- const shot=shotAt(t,data),baseShot=shot.baseShot||shot,mode=shot.mode,variant=mode==='portrait'?1:mode==='wide'?0:shot.variant,shotProgress=clamp((t-baseShot.start)/(baseShot.end-baseShot.start));
+ const baseShot=shot.baseShot||shot,mode=shot.mode,variant=mode==='portrait'?1:mode==='wide'?0:shot.variant,shotProgress=clamp((t-baseShot.start)/(baseShot.end-baseShot.start));
  // 快切只换取景；人物到场、终端与意象沿原镜头时间继续，避免反复重启动画。
  const narrativeShot=shot.baseShot?{...shot,start:baseShot.start,end:baseShot.end}:shot;
  const hasLyrics=resources.jizuraDraw?(data.lyrics?.lines||[]).some(line=>t>=line.time&&t<line.end):activeLyricCues(data,t).length>0;
@@ -436,7 +477,14 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  resources.lyricActive=hasLyrics;resources.drawLyricBack=context=>paintLyricBack(context,resources);
  const ctxExtra={local,energy:music.energy,progress};
  c.save();
- if(mode==='eye'&&s.id<10){eyeInsert(c,t,resources,s,narrativeShot,color)}
+ if(mode==='cold'){
+  drawColdInterlude(c,{t,shot,data,resources,music,
+   drawCharacter:(x,y,h,pose,wind,opacity,placement)=>character(c,resources,t,x,y,h,pose,wind,opacity,placement),
+   drawLyricBack:()=>paintLyricBack(c,resources),
+  });
+ }
+ else if(mode==='portrait'&&shot.pose&&resources[shot.pose]){climaxPortrait(c,t,resources,data,s,shot,ctxExtra)}
+ else if(mode==='eye'&&s.id<10){eyeInsert(c,t,resources,s,narrativeShot,color)}
  else if(mode==='hand'&&s.id<11){handInsert(c,t,resources,s,narrativeShot,color,flower)}
  else if(mode==='world'&&worldShot(c,t,resources,data,s,shot,color,progress)){}
  else if(s.id===1){

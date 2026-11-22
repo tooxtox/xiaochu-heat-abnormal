@@ -1,0 +1,320 @@
+{
+  "start": 134.593,
+  "end": 167.982875,
+  "shots": [
+    {
+      "id": 2000,
+      "scene": 10,
+      "segment": 21,
+      "start": 134.593,
+      "end": 136.03333333333333,
+      "mode": "cold",
+      "coldScene": "archive",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "ARRIVE AT THE FLOODED ARCHIVE",
+      "timing": "existing-section-entry",
+      "duration": 1.4403333333333421
+    },
+    {
+      "id": 2001,
+      "scene": 10,
+      "segment": 21,
+      "start": 136.03333333333333,
+      "end": 137.83333333333334,
+      "mode": "cold",
+      "coldScene": "console",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "LISTEN AT THE CONSOLE",
+      "timing": "measured-audio-onset",
+      "duration": 1.8000000000000114,
+      "onset": {
+        "time": 136.03,
+        "frame60": 8162,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2002,
+      "scene": 10,
+      "segment": 21,
+      "start": 137.83333333333334,
+      "end": 139.96666666666667,
+      "mode": "cold",
+      "coldScene": "oscilloscope",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "ISOLATE AN UNCLASSIFIED RETURN",
+      "timing": "measured-audio-onset",
+      "duration": 2.1333333333333258,
+      "onset": {
+        "time": 137.84,
+        "frame60": 8270,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2003,
+      "scene": 10,
+      "segment": 21,
+      "start": 139.96666666666667,
+      "end": 141.76666666666668,
+      "mode": "cold",
+      "coldScene": "trace",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "FOLLOW THE SIGNAL OUT",
+      "timing": "measured-audio-onset",
+      "duration": 1.8000000000000114,
+      "onset": {
+        "time": 139.97,
+        "frame60": 8398,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2004,
+      "scene": 10,
+      "segment": 21,
+      "start": 141.76666666666668,
+      "end": 143.9,
+      "mode": "cold",
+      "coldScene": "window",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "GLIMPSE THE STAR THROUGH THE WINDOW",
+      "timing": "measured-audio-onset",
+      "duration": 2.1333333333333258,
+      "onset": {
+        "time": 141.77,
+        "frame60": 8506,
+        "strength": 0.98935,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2005,
+      "scene": 10,
+      "segment": 21,
+      "start": 143.9,
+      "end": 145.68333333333334,
+      "mode": "cold",
+      "coldScene": "gate",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "OPEN THE LOWER VAULT",
+      "timing": "measured-audio-onset",
+      "duration": 1.7833333333333314,
+      "onset": {
+        "time": 143.9,
+        "frame60": 8634,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2006,
+      "scene": 10,
+      "segment": 21,
+      "start": 145.68333333333334,
+      "end": 148,
+      "mode": "cold",
+      "coldScene": "dive",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "DROP WITH THE SIGNAL",
+      "timing": "measured-audio-onset",
+      "duration": 2.316666666666663,
+      "onset": {
+        "time": 145.68,
+        "frame60": 8741,
+        "strength": 1,
+        "kind": "strong-low-frequency-transient"
+      }
+    },
+    {
+      "id": 2007,
+      "scene": 10,
+      "segment": 21,
+      "start": 148,
+      "end": 150.46666666666667,
+      "mode": "cold",
+      "coldScene": "racks",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "PASS THE SUBMERGED RACKS",
+      "timing": "measured-audio-onset",
+      "duration": 2.4666666666666686,
+      "onset": {
+        "time": 148,
+        "frame60": 8880,
+        "strength": 0.94863,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2008,
+      "scene": 10,
+      "segment": 21,
+      "start": 150.46666666666667,
+      "end": 152.58333333333334,
+      "mode": "cold",
+      "coldScene": "orbit",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "LOCATE A COLD ORBIT",
+      "timing": "measured-audio-onset",
+      "duration": 2.1166666666666742,
+      "onset": {
+        "time": 150.46,
+        "frame60": 9028,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2009,
+      "scene": 10,
+      "segment": 21,
+      "start": 152.58333333333334,
+      "end": 154.88333333333333,
+      "mode": "cold",
+      "coldScene": "eclipse",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "CLOSE IN ON THE BLACK STAR",
+      "timing": "measured-audio-onset",
+      "duration": 2.299999999999983,
+      "onset": {
+        "time": 152.59,
+        "frame60": 9155,
+        "strength": 0.99822,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2010,
+      "scene": 10,
+      "segment": 21,
+      "start": 154.88333333333333,
+      "end": 157.51666666666668,
+      "mode": "cold",
+      "coldScene": "reach",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "REACH FOR THE MEMORY FRAGMENT",
+      "timing": "measured-audio-onset",
+      "duration": 2.633333333333354,
+      "onset": {
+        "time": 154.89,
+        "frame60": 9293,
+        "strength": 0.96234,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2011,
+      "scene": 10,
+      "segment": 21,
+      "start": 157.51666666666668,
+      "end": 160.13333333333333,
+      "mode": "cold",
+      "coldScene": "recover",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "RECOVER THE PACKET",
+      "timing": "measured-audio-onset",
+      "duration": 2.616666666666646,
+      "onset": {
+        "time": 157.51,
+        "frame60": 9451,
+        "strength": 0.91877,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2012,
+      "scene": 10,
+      "segment": 21,
+      "start": 160.13333333333333,
+      "end": 162.76666666666668,
+      "mode": "cold",
+      "coldScene": "lift",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "RISE THROUGH THE SHAFT",
+      "timing": "measured-audio-onset",
+      "duration": 2.633333333333354,
+      "onset": {
+        "time": 160.13,
+        "frame60": 9608,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2013,
+      "scene": 10,
+      "segment": 21,
+      "start": 162.76666666666668,
+      "end": 164.06666666666666,
+      "mode": "cold",
+      "coldScene": "rebuild",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "RECONSTRUCT THE SIGNAL",
+      "timing": "measured-audio-onset",
+      "duration": 1.299999999999983,
+      "onset": {
+        "time": 162.76,
+        "frame60": 9766,
+        "strength": 0.77169,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2014,
+      "scene": 10,
+      "segment": 21,
+      "start": 164.06666666666666,
+      "end": 165.38333333333333,
+      "mode": "cold",
+      "coldScene": "return",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "RESTORE THE CONSOLE",
+      "timing": "measured-audio-onset",
+      "duration": 1.3166666666666629,
+      "onset": {
+        "time": 164.07,
+        "frame60": 9844,
+        "strength": 0.80987,
+        "kind": "spectral-transient"
+      }
+    },
+    {
+      "id": 2015,
+      "scene": 10,
+      "segment": 21,
+      "start": 165.38333333333333,
+      "end": 167.982875,
+      "mode": "cold",
+      "coldScene": "release",
+      "variant": 0,
+      "expression": "calm",
+      "intent": "SEND THE SIGNAL BACK",
+      "timing": "measured-audio-onset",
+      "duration": 2.5995416666666813,
+      "onset": {
+        "time": 165.38,
+        "frame60": 9923,
+        "strength": 1,
+        "kind": "spectral-transient"
+      }
+    }
+  ]
+}
