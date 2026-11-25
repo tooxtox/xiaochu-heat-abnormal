@@ -29,7 +29,8 @@ try {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error' && !/Failed to load resource/.test(message.text())) errors.push(`console: ${message.text()}`); });
-  const version = flag('v18') ? '&v=18' : flag('v17') ? '&v=17' : flag('v16') ? '&v=16' : useJizura ? '&jizura=1' : '';
+  const edition = [33,32,31,30,29,28,27,26,25,24,23,22,20,19,18,17,16].find(n => flag(`v${n}`));
+  const version = edition ? `&v=${edition}` : useJizura ? '&jizura=1' : '';
   const url = `${service.url}/?export=1&width=${width}&height=${height}${version}`;
   await page.goto(url, { waitUntil: 'load', timeout: 60000 });
   try {

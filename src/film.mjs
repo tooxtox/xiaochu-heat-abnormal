@@ -5,9 +5,14 @@ import {palette as P,configurePalette,resolveInk} from './palette.mjs';
 import {drawCharacterFx,characterFxAt} from './character_fx.mjs';
 import {renderMotionFrame,cameraAt,editorialShotAt} from './transitions.mjs';
 import {activeLyricCues,drawLyricArt} from './lyric_art.mjs';
-import {applyGlitch,glitchAt} from './glitch.mjs';
+import {applyGlitch,glitchAt,glitchToggle} from './glitch.mjs';
 import {drawLyricMotifs} from './lyric_motifs.mjs';
 import {drawColdInterlude} from './v16_cold_interlude.mjs';
+import {finaleVisual} from './v20_edit.mjs';
+import {glitchPulseAt} from './v22_rhythm.mjs';
+import {v24GlitchAt} from './v24_finale.mjs';
+import {DIVE_START,DIVE_END,IMPACT_BEAT,drawImpactExposure} from './v25_impact.mjs';
+import {drawFinaleMontage,drawLineArtFlash,isPaperMontage,lineArtEntry,lineArtFlashAge,montageAt} from './v30_montage.mjs';
 import {
   composeLayers,composeForeground,musicState,contactShadow,castShadow,reactorDeck,nearBarrier,mixHex,
 } from './scene_layers.mjs';
@@ -522,6 +527,39 @@ function depthArchive(c,t,resources,shot,music){
  return true;
 }
 
+function projectedCharacter(c,t,resources,expression,wind){
+ const actor=resources.frontSpace?.subject;
+ if(!actor||!Number.isFinite(actor.height)||actor.depth>1||actor.depth< -1)return;
+ const {x,y,height}=actor;
+ // Fade only at the edge of the moving lens; never substitute another screen position.
+ const visible=ease((height-42)/65)*ease((1330-height)/250)*
+  ease((x+230)/145)*ease((W+230-x)/145)*ease((H+155-y)/90);
+ if(visible>.01)character(c,resources,t,x,y,height,expression,wind,visible,{placed:true});
+}
+
+function depthServer(c,t,resources,data,scene,shot,music){
+ if(!data.v19||!resources.frontSpace?.(c,'server',t,shot,music,scene))return false;
+ paintLyricBack(c,resources);
+ if(data.v29)return true;
+ const mode=shot.coldScene;
+ if(mode==='archive'){
+  projectedCharacter(c,t,resources,'full',.32);
+ }else if(mode==='console'||mode==='return'||mode==='window'||mode==='reach'){
+  const reaching=mode==='reach',atWindow=mode==='window';
+  const pose=reaching?'v16Reach':atWindow?'v16Look':'v17Dial';
+  const art=resources[pose]?pose:'calm';
+  c.save();
+  if(!reaching){
+   // The visible lower edge belongs to the rendered bench, not the sprite.
+   c.beginPath();c.moveTo(0,0);c.lineTo(W,0);c.lineTo(W,atWindow?964:946);
+   c.lineTo(1060,atWindow?985:975);c.lineTo(0,H);c.closePath();c.clip();
+  }
+  character(c,resources,t,atWindow?1480:1410,reaching?1125:1065,reaching?916:790,art,.24,1,{placed:true});
+  c.restore();
+ }
+ return true;
+}
+
 function depthReactor(c,t,resources,data,scene,shot,context,music){
  if(scene.id!==8||!['portrait','abstract','world'].includes(shot.mode))return false;
  if(!resources.frontSpace?.(c,'reactor',t,shot,music))return false;
@@ -555,14 +593,18 @@ function drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,context,mus
   const x=looksRight||s.id===5?595:1370;
   character(c,resources,t,x,1144,pose==='fear'?1165:1050,pose,1,1,{placed:true});
   nearBarrier(c,t,{side:x<960?-1:1,y:1047,reach:410,rim:color,travel:context.local*6});
- }else if(mode==='world'||mode==='wide'){
-  const projected=resources.frontSpace.subject;
-  const rooted=projected&&[projected.x,projected.y,projected.height].every(Number.isFinite);
-  // Keep the same ground anchor as the dolly moves; screen bounds must never switch it to another lane.
-  const x=rooted?clamp(projected.x,140,1780):s.id===5?460:1380;
-  const y=rooted?clamp(projected.y,650,1120):954;
-  const h=rooted?clamp(projected.height,195,810):645;
-  character(c,resources,t,x,y,h,'full',s.id===9?1.65:.65,1,{placed:true});
+ }else if((mode==='world'||mode==='wide')&&!shot.starFocus){
+  if(data.v19){
+   projectedCharacter(c,t,resources,'full',s.id===9?1.65:.65);
+  }else{
+   const projected=resources.frontSpace.subject;
+   const rooted=projected&&[projected.x,projected.y,projected.height].every(Number.isFinite);
+   // Keep the same ground anchor as the dolly moves; screen bounds must never switch it to another lane.
+   const x=rooted?clamp(projected.x,140,1780):s.id===5?460:1380;
+   const y=rooted?clamp(projected.y,650,1120):954;
+   const h=rooted?clamp(projected.height,195,810):645;
+   character(c,resources,t,x,y,h,'full',s.id===9?1.65:.65,1,{placed:true});
+  }
  }
  if(s.id===9&&mode==='abstract'){
   // Tiny displaced survey marks give the reality-cut its visual beat over the same physical city.
@@ -578,16 +620,18 @@ function drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,context,mus
 function renderBaseFrame(c,t,resources,data,width=W,height=H){
  configurePalette(data.config.palette);
  resources.fx=characterFxAt(data,t);
- const s=sceneAt(t,data),shot=shotAt(t,data);
+ const cue=sceneAt(t,data),shot=shotAt(t,data);
+ const visual=finaleVisual(data,t,shot);
+ const s=visual!==null&&visual!==cue.id?{...cue,id:visual,color:visual===5?'#D93B4A':cue.color}:cue;
  // 崩坏后期只求值一次：人物降级与 HUD 计量条共用同一份结果。
  let glitch=glitchAt(data,t);
- if(glitch&&shot.rhythm?.beatLocked&&(s.id===8||s.id===9)){
+ if(glitch&&shot.rhythm?.beatLocked&&(s.id===8||s.id===9||visual!==null)){
   // The beat cuts already supply the large impulses. Break up texture and shape within the shot.
   glitch={...glitch,pixelate:0,split:glitch.split*.32,outline:glitch.outline*.45,echo:glitch.echo*.52};
  }
  resources.glitch=glitch;resources.fxOverride=glitch?.character||null;
  c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle=P.black;c.fillRect(0,0,width,height);c.scale(width/W,height/H);
- const local=t-s.start,end=sceneEnd(s,data),progress=clamp(local/(end-s.start)),e=pulse(data,t),color=resolveInk(s.color)||P.mint;
+ const local=t-cue.start,end=sceneEnd(cue,data),progress=clamp(local/(end-cue.start)),e=pulse(data,t),color=resolveInk(s.color)||P.mint;
  const music=musicState(data,t);
  const baseShot=shot.baseShot||shot,mode=shot.mode,variant=mode==='portrait'?1:mode==='wide'?0:shot.variant,shotProgress=clamp((t-baseShot.start)/(baseShot.end-baseShot.start));
  const frontShot=data.frontEdit&&t>=data.frontEdit.start&&t<data.frontEdit.end?shot:null;
@@ -597,12 +641,20 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  stages.set(c,{t,data,s,frontShot,shot:shot.baseShot?{...narrativeShot,id:baseShot.id}:shot,age:t-baseShot.start,progress:shotProgress,energy:e,hasLyrics,lyricBackDrawn:false,music,scaleX:width/W,scaleY:height/H});
  resources.lyricActive=hasLyrics;resources.drawLyricBack=context=>paintLyricBack(context,resources);
  const ctxExtra={local,energy:music.energy,progress};
+ const montage=montageAt(data,shot,t);
  c.save();
- if(drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,ctxExtra,music)){}
+ if(data.v25&&t+1e-8>=DIVE_START&&t+1e-8<DIVE_END&&resources.frontSpace?.(c,'impact',t,shot,music,s)){
+  paintLyricBack(c,resources);
+ }
+ else if(montage&&drawFinaleMontage(c,t,resources,s,shot,music,montage,data.v33?lineArtEntry(shot)??shot.start:shot.start)){
+  paintLyricBack(c,resources);
+ }
+ else if(drawCityStage(c,t,resources,data,s,shot,narrativeShot,color,ctxExtra,music)){}
+ else if(mode==='cold'&&depthServer(c,t,resources,data,s,shot,music)){}
  else if(mode==='cold'&&depthArchive(c,t,resources,shot,music)){}
  else if(mode==='cold'){
   drawColdInterlude(c,{t,shot,data,resources,music,
-   drawCharacter:(x,y,h,pose,wind,opacity,placement)=>character(c,resources,t,x,y,h,pose,wind,opacity,placement),
+   drawCharacter:data.v29?undefined:(x,y,h,pose,wind,opacity,placement)=>character(c,resources,t,x,y,h,pose,wind,opacity,placement),
    drawLyricBack:()=>paintLyricBack(c,resources),
   });
  }
@@ -610,7 +662,11 @@ function renderBaseFrame(c,t,resources,data,width=W,height=H){
  else if(depthReactor(c,t,resources,data,s,shot,ctxExtra,music)){}
  else if(mode==='portrait'&&shot.pose&&resources[shot.pose]){climaxPortrait(c,t,resources,data,s,shot,ctxExtra)}
  else if(frontShot&&frontExterior(c,t,resources,data,s,shot,color,ctxExtra,music)){}
- else if(mode==='eye'&&s.id<10){eyeInsert(c,t,resources,s,narrativeShot,color)}
+ else if(mode==='eye'&&s.id<10){
+  eyeInsert(c,t,resources,s,narrativeShot,color);
+  // Keep the reactor close-up in the same exposure range as the adjacent half-beat cuts.
+  if(visual===8&&s.segment===28){c.fillStyle='#26152083';c.fillRect(0,0,W,H)}
+ }
  else if(mode==='hand'&&s.id<11){handInsert(c,t,resources,s,narrativeShot,color,flower)}
  else if(mode==='world'&&worldShot(c,t,resources,data,s,shot,color,progress)){}
  else if(s.id===1){
@@ -797,12 +853,38 @@ function renderOverlay(c,t,resources,data,width,height){
 export function renderFrame(c,t,resources,data,width=W,height=H){
  renderMotionFrame(c,t,resources,data,width,height,renderBaseFrame);
  const shot=shotAt(t,data);resources.lyricContrast=!!shot.rhythm&&(shot.mode==='eye'||shot.mode==='hand');
+ const followsFinale=resources.finaleReadingAt?.(t);
+ const montage=montageAt(data,shot,t);
+ const paper=isPaperMontage(montage);
+ const lineFlash=lineArtFlashAge(data,shot,t);
+ const pulse=resources.beatGlitch&&glitchToggle.enabled
+  ? glitchPulseAt(data,t,finaleVisual(data,t,shot)??sceneAt(t,data).id)
+  : null;
+ const beatGlitch=pulse&&v24GlitchAt(data,t,pulse);
+ if(followsFinale){
+  renderOverlay(c,t,resources,data,width,height);
+  if(!paper){
+   applyGlitch(c,t,data,resources,width,height);
+   if(beatGlitch)resources.beatGlitch(c,t,resources,width,height,beatGlitch);
+  }
+  if(data.v25&&t+1e-8>=IMPACT_BEAT&&t+1e-8<DIVE_END){
+   c.save();c.setTransform(width/W,0,0,height/H,0,0);
+   drawImpactExposure(c,t);
+   c.restore();
+  }
+ }
+ if(lineFlash!==null)drawLineArtFlash(c,shot,lineFlash,montage,width,height);
  // The current reading layer follows the incoming camera, but remains intact during
  // image wipes. Background keyword echoes still receive true scene occlusion.
- const camera=cameraAt(data,t,true);c.save();c.setTransform(1,0,0,1,0,0);
- if(camera.enabled){const ax=width*camera.anchorX,ay=height*camera.anchorY;c.translate(ax+camera.panX*width/W,ay+camera.panY*height/H);c.rotate(camera.roll);c.scale(camera.zoom,camera.zoom);c.translate(-ax,-ay)}
+ const camera=followsFinale?null:cameraAt(data,t,true);c.save();c.setTransform(1,0,0,1,0,0);
+ if(camera?.enabled){const ax=width*camera.anchorX,ay=height*camera.anchorY;c.translate(ax+camera.panX*width/W,ay+camera.panY*height/H);c.rotate(camera.roll);c.scale(camera.zoom,camera.zoom);c.translate(-ax,-ay)}
  c.scale(width/W,height/H);if(resources.jizuraDraw)resources.jizuraDraw(c,t,data,'front');else drawLyricArt(c,t,resources,data,'front');c.restore();
- renderOverlay(c,t,resources,data,width,height);
- // 崩坏后期：整幅画面（含阅读层与 HUD）统一失序，只由歌曲时间驱动。
- applyGlitch(c,t,data,resources,width,height);
+ if(!followsFinale){
+  renderOverlay(c,t,resources,data,width,height);
+  if(!paper){
+   applyGlitch(c,t,data,resources,width,height);
+   if(beatGlitch)resources.beatGlitch(c,t,resources,width,height,beatGlitch);
+  }
+ }
+ if(!paper)resources.firstImpact?.(c,t,resources,data,width,height);
 }

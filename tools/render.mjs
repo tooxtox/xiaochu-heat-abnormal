@@ -12,7 +12,7 @@ import { verifyJoins } from './check_joins.mjs';
 
 const defaults = { root: projectRoot, width: 1920, height: 1080, fps: 60, start: 0, engine: 'native', preset: 'fast', crf: 18, 'chunk-duration': 60, jobs: 1, 'encoder-threads': 4 };
 const options = { ...defaults };
-const booleanOptions = new Set(['silent', 'self-test', 'help', 'jizura', 'v16', 'v17', 'v18', 'gpu', 'nvenc']);
+const booleanOptions = new Set(['silent', 'self-test', 'help', 'jizura', 'v16', 'v17', 'v18', 'v19', 'v20', 'v22', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31', 'v32', 'v33', 'gpu', 'nvenc']);
 const allowedOptions = new Set([...Object.keys(defaults), ...booleanOptions, 'duration', 'output', 'audio', 'browser', 'modules', 'renderer', 'lyrics', 'lyric-direction']);
 for (let i = 2; i < process.argv.length; i++) {
   const name = process.argv[i].replace(/^--/, '');
@@ -25,7 +25,7 @@ for (let i = 2; i < process.argv.length; i++) {
   }
 }
 if (options.help) {
-  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--jizura] [--v16|--v17|--v18] [--gpu] [--nvenc] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
+  console.log('node tools/render.mjs [--output export/movie.mp4] [--start 0] [--duration 20] [--fps 60] [--width 1920] [--height 1080] [--jobs 1-8] [--encoder-threads 1-16] [--audio assets/audio/song.m4a] [--lyrics PATH] [--lyric-direction PATH] [--silent] [--engine native|browser] [--jizura] [--v16|--v17|--v18|--v19|--v20|--v22|--v23|--v24|--v25|--v26|--v27|--v28|--v29|--v30|--v31|--v32|--v33] [--gpu] [--nvenc] [--browser PATH] [--preset fast] [--crf 18] [--chunk-duration 60] [--self-test]');
   process.exit(0);
 }
 for (const name of ['width', 'height', 'fps', 'start', 'crf']) options[name] = Number(options[name]);
@@ -37,7 +37,7 @@ if (!Number.isInteger(options['encoder-threads']) || options['encoder-threads'] 
 if(!Number.isInteger(options.jobs)||options.jobs<1||options.jobs>8)throw new Error('--jobs must be an integer between 1 and 8.');
 if (!Number.isFinite(options['chunk-duration']) || options['chunk-duration'] < 0) throw new Error('--chunk-duration must be nonnegative.');
 if (![options.width, options.height, options.fps].every(n => Number.isFinite(n) && n > 0) || !Number.isInteger(options.width) || !Number.isInteger(options.height) || options.width % 2 || options.height % 2 || options.fps > 120 || options.start < 0 || !Number.isFinite(options.start)) throw new Error('Use positive even dimensions, fps <=120, and start >=0.');
-if (options.v16 || options.v17 || options.v18) options.jizura = true;
+if (options.v16 || options.v17 || options.v18 || options.v19 || options.v20 || options.v22 || options.v23 || options.v24 || options.v25 || options.v26 || options.v27 || options.v28 || options.v29 || options.v30 || options.v31 || options.v32 || options.v33) options.jizura = true;
 if (options.jizura) {
   if (options.lyrics || options['lyric-direction']) throw new Error('--jizura uses the project lyric data; custom lyric inputs are not supported.');
   options.engine = 'browser';
@@ -110,7 +110,7 @@ if (options['chunk-duration'] > 0 && count > Math.max(1, Math.floor(options['chu
       const offset=index*chunkFrames;
       const frames = Math.min(chunkFrames, count - offset), name = `part-${String(index).padStart(4, '0')}.mp4`, part = path.join(temp, name);
       const args = [fileURLToPath(import.meta.url), '--root', options.root, '--start', String(+(options.start + offset / options.fps).toFixed(9)), '--duration', String((frames - 1e-6) / options.fps), '--chunk-duration', '0', '--silent', '--output', part];
-      for (const flag of ['jizura', 'v16', 'v17', 'v18', 'gpu', 'nvenc']) if (options[flag]) args.push(`--${flag}`);
+      for (const flag of ['jizura', 'v16', 'v17', 'v18', 'v19', 'v20', 'v22', 'v23', 'v24', 'v25', 'v26', 'v27', 'v28', 'v29', 'v30', 'v31', 'v32', 'v33', 'gpu', 'nvenc']) if (options[flag]) args.push(`--${flag}`);
       for (const key of ['width', 'height', 'fps', 'engine', 'preset', 'crf', 'encoder-threads', 'modules', 'renderer', 'browser', 'lyrics', 'lyric-direction']) if (options[key] !== undefined) args.push(`--${key}`, String(options[key]));
       console.log(`Rendering chunk ${index + 1}/${chunkCount}, frames ${offset}…${offset + frames - 1}.`);
       // Several browsers start at once; a cold Chrome can miss the navigation deadline
@@ -227,9 +227,10 @@ try {
     page.on('pageerror', error => browserErrors.push(error.message));
     // 'networkidle' never settles when several browsers load the engine and the font
     // files at the same time, and the default 30 s deadline then kills a healthy render.
-    const version = options.v18 ? '&v=18' : options.v17 ? '&v=17' : options.v16 ? '&v=16' : options.jizura ? '&jizura=1' : '';
+    const current = [33,32,31,30,29,28,27,26,25,24,23,22,20,19,18,17,16].find(edition => options[`v${edition}`]);
+    const version = current ? `&v=${current}` : options.jizura ? '&jizura=1' : '';
     await page.goto(`${service.url}/?export=1&width=${options.width}&height=${options.height}${version}`, { waitUntil: 'load', timeout: 120000 });
-    await page.waitForFunction(jizura => typeof window.renderAt === 'function' && document.querySelector('#film') && (!jizura || window.MV_READY === true), !!options.jizura, { timeout: options.v18 ? 120000 : 30000 });
+    await page.waitForFunction(jizura => typeof window.renderAt === 'function' && document.querySelector('#film') && (!jizura || window.MV_READY === true), !!options.jizura, { timeout: current >= 18 ? 120000 : 30000 });
     if (options.gpu) {
       const cdp = await browser.newBrowserCDPSession();
       const { gpu } = await cdp.send('SystemInfo.getInfo');
@@ -263,7 +264,7 @@ try {
   const warm = async time => {
     if (options.engine !== 'browser') return;
     // Chrome can switch raster paths on the fifth canvas readback in a fresh V17 worker.
-    const reads = options.v17 || options.v18 ? 6 : options.v16 ? 3 : 1;
+    const reads = options.v17 || options.v18 || options.v19 || options.v20 || options.v22 || options.v23 || options.v24 || options.v25 || options.v26 || options.v27 || options.v28 || options.v29 || options.v30 || options.v31 || options.v32 || options.v33 ? 6 : options.v16 ? 3 : 1;
     for (let i = 0; i < reads; i++) await renderer(time);
   };
   await warm(options.start);

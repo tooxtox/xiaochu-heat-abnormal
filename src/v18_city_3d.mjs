@@ -186,7 +186,7 @@ function makeDistrict(scene) {
   return lampMaterial;
 }
 
-function skyDome() {
+export function skyDome() {
   const material = new THREE.ShaderMaterial({
     side: THREE.BackSide, depthWrite: false,
     uniforms: { horizon: { value: new THREE.Color() }, zenith: { value: new THREE.Color() }, time: { value: 0 }},
@@ -264,7 +264,7 @@ function wetStreet() {
   return ground;
 }
 
-function createBlackStar(scene) {
+export function createBlackStar(scene) {
   const object = new THREE.Group();
   const sphere = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 24), new THREE.MeshBasicMaterial({ color: '#101221', fog: false }));
   object.add(sphere);

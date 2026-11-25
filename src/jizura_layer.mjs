@@ -11,6 +11,11 @@
 //   3. determinism — every renderer is built and every paper texture is pre-warmed while a
 //      seeded Math.random shim is installed, so separate render workers agree pixel for pixel.
 import { editorialShotAt } from './transitions.mjs';
+import { finaleLyricFraming } from './v20_lyric_camera.mjs';
+import { drawV22FinaleLyric } from './v22_lyric_style.mjs';
+import { lyricShakeAt } from './v22_rhythm.mjs';
+import { finaleShotAnchorAt, finaleShotPlanAt, drawV23FinaleLyric } from './v23_lyric_style.mjs';
+import { isPaperMontage, montageAt } from './v30_montage.mjs';
 
 const W = 1920, H = 1080;
 
@@ -47,18 +52,25 @@ function buildLrc(lines, direction){
 // project.overrides is keyed by the LRC row index, so the row map from buildLrc is used
 // here. Every cut gets trans:'none' — JIZURA's own transitions would overwrite the exit
 // motion of the previous line, and the exits here carry the meaning.
-function buildOverrides(direction,lrc){
+function buildOverrides(direction,lrc,isFinaleLine,fixedFinale){
   const overrides={};
   direction.lines.forEach((d,i)=>{
     const row=lrc.lyricRow.get(i);
     if(row==null) return;
+    if(fixedFinale&&isFinaleLine(d)){
+      overrides[row]={
+        layout:d.layout==='scatter'?'vcols':d.layout,enter:'cut',exit:'cut',hold:'still',
+        decor:[],treat:'none',cam:'push',bg:'none',cuts:1,cutTech:{0:{trans:'none'}},
+      };
+      return;
+    }
     const cuts=Math.max(1,d.cuts||1);
     const cutTech={};
     for(let k=0;k<cuts;k++) cutTech[k]={trans:'none'};
     if(d.cutTech) for(const [k,tech] of Object.entries(d.cutTech)) cutTech[k]=Object.assign({},cutTech[k],tech);
     overrides[row]={
       layout:d.layout,enter:d.enter,exit:d.exit,hold:d.hold,
-      decor:d.decor||[],treat:d.treat,cam:d.cam,bg:'none',cuts,cutTech,
+      decor:d.decor||[],treat:isFinaleLine(d)&&d.treat==='marker'?'outline':d.treat,cam:d.cam,bg:'none',cuts,cutTech,
     };
   });
   direction.interludes.forEach((spec,i)=>{
@@ -98,7 +110,11 @@ export async function createJizuraLayer(data){
   if(!direction||!direction.lines||!direction.lines.length) throw new Error('data/jizura_direction.json is required for the JIZURA lyric layer.');
   const lines=data.lyrics.lines;
   const lrc=buildLrc(lines,direction);
-  const overrides=buildOverrides(direction,lrc);
+  const isFinaleLine=line=>line&&data.finaleEdit&&line.time>=data.finaleEdit.start&&line.time<data.finaleEdit.end;
+  // V22 stripped the finale down to one static cut per line. V23 keeps the director's
+  // full direction there — layout, enter, exit, hold, decor, camera and the per-cut
+  // tech — and only adds the per-shot ink on top.
+  const overrides=buildOverrides(direction,lrc,isFinaleLine,data.v22&&!data.v23);
   // The lyric rows carry an id, not an index; the direction table is matched by id.
   const byId=new Map(direction.lines.map(d=>[d.id,d]));
 
@@ -163,13 +179,22 @@ export async function createJizuraLayer(data){
       // two ink polarities against the real picture. It only measures — the director table
       // still decides what is actually rendered.
       const probe=window.__MZ_PLAN_PROBE;
+      if(isFinaleLine(line)){
+        const family=d.plan.replace(/Alt$/,'');
+        const base=family==='light'?'red':family;
+        // V23 lets the picture pick the colour world, so the style changes with the cut.
+        const paper=data.v30&&isPaperMontage(montageAt(data,editorialShotAt(data,t),t));
+        const plan=probe?.[line.id]||(paper?'light':data.v23?finaleShotPlanAt(data,t,base):base);
+        return {line,d,plan,plane:'front',finale:true};
+      }
       // The V17 reactor replaced the brighter V16 plate. Keep the same motion and use its light ink variant.
       const reactorInk=data.frontEdit&&(line.id==='L106'||line.id==='L107')&&d.plan==='redAlt'?'red':d.plan;
       const shot=data.v18?editorialShotAt(data,t):null;
       const city=shot&&[5,6,9].includes(shot.scene);
       const opposite=reactorInk.replace(/Alt$/,'');
       const cityInk=city&&shot.mode!=='eye'&&direction.plans[opposite]?opposite:reactorInk;
-      const plan=(probe&&probe[line.id])||cityInk;
+      const paper=data.v31&&isPaperMontage(montageAt(data,shot,t));
+      const plan=probe?.[line.id]||(paper?'light':cityInk);
       return {line,d,plan,plane:d.layer==='behind'?'back':'front',interlude:false,cityEye:city&&shot.mode==='eye'};
     }
     const gap=gapAt(t);
@@ -177,7 +202,11 @@ export async function createJizuraLayer(data){
     const index=direction.lines.findIndex(d=>d.time>=gap.start);
     const d=index>=0?direction.lines[index]:null;
     const spec=direction.interludes[direction.interludes.findIndex((_,i)=>lrc.gaps[i]===gap)]||{};
-    return {line:null,d:null,plan:d?d.plan:'dark',plane:spec.plane||'back',interlude:true};
+    const base=d?d.plan:'dark';
+    // Inside the finale the interlude card follows the same world the lyric does.
+    const inFinale=data.v23&&data.finaleEdit&&t>=data.finaleEdit.start&&t<data.finaleEdit.end;
+    const plan=inFinale?finaleShotPlanAt(data,t,base):base;
+    return {line:null,d:null,plan,plane:spec.plane||'back',interlude:true};
   }
 
   function schemeOf(planName){
@@ -236,18 +265,35 @@ export async function createJizuraLayer(data){
         // noPost: the engine's transparent post pass multiplies the layer alpha by itself once per
         // active impact event, so an emphasised line (chroma + shake) fades the whole lyric away.
         // The film's own glitch pass drives the screen-level impact instead.
-        window.JZ.drawPlan(state.plan,layer,t,'front',{noPost:true});
-        if(state.cityEye){
+        if(data.v23&&state.finale) drawV23FinaleLyric(window.J,window.JZ,state.plan,layer,data,t);
+        else if(data.v22&&state.finale) drawV22FinaleLyric(window.J,window.JZ,state.plan,layer,data,t,state.line.time);
+        else window.JZ.drawPlan(state.plan,layer,t,'front',{noPost:true});
+        const shake=state.line?lyricShakeAt(data,t):null;
+        if(shake){c.save();c.translate(shake.x,shake.y);}
+        if(state.finale){
+          c.save();
+          if(!data.v22){
+            const frame=finaleLyricFraming(data,t,state.line.time);
+            c.translate(W*.5+frame.x,H*.5+frame.y);
+            c.transform(frame.sx,0,frame.shear,frame.sy,0,0);
+          }
+          c.shadowColor='#10080DE8';
+          c.shadowBlur=10*Math.hypot(c.getTransform().a,c.getTransform().b);
+          const [x,y]=data.v23?finaleShotAnchorAt(data,t,state.d.layout):data.v22?[0,0]:[-W/2,-H/2];
+          c.drawImage(canvas,x,y,W,H);
+          c.restore();
+        }else if(state.cityEye){
           c.save();
           c.shadowColor=state.plan.endsWith('Alt')?'#E9EDE5BB':'#090C13DC';
           c.shadowBlur=8*Math.hypot(c.getTransform().a,c.getTransform().b);
           c.drawImage(canvas,0,0,W,H);
           c.restore();
         }else c.drawImage(canvas,0,0,W,H);
+        if(shake)c.restore();
       }
     }
     if(plane==='front') drawTranslation(c,state);
   }
 
-  return {draw,info,lrc:lrc.lrc};
+  return {draw,info,lrc:lrc.lrc,finaleReadingAt:t=>isFinaleLine(lineAt(t))};
 }

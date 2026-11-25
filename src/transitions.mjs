@@ -1,9 +1,11 @@
 // Pure-time editorial camera and image-to-image transitions. No frame history.
+import {hasMontageAccent} from './v30_montage.mjs';
 const TAU=Math.PI*2;
 const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
 const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
 const fract=x=>x-Math.floor(x);
 const hash=n=>fract(Math.sin(n*127.1+311.7)*43758.5453);
+const shardTransitions=new Set(['climax-burst','glass-crack','shatter']);
 const shotsOf=data=>data.shots?.shots||[];
 function shotIndex(shots,t){
  let lo=0,hi=shots.length;while(lo<hi){const m=(lo+hi)>>>1;if(shots[m].start<=t)lo=m+1;else hi=m}return Math.max(0,lo-1);
@@ -93,6 +95,8 @@ export function transitionAt(data,t){
   const shots=shotsOf(data);if(shots.length<2)return null;
   const to=editorialShotAt(data,t);if(!to||to.start<=0)return null;
   const from=editorialShotAt(data,to.start-1/60);if(!from)return null;
+  if(hasMontageAccent(data,to))return null;
+  if(data.v29&&to.mode==='cold')return null;
   if(to.mode==='cold'&&from.mode==='cold')return null;
   if(to.rhythm?.beatLocked&&to.rhythm.cut==='hard')return null;
   const index=(to.baseShot||to).id-1,scene=sceneId(data,to,t),previousScene=sceneId(data,from,from.end-1/60);
@@ -100,9 +104,11 @@ export function transitionAt(data,t){
   // Every transition is described the same way so the composite stage stays declarative.
   const make=(type,duration)=>{
     if(dt<0||dt>=duration)return null;
+    const localSignal=data.v22&&shardTransitions.has(type);
+    if(localSignal)type='datamosh';
     const progress=clamp(dt/duration);
     const tint=type==='climax-burst'?'#ED8B50':type==='glass-crack'?'#E9ACC8':scene===9?'#D93B4A':'#9DE4C2';
-    return {type,start:to.start,cut:to.start,end:to.start+duration,duration,progress,eased:smooth(progress),
+    return {type,localSignal,start:to.start,cut:to.start,end:to.start+duration,duration,progress,eased:smooth(progress),
       fromShot:from.id,toShot:to.id,scene,direction:to.id%2?1:-1,tint,contrast,
       outgoingTime:Math.max(from.start,to.start-1/60),
       centerX:to.mode==='portrait'?.65:to.mode==='hand'?.56:.5,centerY:to.mode==='eye'?.47:.48};
@@ -256,14 +262,16 @@ function compositeTransition(c,outgoing,incoming,tr,w,h){
   for(let i=0;i<bands;i++){
    const q=smooth(clamp((e-hash(i*3.1)*.55)/.45));
    if(q<=0)continue;
-   const y0=i*h/bands,bh=h/bands+1;
+   const y0=i*h/bands,bh=tr.localSignal?h*(.015+.028*hash(i*11.3)):h/bands+1;
+   const bw=tr.localSignal?w*(.18+.35*hash(i*17.7)):w;
+   const bx=(w-bw)*hash(i*29.3+tr.toShot);
    const off=(hash(i*7.3)-.5)*260*q*(hash(i*11.1)>.5?1:-1);
    c.save();c.globalAlpha=1-q*.9;
-   c.drawImage(outgoing,0,y0,w,bh,off,y0,w,bh);
+   c.drawImage(outgoing,bx,y0,bw,bh,bx+off,y0,bw,bh);
    c.restore();
-   if(q<1){c.save();c.globalAlpha=Math.sin(q*Math.PI)*.5;c.fillStyle=tr.tint||'#9DE4C2';c.fillRect(0,y0,w,1.4);c.restore();}
+   if(q<1){c.save();c.globalAlpha=Math.sin(q*Math.PI)*.5;c.fillStyle=tr.tint||'#9DE4C2';c.fillRect(bx,y0,bw,1.4);c.restore();}
   }
-  c.save();c.globalAlpha=Math.sin(p*Math.PI)*.22;c.fillStyle='#04070B';
+  c.save();c.globalAlpha=Math.sin(p*Math.PI)*(tr.localSignal?.07:.22);c.fillStyle='#04070B';
   for(let y2=0;y2<h;y2+=4)c.fillRect(0,y2,w,1.6);
   c.restore();
   return;

@@ -216,7 +216,7 @@ export function drawV17SpaceFactory(additionalRooms = {}, { detail = false } = {
     if (actor?.position && Number.isFinite(actor.height)) {
       const foot = actor.position.clone().project(camera);
       const head = actor.position.clone().add(new THREE.Vector3(0, actor.height, 0)).project(camera);
-      draw.subject = { x: (1 + foot.x) * 960, y: (1 - foot.y) * 540, height: (foot.y - head.y) * -540 };
+      draw.subject = { x: (1 + foot.x) * 960, y: (1 - foot.y) * 540, height: (head.y - foot.y) * 540, depth: foot.z };
     }
     c.drawImage(canvas, 0, 0, 1920, 1080);
     return true;
